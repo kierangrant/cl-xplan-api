@@ -65,11 +65,15 @@ field -> (if field `((\"field\" . ,field)))
 			,@(loop for item in arglist collecting
 			       (if (typep item 'symbol)
 				   `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
-				   (destructuring-bind (field &key (string field string-p) (cond field cond-p) (value field value-p))
+				   (destructuring-bind (field &key (string nil string-p) (cond field cond-p) (value field value-p))
 				       item
-				     ;; fixup defaults if field is not a symbol
-				     (if (not (typep field 'symbol))
-					 (setf string (if string-p string (car field))
+				     ;; fixup defaults
+				     (if (typep field 'symbol)
+					 (setf string (if string-p
+							  string
+							  (string-downcase (symbol-name field))))
+					 (setf string (if string-p string
+							  (string-downcase (symbol-name (car field))))
 					       cond (if cond-p cond (car field))
 					       value (if value-p value (car field))))
 				     `(if ,cond (list (cons ,string ,value))))))))))
@@ -93,11 +97,15 @@ field -> (if field `((\"field\" . ,field)))
 		 ,@(loop for item in arglist collecting
 			(if (typep item 'symbol)
 			    `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
-			    (destructuring-bind (field &key (string field string-p) (cond field cond-p) (value field value-p))
+			    (destructuring-bind (field &key (string nil string-p) (cond field cond-p) (value field value-p))
 				item
-			      ;; fixup defaults if field is not a symbol
-			      (if (not (typep field 'symbol))
-				  (setf string (if string-p string (car field))
+			      ;; fixup defaults
+			      (if (typep field 'symbol)
+				  (setf string (if string-p
+						   string
+						   (string-downcase (symbol-name field))))
+				  (setf string (if string-p string
+						   (string-downcase (symbol-name (car field))))
 					cond (if cond-p cond (car field))
 					value (if value-p value (car field))))
 			      `(if ,cond (list (cons ,string ,value))))))))))))))
