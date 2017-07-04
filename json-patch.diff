@@ -1,0 +1,46 @@
+diff --git a/doc/cl-json.html b/doc/cl-json.html
+index 8b20fa9..c4c669b 100644
+--- a/doc/cl-json.html
++++ b/doc/cl-json.html
+@@ -207,7 +207,9 @@ darcs get http://common-lisp.net/project/cl-json/darcs/cl-json
+     <td><code class="json-literal">null</code></td></tr>
+   <tr>
+   <td class="map">&larr;<span class="cc">   </span></td>
+-    <td><code class="json-literal">false</code></td></tr>
++  <td rowspan="2"><code class="json-literal">false</code></td></tr>
++  <tr><td>the value <code class="lisp">JSON:+JSON-FALSE+</code></td>
++    <td class="map">&rarr;</td></tr>
+   <tr><td>any other <code class="lisp-type">symbol</code></td>
+   <td class="map">&rarr;<span class="cc"> <br/>with identifier name translation </span></td>
+     <td rowspan="2"><code class="json">String</code></td></tr>
+diff --git a/src/common.lisp b/src/common.lisp
+index 97d20e1..168aefe 100644
+--- a/src/common.lisp
++++ b/src/common.lisp
+@@ -71,10 +71,13 @@ slash.")
+ 
+ ;;; Symbols
+ 
++(defconstant +JSON-FALSE+ '+JSON-FALSE+ "Special Constant to force the output of 'false' in an encoded JSON structure. Some applications are known to test for a value of 'false', meaning that a value of 'null' is not enough, this value can be used for those special occasions.")
++
+ (defparameter +json-lisp-symbol-tokens+
+   '(("true" . t)
+     ("null" . nil)
+-    ("false" . nil))
++    ("false" . nil)
++    ("false" . +JSON-FALSE+))
+   "Mapping between JSON literal names and Lisp boolean values.")
+ 
+ (defvar *json-symbols-package* (find-package 'keyword)
+diff --git a/src/package.lisp b/src/package.lisp
+index 1a96795..e2d1c41 100644
+--- a/src/package.lisp
++++ b/src/package.lisp
+@@ -18,6 +18,7 @@
+    #:*json-identifier-name-to-lisp*
+    #:*lisp-identifier-name-to-json*
+    #:*identifier-name-to-key*
++   #:+JSON-FALSE+
+    ;; camel-case.lisp
+    #:simplified-camel-case-to-lisp
+    #:camel-case-to-lisp
