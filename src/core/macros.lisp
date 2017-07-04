@@ -123,7 +123,7 @@ field -> (if field `((\"field\" . ,field)))
 	    (progn ,@body)
 	 (when (not ,ko) (ignore-errors (session ,session-name :delete)))))))
 
-(defmacro with-bulk-request ((session request-name &optional (request-spec NIL) &rest request-opt) &body body)
+(defmacro with-bulk-request ((request-name session &optional (request-spec NIL) &rest request-opt) &body body)
   "Executes body in a let environment where a BULK request is created to request-name if not specified by request-spec using request-opt as options."
   `(let ((,request-name
 	  ,(if request-spec
