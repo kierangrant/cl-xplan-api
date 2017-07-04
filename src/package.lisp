@@ -35,6 +35,7 @@ Description: Package definition for CL-XPLAN-API
    delete-session
    drakma-settings
    force-init-auth
+   name
    password
    prepare-request
    process-request
