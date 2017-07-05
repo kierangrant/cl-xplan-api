@@ -26,7 +26,7 @@ Description: /entity API Functions
    (ids :cond (and (not entity_id) ids))
    (page :cond (and (not entity_id) page))
    (quicksearch :cond (and (not entity_id) quicksearch))
-   ((images_as_base64 nil base64-p) :cond base64-p :value (if images_as_base64 1 0)) 
+   ((images_as_base64 nil base64-p) :cond base64-p :value (if images_as_base64 1 0))
    ((title_fields nil title-p) :cond (and (not entity_id) title-p) :value (if title_fields 1 0))
    ((include_prospect nil prospect-p) :cond (and (not entity_id) prospect-p) :value (if include_prospect 1 0)))
   :resource (format nil "/entity/client~@[/~A~]" entity_id))
@@ -35,7 +35,8 @@ Description: /entity API Functions
 (cl-xplan-api/core::define-entrypoint entity/client :post () (fields) :resource "/entity/client")
 
 ;; entity/client - PATCH /resourceful/entity/client/:entity_id
-(cl-xplan-api/core::define-entrypoint entity/client :patch (entity_id) (fields) :resource (format NIL "/entity/client/~A" entity_id))
+(cl-xplan-api/core::define-entrypoint entity/client :patch
+  (entity_id) (fields) :resource (format NIL "/entity/client/~A" entity_id))
 
 ;; entity/client-v2 - GET /resourceful/entity/client-v2 and GET /resourceful/entity/client-v2/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/client-v2 :get
@@ -54,7 +55,8 @@ Description: /entity API Functions
 (cl-xplan-api/core::define-entrypoint entity/client-v2 :post () (fields) :resource "/entity/client-v2")
 
 ;; entity/client-v2 - PATCH /resourceful/entity/client-v2/:entity_id
-(cl-xplan-api/core::define-entrypoint entity/client-v3 :patch (entity_id) (fields) :resource (format NIL "/entity/client-v2/~A" entity_id))
+(cl-xplan-api/core::define-entrypoint entity/client-v3 :patch
+  (entity_id) (fields) :resource (format NIL "/entity/client-v2/~A" entity_id))
 
 ;; entity/client-v3 - GET /resourceful/entity/client-v3 and GET /resourceful/entity/client-v3/:entity_id
 (cl-xplan-api/core::define-entrypoint
@@ -81,13 +83,16 @@ Use ids for multiple Entities (entity/client-v3) else use entity_id (entity/clie
   :resource (format nil "/entity/client-v3~@[/~A~]" entity_id))
 
 ;; entity/client/portfolio - GET /resourceful/entity/client/:entity_id/portfolio
-(cl-xplan-api/core::define-entrypoint entity/client/portfolio :get (entity_id) (fields) :resource (format NIL "/entity/client/~A/portfolio" entity_id))
+(cl-xplan-api/core::define-entrypoint entity/client/portfolio :get
+  (entity_id) (fields) :resource (format NIL "/entity/client/~A/portfolio" entity_id))
 
 ;; entity/client-v2/portfolio - GET /resourceful/entity/client-v2/:entity_id/portfolio
-(cl-xplan-api/core::define-entrypoint entity/client-v2/portfolio :get (entity_id) (fields) :resource (format NIL "/entity/client-v2/~A/portfolio" entity_id))
+(cl-xplan-api/core::define-entrypoint entity/client-v2/portfolio :get
+  (entity_id) (fields) :resource (format NIL "/entity/client-v2/~A/portfolio" entity_id))
 
 ;; entity/client-v3/portfolio - GET /resourceful/entity/client-v3/:entity_id/portfolio
-(cl-xplan-api/core::define-entrypoint entity/client-v3/portfolio :get (entity_id) (fields) :resource (format NIL "/entity/client-v3/~A/portfolio" entity_id))
+(cl-xplan-api/core::define-entrypoint entity/client-v3/portfolio :get
+  (entity_id) (fields) :resource (format NIL "/entity/client-v3/~A/portfolio" entity_id))
 
 ;; entity/user - GET /resourceful/entity/user and GET /resourceful/entity/user/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/user :get
@@ -123,7 +128,9 @@ Use ids for multiple Entities (entity/user-v2) else use entity_id (entity/user-v
   :resource (format nil "/entity/user-v2~@[/~A~]" entity_id))
 
 ;; entity/user-v2 - POST /resourceful/entity/user-v2
-(cl-xplan-api/core::define-entrypoint entity/user-v2 :post () (access-level billing_group fields user_id password) :resource "/entity/user-v2")
+(cl-xplan-api/core::define-entrypoint entity/user-v2 :post
+  () (access-level billing_group fields user_id password) :resource "/entity/user-v2")
 
 ;; entity/user-v2 - PATCH /resourceful/entity/user-v2/:entity_id
-(cl-xplan-api/core::define-entrypoint entity/user-v2 :patch (entity_id) (fields) :resource (format nil "/entity/user-v2/~A" entity_id))
+(cl-xplan-api/core::define-entrypoint entity/user-v2 :patch
+  (entity_id) (fields) :resource (format nil "/entity/user-v2/~A" entity_id))

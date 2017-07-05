@@ -52,4 +52,4 @@ Description: /currency API functions
   :single-resource "/currency-v2"
   :hidden-single-parameters (("_method" . "sum"))
   :bulk-method :post
-  :bulk-resource "/currency-v2?_method=sum")  
+  :bulk-resource "/currency-v2?_method=sum")

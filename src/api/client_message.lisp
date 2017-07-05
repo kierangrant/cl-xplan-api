@@ -20,4 +20,6 @@ Description: /client_message API Functions
 ;;; client_message
 
 ;; client_message - POST /resourceful/client_message
-(cl-xplan-api/core::define-entrypoint client_message :post () (subject content adviser_id attachments attachment_names) :resource "/client_message" :documentation "Send a message to the client's adviser.")
+(cl-xplan-api/core::define-entrypoint client_message :post
+  () (subject content adviser_id attachments attachment_names)
+  :resource "/client_message" :documentation "Send a message to the client's adviser.")

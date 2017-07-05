@@ -118,7 +118,9 @@ If no portfolio is given, all transactions visible to the user are returned."
   :resource (format NIL "/portfolio/transaction/~A" transaction_id))
 
 ;; portfolio/transaction - DELETE /resourceful/portfolio/transaction/:transaction_id
-(cl-xplan-api/core::define-entrypoint portfolio/transaction :delete (transaction_id) () :resource (format nil "/portfolio/transaction/~A" transaction_id))
+(cl-xplan-api/core::define-entrypoint portfolio/transaction :delete
+  (transaction_id) () :resource (format nil "/portfolio/transaction/~A" transaction_id))
 
 ;; portfolio/transaction_types - GET /resourceful/portfolio/transaction_types
-(cl-xplan-api/core::define-entrypoint portfolio/transaction_types :get () () :resource "/portfolio/transaction_types")
+(cl-xplan-api/core::define-entrypoint portfolio/transaction_types :get
+  () () :resource "/portfolio/transaction_types")
