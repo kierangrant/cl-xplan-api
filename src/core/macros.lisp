@@ -47,7 +47,7 @@ field -> (if field `((\"field\" . ,field)))
 			      item
 			      (car item)))))
   `(progn
-     ,@(if (not (fboundp name))
+     ,@(if (not (boundp name))
 	   `((defgeneric ,name (session method &key &allow-other-keys))))
      ,@(if (not inhibit-single)
 	   `((defmethod ,name ((session xplan-session) (method (eql ,method))

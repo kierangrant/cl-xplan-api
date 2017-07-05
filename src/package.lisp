@@ -63,6 +63,7 @@ Description: Package definition for CL-XPLAN-API
    ;; macros
    with-xplan-session
    with-bulk-request
+   define-entrypoint
    ;; variables
    *max-rounding*
    *xplan-api-debug*
@@ -70,6 +71,7 @@ Description: Package definition for CL-XPLAN-API
 
 (defpackage :cl-xplan-api/api
   (:use :cl)
+  (:import-from :cl-xplan-api/core :define-entrypoint)
   (:export
    ;; access
    access/client
@@ -108,6 +110,14 @@ Description: Package definition for CL-XPLAN-API
    ;; currency
    currency
    currency-v2
+   ;; debt_qualifier
+   debt_qualifier/au/lender_document
+   debt_qualifier/au/lender_document_report
+   debt_qualifier/gb/browse_product
+   debt_qualifier/gb/credit_history_questions
+   debt_qualifier/gb/custom_panel
+   debt_qualifier/gb/kfi_complaint_setting
+   debt_qualifier/gb/panel_provider
    ;; entity
    entity/client
    entity/client-v2
@@ -184,6 +194,14 @@ Description: Package definition for CL-XPLAN-API
    ;; currency
    currency
    currency-v2
+   ;; debt_qualifier
+   debt_qualifier/au/lender_document
+   debt_qualifier/au/lender_document_report
+   debt_qualifier/gb/browse_product
+   debt_qualifier/gb/credit_history_questions
+   debt_qualifier/gb/custom_panel
+   debt_qualifier/gb/kfi_complaint_setting
+   debt_qualifier/gb/panel_provider
    ;; entity
    entity/client
    entity/client-v2
