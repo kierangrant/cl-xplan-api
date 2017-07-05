@@ -42,6 +42,7 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "asset_class")
 		     (:file "assumption_set")
 		     (:file "case_manager")
+		     (:file "class_smsf")
 		     (:file "entity")
 		     (:file "portfolio")
 		     (:file "session")

@@ -97,6 +97,12 @@ Description: Package definition for CL-XPLAN-API
    case_manager/task
    case_manager/thread
    case_manager/xtool_scenario
+   ;; class_smsf
+   class_smsf/account
+   class_smsf/fund
+   class_smsf/fund/contribution_caps
+   class_smsf/fund/members
+   class_smsf/fund_link
    ;; entity
    entity/client
    entity/client-v2
@@ -162,6 +168,12 @@ Description: Package definition for CL-XPLAN-API
    case_manager/task
    case_manager/thread
    case_manager/xtool_scenario
+   ;; class_smsf
+   class_smsf/account
+   class_smsf/fund
+   class_smsf/fund/contribution_caps
+   class_smsf/fund/members
+   class_smsf/fund_link
    ;; entity
    entity/client
    entity/client-v2
