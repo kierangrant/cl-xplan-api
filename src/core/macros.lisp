@@ -21,10 +21,13 @@ Description: Client and API Macros
 
 ;; Define an API entrypoint.
 
-(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist) &key documentation resource inhibit-bulk inhibit-single inhibit-transaction (single-method method) (single-resource resource) (bulk-method method) (bulk-resource resource))
+(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist) &key documentation resource inhibit-bulk inhibit-single inhibit-transaction (single-method method) (single-resource resource) (bulk-method method) (bulk-resource resource) hidden-single-parameters hidden-bulk-parameters)
   "Defines an API entry point.
 
 extra-parms are extra keyword parameters for use in expressions for different parameters, used for parameters that MUST NOT come out in API parameters call.
+
+hidden-single-parameters are parameters that are added to Single API call method, for such things like needing '?_method=...' in a request that has parameters. Is an alist of name, value pairs, that are inserted in a form that allows name and value to be run-time expressions
+hidden-bulk-parameters is like hidden-single-parameters, but it's parameters are added like arglist, as nothing is every added to URI in a bulk request, you can customize that using bulk-resource
 
 arglist is of form ({field|(field &key field-string cond-expr value-expr)}*):
 
@@ -62,6 +65,8 @@ field -> (if field `((\"field\" . ,field)))
 		       :parameters
 		       (append
 			,@(if (not inhibit-transaction) `((if request-transaction (list (cons "_transaction" request-transaction)))))
+			(list ,@(loop for item in hidden-single-parameters collecting
+				     `(cons ,(car item) ,(cdr item))))
 			,@(loop for item in arglist collecting
 			       (if (typep item 'symbol)
 				   `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
@@ -94,6 +99,8 @@ field -> (if field `((\"field\" . ,field)))
 		:parameters
 		(append
 		 ,@(if (not inhibit-transaction) `((if request-transaction (list (cons "_transaction" request-transaction)))))
+		 (list ,@(loop for item in hidden-bulk-parameters collecting
+			      `(cons ,(car item) ,(cdr item))))
 		 ,@(loop for item in arglist collecting
 			(if (typep item 'symbol)
 			    `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
@@ -129,7 +136,7 @@ field -> (if field `((\"field\" . ,field)))
 	   (,session-name ,(if session-spec session-spec `(make-instance 'xplan-session ,@session-opt))))
        (unwind-protect
 	    (progn ,@body)
-	 (when (not ,ko) (ignore-errors (session ,session-name :delete)))))))
+	 (when (not ,ko) (ignore-errors (delete-session ,session-name)))))))
 
 (defmacro with-bulk-request ((request-name session &optional (request-spec NIL) &rest request-opt) &body body)
   "Executes body in a let environment where a BULK request is created to request-name if not specified by request-spec using request-opt as options."

@@ -36,6 +36,7 @@ Description: /session API Functions
   :inhibit-transaction T
   :documentation "Commit a Transaction."
   :single-method :post
-  :single-resource (format NIL "/session/transaction/~A?_method=commit" transaction_id)
+  :single-resource (format NIL "/session/transaction/~A" transaction_id)
+  :hidden-single-parameters (("_method" . "commit"))
   :bulk-method :comiit
   :bulk-resource (format NIL "/session/transaction/~A" transaction_id))

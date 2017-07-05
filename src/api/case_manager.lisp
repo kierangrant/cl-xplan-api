@@ -168,7 +168,7 @@ Description: /case_manager API Functions
 (cl-xplan-api/core::define-entrypoint case_manager/goal :post (container_id) (goal_id entity_id) :resource (format NIL "/case_manager/~A/goal" container_id))
 
 ;; case_manager/goal - POST /resourceful/case_manager/:container_id/goal?_method=sort - Unsure if in Bulk I can use 'SORT' method...
-(cl-xplan-api/core::define-entrypoint case_manager/goal :sort (container_id) (goals) :resource (format NIL "/case_manager/~A/goal?_method=sort" container_id) :single-method :POST :bulk-method :POST)
+(cl-xplan-api/core::define-entrypoint case_manager/goal :sort (container_id) (goals) :single-resource (format NIL "/case_manager/~A/goal" container_id) :hidden-single-parameters (("_method" . "sort")) :bulk-resource (format NIL "/case_manager/~A/goal?_method=sort" container_id) :single-method :POST :bulk-method :POST)
 
 ;; case_manager/goal - DELETE /resourceful/case_manager/:container_id/goal/:goal_id
 (cl-xplan-api/core::define-entrypoint case_manager/goal :delete (container_id goal_id) (entity_id) :resource (format NIL "/case_manager/~A/goal/~A" container_id goal_id))
@@ -193,7 +193,7 @@ Description: /case_manager API Functions
 (cl-xplan-api/core::define-entrypoint case_manager/objective :post (container_id) (objective_id entity_id) :resource (format nil "/case_manager/~A/objective" container_id))
 
 ;; case_manager/objective - POST /resourceful/case_manager/:container_id/objective?_method=sort
-(cl-xplan-api/core::define-entrypoint case_manager/objective :sort (container_id) (objectives) :resource (format NIL "/case_manager/~A/objective?_method=sort" container_id) :single-method :POST :bulk-method :POST)
+(cl-xplan-api/core::define-entrypoint case_manager/objective :sort (container_id) (objectives) :single-resource (format nil "/case_manager/~A/objective" container_id) :hidden-single-parameters (("_method" . "sort")) :bulk-resource (format NIL "/case_manager/~A/objective?_method=sort" container_id) :single-method :POST :bulk-method :POST)
 
 ;; case_manager/objective - DELETE /resourceful/case_manager/:container_id/objective/:objective_id
 (cl-xplan-api/core::define-entrypoint case_manager/objective :delete (container_id objective_id) (entity_id) :resource (format NIL "/case_manager/~A/objective/~A" container_id objective_id))

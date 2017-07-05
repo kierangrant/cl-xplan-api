@@ -105,6 +105,9 @@ Description: Package definition for CL-XPLAN-API
    class_smsf/fund_link
    ;; client_message
    client_message
+   ;; currency
+   currency
+   currency-v2
    ;; entity
    entity/client
    entity/client-v2
@@ -178,6 +181,9 @@ Description: Package definition for CL-XPLAN-API
    class_smsf/fund_link
    ;; client_message
    client_message
+   ;; currency
+   currency
+   currency-v2
    ;; entity
    entity/client
    entity/client-v2

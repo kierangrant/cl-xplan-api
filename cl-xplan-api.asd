@@ -44,6 +44,7 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "case_manager")
 		     (:file "class_smsf")
 		     (:file "client_message")
+		     (:file "currency")
 		     (:file "entity")
 		     (:file "portfolio")
 		     (:file "session")
