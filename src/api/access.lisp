@@ -19,9 +19,7 @@ Description: /access API functions
 
 ;;; access
 
-;; access
-
-;; POST /resourceful/access/client/:entityid
+;; access - POST /resourceful/access/client/:entityid
 
 (cl-xplan-api/core::define-entrypoint
     access/client

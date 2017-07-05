@@ -19,9 +19,7 @@ Description: /entity API Functions
 
 ;;; entity
 
-;; entity/client
-
-;; GET /resourceful/entity/client and GET /resourceful/entity/client/:entity_id
+;; entity/client - GET /resourceful/entity/client and GET /resourceful/entity/client/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/client :get
   (entity_id)
   (fields
@@ -33,15 +31,13 @@ Description: /entity API Functions
    ((include_prospect nil prospect-p) :cond (and (not entity_id) prospect-p) :value (if include_prospect 1 0)))
   :resource (format nil "/entity/client~@[/~A~]" entity_id))
 
-;; POST /resourceful/entity/client
+;; entity/client - POST /resourceful/entity/client
 (cl-xplan-api/core::define-entrypoint entity/client :post () (fields) :resource "/entity/client")
 
-;; PATCH /resourceful/entity/client/:entity_id
+;; entity/client - PATCH /resourceful/entity/client/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/client :patch (entity_id) (fields) :resource (format NIL "/entity/client/~A" entity_id))
 
-;; entity/client-v2
-
-;; GET /resourceful/entity/client-v2 and GET /resourceful/entity/client-v2/:entity_id
+;; entity/client-v2 - GET /resourceful/entity/client-v2 and GET /resourceful/entity/client-v2/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/client-v2 :get
   (entity_id)
   (fields
@@ -54,15 +50,13 @@ Description: /entity API Functions
    ((include_prospect nil prospect-p) :cond (and (not entity_id) prospect-p) :value (if include_prospect 1 0)))
   :resource (format nil "/entity/client-v2~@[/~A~]" entity_id))
 
-;; POST /resourceful/entity/client-v2
+;; entity/client-v2 - POST /resourceful/entity/client-v2
 (cl-xplan-api/core::define-entrypoint entity/client-v2 :post () (fields) :resource "/entity/client-v2")
 
-;; PATCH /resourceful/entity/client-v2/:entity_id
+;; entity/client-v2 - PATCH /resourceful/entity/client-v2/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/client-v3 :patch (entity_id) (fields) :resource (format NIL "/entity/client-v2/~A" entity_id))
 
-;; entity/client-v3
-
-;; GET /resourceful/entity/client-v3 and GET /resourceful/entity/client-v3/:entity_id
+;; entity/client-v3 - GET /resourceful/entity/client-v3 and GET /resourceful/entity/client-v3/:entity_id
 (cl-xplan-api/core::define-entrypoint
     entity/client-v3
     :get
@@ -86,20 +80,16 @@ Description: /entity API Functions
 Use ids for multiple Entities (entity/client-v3) else use entity_id (entity/client-v3/:entity_id)"
   :resource (format nil "/entity/client-v3~@[/~A~]" entity_id))
 
-;; entity/client/portfolio
-
-;; GET /resourceful/entity/client/:entity_id/portfolio
+;; entity/client/portfolio - GET /resourceful/entity/client/:entity_id/portfolio
 (cl-xplan-api/core::define-entrypoint entity/client/portfolio :get (entity_id) (fields) :resource (format NIL "/entity/client/~A/portfolio" entity_id))
 
-;; GET /resourceful/entity/client-v2/:entity_id/portfolio
+;; entity/client-v2/portfolio - GET /resourceful/entity/client-v2/:entity_id/portfolio
 (cl-xplan-api/core::define-entrypoint entity/client-v2/portfolio :get (entity_id) (fields) :resource (format NIL "/entity/client-v2/~A/portfolio" entity_id))
 
-;; GET /resourceful/entity/client-v3/:entity_id/portfolio
+;; entity/client-v3/portfolio - GET /resourceful/entity/client-v3/:entity_id/portfolio
 (cl-xplan-api/core::define-entrypoint entity/client-v3/portfolio :get (entity_id) (fields) :resource (format NIL "/entity/client-v3/~A/portfolio" entity_id))
 
-;; entity/user
-
-;; GET /resourceful/entity/user and GET /resourceful/entity/user/:entity_id
+;; entity/user - GET /resourceful/entity/user and GET /resourceful/entity/user/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/user :get
   (entity_id)
   (fields
@@ -111,12 +101,10 @@ Use ids for multiple Entities (entity/client-v3) else use entity_id (entity/clie
    ((include_prospect nil prospect-p) :cond (and (not entity_id) prospect-p) :value (if include_prospect 1 0)))
   :resource (format NIL "/entity/user~@[/~A~]" entity_id))
 
-;; PATCH /resourceful/entity/user/:entity_id
-(cl-xplan-api/core::define-entrypoint entity/user-v2 :patch (entity_id) (fields) :resource (format NIL "/entity/user/~A" entity_id))
+;; entity/user - PATCH /resourceful/entity/user/:entity_id
+(cl-xplan-api/core::define-entrypoint entity/user :patch (entity_id) (fields) :resource (format NIL "/entity/user/~A" entity_id))
 
-;; entity/user-v2
-
-;; GET /resourceful/entity/user-v2 and GET /resourceful/entity/user-v2/:entity_id
+;; entity/user-v2 - GET /resourceful/entity/user-v2 and GET /resourceful/entity/user-v2/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/user-v2 :get
   (entity_id)
   (fields
@@ -134,8 +122,8 @@ Use ids for multiple Entities (entity/client-v3) else use entity_id (entity/clie
 Use ids for multiple Entities (entity/user-v2) else use entity_id (entity/user-v2/:entity_id)"
   :resource (format nil "/entity/user-v2~@[/~A~]" entity_id))
 
-;; POST /resourceful/entity/user-v2
+;; entity/user-v2 - POST /resourceful/entity/user-v2
 (cl-xplan-api/core::define-entrypoint entity/user-v2 :post () (access-level billing_group fields user_id password) :resource "/entity/user-v2")
 
-;; PATCH /resourceful/entity/user-v2/:entity_id
+;; entity/user-v2 - PATCH /resourceful/entity/user-v2/:entity_id
 (cl-xplan-api/core::define-entrypoint entity/user-v2 :patch (entity_id) (fields) :resource (format nil "/entity/user-v2/~A" entity_id))

@@ -19,9 +19,7 @@ Description: /ufield API Functions
 
 ;;; ufield
 
-;; ufield
-
-;; GET /resourceful/ufield/:group_name and GET /resourceful/ufield/:group_name/:field_name
+;; ufield - GET /resourceful/ufield/:group_name and GET /resourceful/ufield/:group_name/:field_name
 (cl-xplan-api/core::define-entrypoint ufield :get
   (group_name field_name)
   ((fields :cond (and (not field_name) fields))

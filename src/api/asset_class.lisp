@@ -19,9 +19,7 @@ Description: /asset_class API functions
 
 ;;; asset_class
 
-;; asset_class
-
-;; GET /resourceful/asset_class and GET /resourceful/asset_class/:xplan_id
+;; asset_class - GET /resourceful/asset_class and GET /resourceful/asset_class/:xplan_id
 
 (cl-xplan-api/core::define-entrypoint
     asset_class
