@@ -20,7 +20,7 @@ Description: /currency API functions
 ;;; currency
 
 ;; currency - POST /resourceful/currency?_method=convert
-(cl-xplan-api/core::define-entrypoint currency :convert
+(define-entrypoint currency :convert
   ()
   (values src_currency_code dest_currency_code date)
   :single-method :post
@@ -33,7 +33,7 @@ Description: /currency API functions
 ;;; currency-v2
 
 ;; currency-v2 - POST /resourceful/currency-v2?_method=convert
-(cl-xplan-api/core::define-entrypoint currency-v2 :convert
+(define-entrypoint currency-v2 :convert
   ()
   (values target_currency_code ((use_cached_exchange_rate nil cache-p) :cond cache-p :value (if use_cached_exchange_rate 1 0)) date)
   :single-method :post
@@ -44,7 +44,7 @@ Description: /currency API functions
   :documentation "Convert a vector of currency values to the target currency. If date is provided, it will return the the closing price exchange rate of that particular date.")
 
 ;; currency-v2 - POST /resourceful/currency-v2?_method=sum
-(cl-xplan-api/core::define-entrypoint currency-v2 :sum
+(define-entrypoint currency-v2 :sum
   ()
   (values target_currency_code entityid)
   :documentation "Convert a vector of currency values to the target currency and return their sum-up value. If target currency code is not provided, the currency code will be derived from the given entity identified by the entityid or the login session."

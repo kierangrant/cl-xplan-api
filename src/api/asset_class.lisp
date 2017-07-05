@@ -21,9 +21,7 @@ Description: /asset_class API functions
 
 ;; asset_class - GET /resourceful/asset_class and GET /resourceful/asset_class/:xplan_id
 
-(cl-xplan-api/core::define-entrypoint
-    asset_class
-    :get
+(define-entrypoint asset_class :get
   (xplan_id)
   (fields ((include_other nil other-p) :cond other-p :value (if include_other 1 0)))
   :documentation "Retrieve a collection of asset_class resources.

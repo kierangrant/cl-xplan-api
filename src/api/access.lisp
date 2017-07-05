@@ -21,9 +21,7 @@ Description: /access API functions
 
 ;; access - POST /resourceful/access/client/:entityid
 
-(cl-xplan-api/core::define-entrypoint
-    access/client
-    :post
+(define-entrypoint access/client :post
   (entityid)
   (userid passwd login_mode expiry
 	  ((change_passwd nil passwd-p) :cond passwd-p :value (if change_passwd 1 0)))

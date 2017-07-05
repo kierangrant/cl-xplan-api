@@ -20,7 +20,7 @@ Description: /portfolio API Functions
 ;;; portfolio
 
 ;; portfolio/position - GET /resourceful/portfolio/position and GET /resourceful/portfolio/position/:position_id
-(cl-xplan-api/core::define-entrypoint portfolio/position :get
+(define-entrypoint portfolio/position :get
   (position_id)
   (date
    currency
@@ -44,7 +44,7 @@ Description: /portfolio API Functions
   :resource (format nil "/portfolio/position~@[/~A~]" position_id))
 
 ;; portfolio/position - PATCH /resourceful/portfolio/position/:position_id
-(cl-xplan-api/core::define-entrypoint portfolio/position :patch
+(define-entrypoint portfolio/position :patch
   (position_id)
   (reinvestment
    notes
@@ -70,9 +70,10 @@ Description: /portfolio API Functions
 
 ;; portfolio/profit_analysis/detail - GET /resourceful/portfolio/profit_analysis/detail
 
-(cl-xplan-api/core::define-entrypoint portfolio/profit_analysis/detail :get
+(define-entrypoint portfolio/profit_analysis/detail :get
   ()
-  (start_date end_date grouping from_pricing_type to_pricing_type fields portfolioid accountid fees_and_taxes
+  (start_date end_date grouping from_pricing_type to_pricing_type fields portfolioid accountid
+	      fees_and_taxes
 	      ((include_irr nil irr-p) :cond irr-p :value (if include_irr 1 0))
 	      ((include_twrr nil twrr-p) :cond twrr-p :value (if include_twrr 1 0))
 	      ((proposed nil proposed-p) :cond proposed-p :value (if proposed 1 0))
@@ -84,7 +85,7 @@ Description: /portfolio API Functions
   :resource "/portfolio/profit_analysis/detail")
 
 ;; portfolio/transaction - GET /resourceful/portfolio/transaction/:transaction_id and GET /resourceful/portfolio/transaction
-(cl-xplan-api/core::define-entrypoint portfolio/transaction :get
+(define-entrypoint portfolio/transaction :get
   (transaction_id)
   (fields
    (start_date :cond (and (not transaction_id) start_date))
@@ -112,15 +113,14 @@ If no portfolio is given, all transactions visible to the user are returned."
   :resource (format nil "/portfolio/transaction~@[/~A~]" transaction_id))
 
 ;; portfolio/transaction - PATCH /resourceful/portfolio/transaction/:transaction_id
-(cl-xplan-api/core::define-entrypoint portfolio/transaction :patch
+(define-entrypoint portfolio/transaction :patch
   (transaction_id)
   (transaction_type comment trade_date tax_date settlement_date volume value price_per_unit transaction_status transaction_subtype)
   :resource (format NIL "/portfolio/transaction/~A" transaction_id))
 
 ;; portfolio/transaction - DELETE /resourceful/portfolio/transaction/:transaction_id
-(cl-xplan-api/core::define-entrypoint portfolio/transaction :delete
-  (transaction_id) () :resource (format nil "/portfolio/transaction/~A" transaction_id))
+(define-entrypoint portfolio/transaction :delete (transaction_id) ()
+		   :resource (format nil "/portfolio/transaction/~A" transaction_id))
 
 ;; portfolio/transaction_types - GET /resourceful/portfolio/transaction_types
-(cl-xplan-api/core::define-entrypoint portfolio/transaction_types :get
-  () () :resource "/portfolio/transaction_types")
+(define-entrypoint portfolio/transaction_types :get () () :resource "/portfolio/transaction_types")

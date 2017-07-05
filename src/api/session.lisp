@@ -24,27 +24,24 @@ Description: /session API Functions
 ;; session/transaction - We only support with normal non-bulk requests
 
 ;; session/transaction - POST /resourceful/session/transaction
-(cl-xplan-api/core::define-entrypoint session/transaction :post
-  () ()
-  :inhibit-bulk T
-  :inhibit-transaction T
-  :documentation "Create a Session Transaction" :resource "/session/transaction")
+(define-entrypoint session/transaction :post () ()
+		   :inhibit-bulk T
+		   :inhibit-transaction T
+		   :documentation "Create a Session Transaction" :resource "/session/transaction")
 
 ;; session/transaction - DELETE /resourceful/session/transaction/:transaction_id
-(cl-xplan-api/core::define-entrypoint session/transaction :delete
-  (transaction_id) ()
-  :inhibit-bulk T
-  :inhibit-transaction T
-  :documentation "Rollback the transaction and dispose of if."
-  :resource (format NIL "/session/transaction/~A" transaction_id))
+(define-entrypoint session/transaction :delete (transaction_id) ()
+		   :inhibit-bulk T
+		   :inhibit-transaction T
+		   :documentation "Rollback the transaction and dispose of if."
+		   :resource (format NIL "/session/transaction/~A" transaction_id))
 
 ;; session/transaction - POST /resourceful/session/transaction/:transaction_id?_method=commit - We know that we can use method 'COMMIT' when doing bulk - https://insights.iressconnect.com/docs/DOC-7377#jive_content_id_Commit_a_Transaction
-(cl-xplan-api/core::define-entrypoint session/transaction :commit
-  (transaction_id) ()
-  :inhibit-transaction T
-  :documentation "Commit a Transaction."
-  :single-method :post
-  :single-resource (format NIL "/session/transaction/~A" transaction_id)
-  :hidden-single-parameters (("_method" . "commit"))
-  :bulk-method :comiit
-  :bulk-resource (format NIL "/session/transaction/~A" transaction_id))
+(define-entrypoint session/transaction :commit (transaction_id) ()
+		   :inhibit-transaction T
+		   :documentation "Commit a Transaction."
+		   :single-method :post
+		   :single-resource (format NIL "/session/transaction/~A" transaction_id)
+		   :hidden-single-parameters (("_method" . "commit"))
+		   :bulk-method :comiit
+		   :bulk-resource (format NIL "/session/transaction/~A" transaction_id))
