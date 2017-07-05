@@ -128,6 +128,23 @@ Description: Package definition for CL-XPLAN-API
    digital_signature/signatories/sign
    ;; disclaimer
    disclaimer/orders
+   ;; docnote
+   docnote
+   docnote-v2
+   docnote/attachment
+   docnote-v2/attachment
+   docnote/attachment-v2
+   docnote-v2/attachment-v2
+   docnote/attachment-v3
+   docnote-v2/attachment-v3
+   docnote/attachment-v3/content
+   docnote-v2/attachment-v3/content
+   docnote-v2/body
+   docnote-v2/case
+   docnote/category
+   docnote-v2/category
+   docnote-v2/email
+   docnote-v2/firstread
    ;; entity
    entity/client
    entity/client-v2
@@ -222,6 +239,23 @@ Description: Package definition for CL-XPLAN-API
    digital_signature/signatories/sign
    ;; disclaimer
    disclaimer/orders
+   ;; docnote
+   docnote
+   docnote-v2
+   docnote/attachment
+   docnote-v2/attachment
+   docnote/attachment-v2
+   docnote-v2/attachment-v2
+   docnote/attachment-v3
+   docnote-v2/attachment-v3
+   docnote/attachment-v3/content
+   docnote-v2/attachment-v3/content
+   docnote-v2/body
+   docnote-v2/case
+   docnote/category
+   docnote-v2/category
+   docnote-v2/email
+   docnote-v2/firstread
    ;; entity
    entity/client
    entity/client-v2
