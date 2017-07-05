@@ -17,9 +17,9 @@ Description: /case_manager API Functions
 
 (in-package :cl-xplan-api/api)
 
-;;; /case_manager
+;;; case_manager
 
-;; /case_manager - GET /resourceful/case_manager and GET /resourceful/case_manager/:container_id
+;; case_manager - GET /resourceful/case_manager and GET /resourceful/case_manager/:container_id
 
 (cl-xplan-api/core::define-entrypoint case_manager :get
   (container_id)
@@ -34,7 +34,7 @@ Description: /case_manager API Functions
    (page :cond (and (not container_id) page)))
   :resource (format NIL "/case_manager~@[/~A~]" container_id))
 
-;; /case_manager - POST /resourceful/case_manager
+;; case_manager - POST /resourceful/case_manager
 
 (cl-xplan-api/core::define-entrypoint case_manager :post
   ()
@@ -48,7 +48,7 @@ Description: /case_manager API Functions
 		 ((fields.is_joint nil joint-p) :cond joint-p :value (if fields.is_joint 1 0)))
   :resource "/case_manager")
 
-;; /case_manager - PATCH /resourceful/case_manager/:container_id
+;; case_manager - PATCH /resourceful/case_manager/:container_id
 
 (cl-xplan-api/core::define-entrypoint case_manager :patch
   (container_id)
@@ -62,14 +62,14 @@ Description: /case_manager API Functions
 		 ((fields.is_joint nil joint-p) :cond joint-p :value (if fields.is_joint 1 0)))
   :resource (format NIL "/case_manager/~A" container_id))
 
-;; /case_manager - DELETE /resourceful/case_manager/:container_id
+;; case_manager - DELETE /resourceful/case_manager/:container_id
 
 (cl-xplan-api/core::define-entrypoint case_manager :delete
   (container_id)
   ()
   :resource (format NIL "/case_manager/~A" container_id))
 
-;; /case_manager-v2 - GET /resourceful/case_manager-v2
+;; case_manager-v2 - GET /resourceful/case_manager-v2
 
 (cl-xplan-api/core::define-entrypoint case_manager-v2 :get
   ()
@@ -77,7 +77,7 @@ Description: /case_manager API Functions
 	    page_bookmark page_dir)
   :resource "/case_manager-v2")
 
-;; /case_manager-v2 - POST /resourceful/case_manager-v2
+;; case_manager-v2 - POST /resourceful/case_manager-v2
 
 (cl-xplan-api/core::define-entrypoint case_manager-v2 :post
   ()
@@ -91,20 +91,20 @@ Description: /case_manager API Functions
 		 ((fields.is_joint nil joint-p) :cond joint-p :value (if fields.is_joint 1 0)))
   :resource "/case_manager-v2")
 
-;;; /case_manager/benchmark
+;;; case_manager/benchmark
 
-;; /case_manager/benchmark - GET /resourceful/case_manager/:container_id/benchmark
+;; case_manager/benchmark - GET /resourceful/case_manager/:container_id/benchmark
 (cl-xplan-api/core::define-entrypoint case_manager/benchmark :get (container_id) () :resource (format NIL "/case_manager/~A/benchmark" container_id))
 
-;; /case_manager/debt_qualifier_scenario - GET /resourceful/case_manager/:container_id/debt_qualifier_scenario
+;; case_manager/debt_qualifier_scenario - GET /resourceful/case_manager/:container_id/debt_qualifier_scenario
 (cl-xplan-api/core::define-entrypoint case_manager/debt_qualifier_scenario :get (container_id) () :resource (format NIL "/case_manager/~A/debt_qualifier_scenario" container_id))
 
-;; /case_manager/debt_qualifier_scenario - POST /resourceful/case_manager/:container_id/debt_qualifier_scenario
+;; case_manager/debt_qualifier_scenario - POST /resourceful/case_manager/:container_id/debt_qualifier_scenario
 (cl-xplan-api/core::define-entrypoint case_manager/debt_qualifier_scenario :post
   (container_id) (linked_obj_id ((benchmarkable nil benchmarkable-p) :cond benchmarkable-p :value (if benchmarkable 1 0)))
   :resource (format NIL "/case_manager/~A/debt_qualifier_scenario" container_id))
 
-;; /case_manager/debt_qualifier_scenario - DELETE /resourceful/case_manager/:container_id/debt_qualifier_scenario/:linked_obj_id
+;; case_manager/debt_qualifier_scenario - DELETE /resourceful/case_manager/:container_id/debt_qualifier_scenario/:linked_obj_id
 (cl-xplan-api/core::define-entrypoint case_manager/debt_qualifier_scenario :delete (container_id linked_obj_id) () :resource (format NIL "/case_manager/~A/debt_qualifier_scenario/~A" container_id linked_obj_id))
 
 ;;; case_manager/diary
@@ -184,4 +184,82 @@ Description: /case_manager API Functions
 ;; case_manager/lead - DELETE /resourceful/case_manager/:container_id/lead/:lead_id
 (cl-xplan-api/core::define-entrypoint case_manager/lead :delete (container_id lead_id) () :resource (format NIL "/case_manager/~A/lead/~A" container_id lead_id))
 
-;;;; ToDo:Add objective, risk_researcher_scenario, savings supersolver_scenario, task, thread, xtool_scenario
+;;; case_manager/objective
+
+;; case_manager/objective - GET /resourceful/case_manager/:container_id/objective
+(cl-xplan-api/core::define-entrypoint case_manager/objective :get (container_id) (sort_order) :resource (format NIL "/case_manager/~A/objective" container_id))
+
+;; case_manager/objective - POST /resourceful/case_manager/:container_id/objective
+(cl-xplan-api/core::define-entrypoint case_manager/objective :post (container_id) (objective_id entity_id) :resource (format nil "/case_manager/~A/objective" container_id))
+
+;; case_manager/objective - POST /resourceful/case_manager/:container_id/objective?_method=sort
+(cl-xplan-api/core::define-entrypoint case_manager/objective :sort (container_id) (objectives) :resource (format NIL "/case_manager/~A/objective?_method=sort" container_id) :single-method :POST :bulk-method :POST)
+
+;; case_manager/objective - DELETE /resourceful/case_manager/:container_id/objective/:objective_id
+(cl-xplan-api/core::define-entrypoint case_manager/objective :delete (container_id objective_id) (entity_id) :resource (format NIL "/case_manager/~A/objective/~A" container_id objective_id))
+
+;;; case_manager/risk_researcher_scenario
+
+;; case_manager/risk_researcher_scenario - GET /resourceful/case_manager/:container_id/risk_researcher_scenario
+(cl-xplan-api/core::define-entrypoint case_manager/risk_researcher_scenario :get (container_id) () :resource (format nil "/case_manager/~A/risk_researcher_scenario" container_id))
+
+;; case_manager/risk_researcher_scenario - POST /resourceful/case_manager/:container_id/risk_researcher_scenario
+(cl-xplan-api/core::define-entrypoint case_manager/risk_researcher_scenario :post (container_id) (linked_obj_id ((benchmarkable nil benchmarkable-p) :cond benchmarkable-p :value (if benchmarkable 1 0))) :resource (format NIL "/case_manager/~A/risk_researcher_scenario" container_id))
+
+;; case_manager/risk_researcher_scenario - DELETE /resourceful/case_manager/:container_id/risk_researcher_scenario/:linked_obj_id
+(cl-xplan-api/core::define-entrypoint case_manager/risk_researcher_scenairo :delete (container_id linked_obj_id) () :resource (format NIL "/case_manager/~A/risk_researcher_scenario/~A" container_id linked_obj_id))
+
+;;; case_manager/savings
+
+;; case_manager/savings - GET /resourceful/case_manager/:container_id/savings
+(cl-xplan-api/core::define-entrypoint case_manager/savings :get (container_id) () :resource (format NIL "/case_manager/~A/savings" container_id))
+
+;; case_manager/savings - POST /resourceful/case_manager/:container_id/savings
+(cl-xplan-api/core::define-entrypoint case_manager/savings :post (container_id) (linked_obj_id ((benchmarkable nil benchmarkable-p) :cond benchmarkable-p :value (if benchmarkable 1 0))) :resource (format NIL "/case_manager/~A/savings" container_id))
+
+;; case_manager/savings - DELETE /resourceful/case_manager/:container_id/savings/:linked_obj_id
+(cl-xplan-api/core::define-entrypoint case_manager/savings :delete (container_id linked_obj_id) () :resource (format nil "/case_manager/~A/savings/~A" container_id linked_obj_id))
+
+;;; case_manager/supersolver_scenario
+
+;; case_manager/supersolver_scenario - GET /resourceful/case_manager/:container_id/supersolver_scenario
+(cl-xplan-api/core::define-entrypoint case_manager/supersolver_scenario :get (container_id) () :resource (format nil "/case_manager/~A/supersolver_scenario" container_id))
+
+;; case_manager/supersolver_scenario - POST /resourceful/case_manager/:container_id/supersolver_scenario
+(cl-xplan-api/core::define-entrypoint case_manager/supersolver_scenario :post (container_id) (linked_obj_id ((benchmarkable nil benchmarkable-p) :cond benchmarkable-p :value (if benchmarkable 1 0))) :resource (format NIL "/case_manager/~A/supersolver_scenario" container_id))
+
+;; case_manager/supersolver_scenario - DELETE /resourceful/case_manager/:container_id/supersolver_scenario/:linked_obj_id
+(cl-xplan-api/core::define-entrypoint case_manager/supersolver_scenario :delete (container_id linked_obj_id) () :resource (format nil "/case_manager/~A/supersolver_scenario/~A" container_id linked_obj_id))
+
+;;; case_manager/task
+
+;; case_manager/task - GET /resourceful/case_manager/:container_id/task
+(cl-xplan-api/core::define-entrypoint case_manager/task :get (container_id) () :resource (format nil "/case_manager/~A/task" container_id))
+
+;; case_manager/task - POST /resourceful/case_manager/:container_id/task
+(cl-xplan-api/core::define-entrypoint case_manager/task :post (container_id) (linked_obj_id ((benchmarkable nil benchmarkable-p) :cond benchmarkable-p :value (if benchmarkable 1 0))) :resource (format nil "/case_manager/~A/task" container_id))
+
+;; case_manager/task - DELETE /resourceful/case_manager/:container_id/task/:linked_obj_id
+(cl-xplan-api/core::define-entrypoint case_manager/task :delete (container_id linked_obj_id) () :resource (format nil "/case_manager/~A/task/~A" container_id linked_obj_id))
+
+;;; case_manager/thread
+
+;; case_manager/thread - GET /resourceful/case_manager/:container_id/thread
+(cl-xplan-api/core::define-entrypoint case_manager/thread :get (container_id) () :resource (format nil "/case_manager/~A/thread" container_id))
+
+;; case_manager/thread - POST /resourceful/case_manager/:container_id/thread
+(cl-xplan-api/core::define-entrypoint case_manager/threasd :post (container_id) (thread_id) :resource (format nil "/case_manager/~A/thread" container_id))
+
+;; case_manager/thread - DELETE /resourceful/case_manager/:container_id/thread/:thread_id
+(cl-xplan-api/core::define-entrypoint case_manager/thread :delete (container_id thread_id) () :resource (format nil "/case_manager/~A/thread/~A" container_id thread_id))
+
+;;; case_manager/xtool_scenario
+
+;; case_manager/xtool_scenario - GET /resourceful/case_manager/:container_id/xtool_scenario
+(cl-xplan-api/core::define-entrypoint case_manager/xtool_scenario :get (container_id) (((include_frozen nil frozen-p) :cond frozen-p :value (if include_frozen 1 0))) :resource (format nil "/case_manager/~A/xtool_scenario" container_id))
+
+;; case_manager/xtool_scenario - POST /resourceful/case_manager/:container_id/xtool_scenario
+(cl-xplan-api/core::define-entrypoint case_manager/xtool_scenario :post (container_id) (domain tool_name scenario_name partner_id) :resource (format nil "/case_manager/~A/xtool_scenario" container_id))
+
+;; case_manager/xtool_scenario - DELETE /resourceful/case_manager/:container_id/xtool_scenario
+(cl-xplan-api/core::define-entrypoint case_manager/xtool_scenario :delete (container_id) (domain tool_name scenario_name partner_id) :resource (format nil "/case_manager/~A/xtool_scenario" container_id))

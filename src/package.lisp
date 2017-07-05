@@ -90,6 +90,13 @@ Description: Package definition for CL-XPLAN-API
    case_manager/fsg
    case_manager/goal
    case_manager/lead
+   case_manager/objective
+   case_manager/risk_researcher_scenario
+   case_manager/savings
+   case_manager/supersolver_scenario
+   case_manager/task
+   case_manager/thread
+   case_manager/xtool_scenario
    ;; entity
    entity/client
    entity/client-v2
@@ -148,6 +155,13 @@ Description: Package definition for CL-XPLAN-API
    case_manager/fsg
    case_manager/goal
    case_manager/lead
+   case_manager/objective
+   case_manager/risk_researcher_scenario
+   case_manager/savings
+   case_manager/supersolver_scenario
+   case_manager/task
+   case_manager/thread
+   case_manager/xtool_scenario
    ;; entity
    entity/client
    entity/client-v2
