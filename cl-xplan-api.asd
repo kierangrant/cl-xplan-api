@@ -47,6 +47,7 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "currency")
 		     (:file "debt_qualifier")
 		     (:file "digital_signature")
+		     (:file "disclaimer")
 		     (:file "entity")
 		     (:file "portfolio")
 		     (:file "session")

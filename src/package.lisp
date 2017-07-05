@@ -126,6 +126,8 @@ Description: Package definition for CL-XPLAN-API
    digital_signature/signatories
    digital_signature/signatories/generate_code
    digital_signature/signatories/sign
+   ;; disclaimer
+   disclaimer/orders
    ;; entity
    entity/client
    entity/client-v2
@@ -218,6 +220,8 @@ Description: Package definition for CL-XPLAN-API
    digital_signature/signatories
    digital_signature/signatories/generate_code
    digital_signature/signatories/sign
+   ;; disclaimer
+   disclaimer/orders
    ;; entity
    entity/client
    entity/client-v2
