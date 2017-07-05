@@ -57,7 +57,7 @@ Description: /docnote API Functions
 	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted 1 0))
 	reference_date entity_ids
 	((is_locked nil locked-p) :cond locked-p :value (if is_locked 1 0))
-	permission shared_entity_ids 
+	permission shared_entity_ids
 	((is_client_access_accessible nil client-access-p) :cond client-access-p
 	 :value (if is_client_access_accessible 1 0))
 	((is_client_share_all nil client-share-p) :cond client-share-p
@@ -85,7 +85,7 @@ Description: /docnote API Functions
 	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted 1 0))
 	reference_date entity_ids
 	((is_locked nil locked-p) :cond locked-p :value (if is_locked 1 0))
-	permission shared_entity_ids 
+	permission shared_entity_ids
 	((is_client_access_accessible nil client-access-p) :cond client-access-p
 	 :value (if is_client_access_accessible 1 0))
 	((is_client_share_all nil client-share-p) :cond client-share-p
