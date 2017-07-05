@@ -103,6 +103,8 @@ Description: Package definition for CL-XPLAN-API
    class_smsf/fund/contribution_caps
    class_smsf/fund/members
    class_smsf/fund_link
+   ;; client_message
+   client_message
    ;; entity
    entity/client
    entity/client-v2
@@ -174,6 +176,8 @@ Description: Package definition for CL-XPLAN-API
    class_smsf/fund/contribution_caps
    class_smsf/fund/members
    class_smsf/fund_link
+   ;; client_message
+   client_message
    ;; entity
    entity/client
    entity/client-v2

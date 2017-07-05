@@ -43,6 +43,7 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "assumption_set")
 		     (:file "case_manager")
 		     (:file "class_smsf")
+		     (:file "client_message")
 		     (:file "entity")
 		     (:file "portfolio")
 		     (:file "session")
