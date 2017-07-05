@@ -118,6 +118,14 @@ Description: Package definition for CL-XPLAN-API
    debt_qualifier/gb/custom_panel
    debt_qualifier/gb/kfi_complaint_setting
    debt_qualifier/gb/panel_provider
+   ;; digital_signature
+   digital_signature
+   digital_signature/content
+   digital_signature/content_path
+   digital_signature/notify
+   digital_signature/signatories
+   digital_signature/signatories/generate_code
+   digital_signature/signatories/sign
    ;; entity
    entity/client
    entity/client-v2
@@ -202,6 +210,14 @@ Description: Package definition for CL-XPLAN-API
    debt_qualifier/gb/custom_panel
    debt_qualifier/gb/kfi_complaint_setting
    debt_qualifier/gb/panel_provider
+   ;; digital_signature
+   digital_signature
+   digital_signature/content
+   digital_signature/content_path
+   digital_signature/notify
+   digital_signature/signatories
+   digital_signature/signatories/generate_code
+   digital_signature/signatories/sign
    ;; entity
    entity/client
    entity/client-v2
