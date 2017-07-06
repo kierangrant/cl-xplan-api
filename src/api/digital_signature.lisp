@@ -63,10 +63,10 @@ Description: /digital_signature API Functions
 ;; digital_signature/signatories/generate_code - POST /resourceful/digital_signature/:digital_signature_id/signatories/:signatory_id/generate_code?_method=post
 (define-entrypoint digital_signature/signatories/generate_code :post
   (digital_signature_id signatory_id) ()
-  :single-resource (format nil "/digital_signature/~A/signatories/~A/generate_code"
+  :single-resource (format nil "/digital_signature/~A/signatories/~A/generate_code?_method=post"
 			   digital_signature_id signatory_id)
-  :hidden-single-parameters (("_method" . "post"))
-  :bulk-resource (format nil "/digital_signature/~A/signatories/~A/generate_code?_method=post"
+  :single-parms-as-body T
+  :bulk-resource (format nil "/digital_signature/~A/signatories/~A/generate_code"
 			 digital_signature_id signatory_id))
 
 ;;; digital_signature/signatories/sign
@@ -74,8 +74,8 @@ Description: /digital_signature API Functions
 ;; digital_signature/signatories/sign - POST /resourceful/digital_signature/:digital_signature_id/signatories/:signatory_id/sign?_method=post
 (define-entrypoint digital_signature/signatories/sign :post
   (digital_signature_id signatory_id) (signing_method secure_data otp)
-  :single-resource (format nil "/digital_signature/~A/signatories/~A/sign"
+  :single-resource (format nil "/digital_signature/~A/signatories/~A/sign?_method=post"
 			   digital_signature_id signatory_id)
-  :hidden-single-parameters (("_method" . "post"))
-  :bulk-resource (format nil "/digital_signature/~A/signatories/~A/sign?_method=post"
+  :single-parms-as-body T
+  :bulk-resource (format nil "/digital_signature/~A/signatories/~A/sign"
 			 digital_signature_id signatory_id))

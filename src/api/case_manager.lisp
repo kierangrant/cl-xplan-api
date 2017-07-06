@@ -194,10 +194,9 @@ Description: /case_manager API Functions
 (define-entrypoint case_manager/goal :sort
   (container_id) (goals)
   :single-method :POST
-  :single-resource (format NIL "/case_manager/~A/goal" container_id)
-  :hidden-single-parameters (("_method" . "sort"))
-  :bulk-method :POST
-  :bulk-resource (format NIL "/case_manager/~A/goal?_method=sort" container_id))
+  :single-resource (format NIL "/case_manager/~A/goal?_method=sort" container_id)
+  :single-parms-as-body T
+  :bulk-resource (format NIL "/case_manager/~A/goal" container_id))
 
 ;; case_manager/goal - DELETE /resourceful/case_manager/:container_id/goal/:goal_id
 (define-entrypoint case_manager/goal :delete (container_id goal_id) (entity_id)
@@ -231,10 +230,9 @@ Description: /case_manager API Functions
 (define-entrypoint case_manager/objective :sort
   (container_id) (objectives)
   :single-method :POST
-  :single-resource (format nil "/case_manager/~A/objective" container_id)
-  :hidden-single-parameters (("_method" . "sort"))
-  :bulk-method :POST
-  :bulk-resource (format NIL "/case_manager/~A/objective?_method=sort" container_id))
+  :single-resource (format nil "/case_manager/~A/objective/?_method=sort" container_id)
+  :single-parms-as-body T
+  :bulk-resource (format NIL "/case_manager/~A/objective" container_id))
 
 ;; case_manager/objective - DELETE /resourceful/case_manager/:container_id/objective/:objective_id
 (define-entrypoint case_manager/objective :delete (container_id objective_id) (entity_id)

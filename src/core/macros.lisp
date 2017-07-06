@@ -21,13 +21,17 @@ Description: Client and API Macros
 
 ;; Define an API entrypoint.
 
-(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist) &key documentation resource inhibit-bulk inhibit-single inhibit-transaction (single-method method) (single-resource resource) (bulk-method method) (bulk-resource resource) hidden-single-parameters hidden-bulk-parameters)
+(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist) &key documentation resource inhibit-bulk inhibit-single inhibit-transaction single-parms-as-body (single-method method) (single-resource resource) (bulk-method method) (bulk-resource resource) hidden-single-parameters hidden-bulk-parameters)
   "Defines an API entry point.
 
 extra-parms are extra keyword parameters for use in expressions for different parameters, used for parameters that MUST NOT come out in API parameters call.
 
 hidden-single-parameters are parameters that are added to Single API call method, for such things like needing '?_method=...' in a request that has parameters. Is an alist of name, value pairs, that are inserted in a form that allows name and value to be run-time expressions
 hidden-bulk-parameters is like hidden-single-parameters, but it's parameters are added like arglist, as nothing is every added to URI in a bulk request, you can customize that using bulk-resource
+
+single-parms-as-body forces paramters to instead by inserted as content.
+Content-Type will be 'application/json'. The content of parameters is convert to JSON using
+json:encode-json-to-string. You must convert to XPLAN Types yourself where needed.
 
 arglist is of form ({field|(field &key field-string cond-expr value-expr)}*):
 
@@ -42,10 +46,52 @@ field -> (if field `((\"field\" . ,field)))
 ((field nil field-p)) -> (if field `((\"field\" . ,field))) ; will not automatically use field-p
 (field :field-string \"Field\" :value-expr (symbol-name field)) -> (if field `((\"Field\" . ,(symbol-name field))))
 ((field \"Something\" field-p) :field-string \"Field_Thing\" :cond-expr (and field-p (not (string= field \"Blarg\"))) :value-expr (somefunc field)) -> (if (and field-p (not (string= field \"Blarg\"))) `((\"Field_Thing\" . ,(somefunc field))))"
-(let ((field-entries (loop for item in arglist collecting
-			  (if (typep item 'symbol)
-			      item
-			      (car item)))))
+(let* ((field-entries (loop for item in arglist collecting (if (typep item 'symbol) item (car item))))
+       (sparms
+	(if (not inhibit-single)
+	    `(append
+	      ,@(if (not inhibit-transaction)
+		    `((if request-transaction
+			  (list (cons "_transaction" request-transaction)))))
+	      (list ,@(loop for item in hidden-single-parameters collecting
+			   `(cons ,(car item) ,(cdr item))))
+	      ,@(loop for item in arglist collecting
+		     (if (typep item 'symbol)
+			 `(if ,item
+			      (list (cons ,(string-downcase (symbol-name item)) ,item)))
+			 (destructuring-bind (field &key (string nil string-p)
+						    (cond field cond-p) (value field value-p))
+			     item
+			   ;; fixup defaults
+			   (if (typep field 'symbol)
+			       (setf string (if string-p
+						string (string-downcase (symbol-name field))))
+			       (setf string (if string-p string
+						(string-downcase (symbol-name (car field))))
+				     cond (if cond-p cond (car field))
+				     value (if value-p value (car field))))
+			   `(if ,cond (list (cons ,string ,value)))))))))
+       (bparms
+	(if (not inhibit-bulk)
+	    `(append
+	      ,@(if (not inhibit-transaction)
+		    `((if request-transaction (list (cons "_transaction" request-transaction)))))
+	      (list ,@(loop for item in hidden-bulk-parameters collecting
+			   `(cons ,(car item) ,(cdr item))))
+	      ,@(loop for item in arglist collecting
+		     (if (typep item 'symbol)
+			 `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
+			 (destructuring-bind (field &key (string nil string-p) (cond field cond-p)
+						    (value field value-p))
+			     item
+			   ;; fixup defaults
+			   (if (typep field 'symbol)
+			       (if (not string-p) (setf string (string-downcase (symbol-name field))))
+			       (setf string (if string-p
+						string (string-downcase (symbol-name (car field))))
+				     cond (if cond-p cond (car field))
+				     value (if value-p value (car field))))
+			   `(if ,cond (list (cons ,string ,value))))))))))
   `(progn
      ,@(if (not (boundp name))
 	   `((defgeneric ,name (session method &key &allow-other-keys))))
@@ -62,26 +108,10 @@ field -> (if field `((\"field\" . ,field)))
 		       :inhibit-json-decode inhibit-json-decode
 		       :method ,single-method
 		       :resource ,single-resource
-		       :parameters
-		       (append
-			,@(if (not inhibit-transaction) `((if request-transaction (list (cons "_transaction" request-transaction)))))
-			(list ,@(loop for item in hidden-single-parameters collecting
-				     `(cons ,(car item) ,(cdr item))))
-			,@(loop for item in arglist collecting
-			       (if (typep item 'symbol)
-				   `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
-				   (destructuring-bind (field &key (string nil string-p) (cond field cond-p) (value field value-p))
-				       item
-				     ;; fixup defaults
-				     (if (typep field 'symbol)
-					 (setf string (if string-p
-							  string
-							  (string-downcase (symbol-name field))))
-					 (setf string (if string-p string
-							  (string-downcase (symbol-name (car field))))
-					       cond (if cond-p cond (car field))
-					       value (if value-p value (car field))))
-				     `(if ,cond (list (cons ,string ,value))))))))))
+		       ,@(if (not single-parms-as-body) `(:parameters ,sparms))
+		       ,@(if single-parms-as-body
+			     `(:content-type "application/json"
+					     :content (json:encode-json-to-string ,sparms))))))
 		 (if return-request
 		     res
 		     (convert-bulk-to-native (response res)))))))
@@ -96,26 +126,7 @@ field -> (if field `((\"field\" . ,field)))
 		:name request-name
 		:method ,bulk-method
 		:resource ,bulk-resource
-		:parameters
-		(append
-		 ,@(if (not inhibit-transaction) `((if request-transaction (list (cons "_transaction" request-transaction)))))
-		 (list ,@(loop for item in hidden-bulk-parameters collecting
-			      `(cons ,(car item) ,(cdr item))))
-		 ,@(loop for item in arglist collecting
-			(if (typep item 'symbol)
-			    `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
-			    (destructuring-bind (field &key (string nil string-p) (cond field cond-p) (value field value-p))
-				item
-			      ;; fixup defaults
-			      (if (typep field 'symbol)
-				  (setf string (if string-p
-						   string
-						   (string-downcase (symbol-name field))))
-				  (setf string (if string-p string
-						   (string-downcase (symbol-name (car field))))
-					cond (if cond-p cond (car field))
-					value (if value-p value (car field))))
-			      `(if ,cond (list (cons ,string ,value))))))))))))))
+		:parameters ,bparms)))))))
 
 (defmacro with-xplan-api-json-handlers (&body body)
   `(let ((json:*beginning-of-object-handler* #'object-begin)

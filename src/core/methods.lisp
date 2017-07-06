@@ -142,7 +142,7 @@ Description: Methods for Classes
 		      :basic-authorization (list username password)
 		      (if (and content content-type)
 			  (append
-			   `(:content content :content-type content-type)
+			   `(:content ,content :content-type ,content-type)
 			   drakma-settings)
 			  drakma-settings)))))
 	    (setf drakma-response
@@ -159,7 +159,7 @@ Description: Methods for Classes
 		      ("Accept" . "application/json"))
 		    (if (and content content-type)
 			(append
-			 `(:content content :content-type content-type)
+			 `(:content ,content :content-type ,content-type)
 			 drakma-settings)
 			drakma-settings)))))
 	(values-list drakma-response)))))

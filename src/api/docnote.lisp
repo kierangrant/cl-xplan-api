@@ -371,11 +371,11 @@ Description: /docnote API Functions
 
 ;; docnote-v2/email - POST /resourceful/docnote-v2/:docid/email?_method=send
 (define-entrypoint docnote-v2/email :send (docid) (email_address template)
-		   :single-resource (format nil "/docnote-v2/~A/email" docid)
+		   :single-resource (format nil "/docnote-v2/~A/email?_method=send" docid)
 		   :single-method :post
-		   :hidden-single-parameters (("_method" . "send"))
-		   :bulk-resource (format nil "/docnote-v2/~A/email?_method=send" docid)
-		   :bulk-method :post
+		   :single-parms-as-body T
+		   :bulk-resource (format nil "/docnote-v2/~A/email" docid)
+		   :bulk-method :send
 		   :documentation "Send an email based on a specified email template. Attachments on the note will be sent as email attachments")
 
 ;;; docnote-v2/firstread

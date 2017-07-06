@@ -28,6 +28,7 @@ Description: /disclaimer API Functions
 
 ;; disclaimer/orders - POST /resourceful/disclaimer/orders?_method=accept
 (define-entrypoint disclaimer/orders :accept () (client_accepted_disclaimer)
-		   :single-resource "/disclaimer/orders"
-		   :hidden-single-parameters (("_method" . "accept"))
-		   :bulk-resource "/disclaimer/orders?_method=accept")
+		   :single-method :post
+		   :single-resource "/disclaimer/orders?_method=accept"
+		   :single-parms-as-body T
+		   :bulk-resource "/disclaimer/orders")
