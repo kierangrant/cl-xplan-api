@@ -281,7 +281,9 @@ Description: Methods for Classes
 		   (if (gethash "body" res)
 		       (if inhibit-json-decode
 			   (gethash "body" res)
-			   (with-xplan-api-json-handlers (json:decode-json-from-string (gethash "body" res))))
+			   (with-xplan-api-json-handlers
+			     (convert-bulk-to-native
+			      (json:decode-json-from-string (gethash "body" res)))))
 		       nil)
 		   response-msg (gethash "msg" res)
 		   response-code (gethash "code" res)
@@ -341,7 +343,8 @@ Description: Methods for Classes
 		    (if inhibit-json-decode
 			(babel:octets-to-string (elt %response 0))
 			(with-xplan-api-json-handlers
-			  (json:decode-json-from-string (babel:octets-to-string (elt %response 0)))))
+			  (convert-bulk-to-native
+			   (json:decode-json-from-string (babel:octets-to-string (elt %response 0))))))
 		    nil)
        response-headers (elt %response 2)
        response-code (elt %response 1)))

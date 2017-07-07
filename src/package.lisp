@@ -45,6 +45,7 @@ Description: Package definition for CL-XPLAN-API
    response-code
    response-msg
    response-headers
+   response-time
    resource
    requests
    request-method
@@ -183,6 +184,7 @@ Description: Package definition for CL-XPLAN-API
    convert-native-to-xplan-type
    convert-bulk-to-native
    response
+   response-time
    ;; export API
    ;; access
    access/client

@@ -114,7 +114,7 @@ field -> (if field `((\"field\" . ,field)))
 					     :content (json:encode-json-to-string ,sparms))))))
 		 (if return-request
 		     res
-		     (convert-bulk-to-native (response res)))))))
+		     (response res))))))
      ,@(if (not inhibit-bulk)
 	   `((defmethod ,name ((session xplan-request-bulk) (method (eql ,method))
 			       &key request-name
@@ -135,7 +135,6 @@ field -> (if field `((\"field\" . ,field)))
 	 (json:*object-value-handler* #'object-value)
 	 (json:*json-array-type* 'vector))
      ,@body))
-
 
 ;;; PUBLIC
 
