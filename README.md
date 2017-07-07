@@ -11,6 +11,12 @@ https://insights.iressconnect.com/docs/DOC-7376 - Getting Started with XPLAN API
 https://insights.iressconnect.com/docs/DOC-7377 - XPLAN API Transaction
 https://insights.iressconnect.com/docs/DOC-7378#jive_content_id_Specifying_Request_Dependencies - XPLAN API Batched Requests
 
+Has been tested on SBCL and CLISP on GNU/Linux and Windows.
+Note: On Windows, you need to set the path to a CA file or directory.
+This setting is stored in the drakma-settings on the xplan-session.
+EG:
+(setf (getf (cl-xplan-api/core:drakma-settings *sess*) :ca-file) "/Path/to/cacert.perm")
+
 Example usage of API:
 (defpackage :test (:use :cl :cl-xplan-api))
 (in-package :test)
