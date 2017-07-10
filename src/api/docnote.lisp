@@ -34,7 +34,7 @@ Description: /docnote API Functions
    (keywords :cond (and (not docid) keywords))
    (created_date :cond (and (not docid) created_date))
    (modified_date :cond (and (not docid) modified_date))
-   (reference_date :cond (and (not docid) reference_data))
+   (reference_date :cond (and (not docid) reference_date))
    ((session_info nil sinfo-p) :cond (and (not docid) sinfo-p) :value (if session_info 1 0))
    (firstread :cond (and (not docid) firstread))
    (page_size :cond (and (not docid) page_size))
