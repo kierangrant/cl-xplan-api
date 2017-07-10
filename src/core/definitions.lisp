@@ -21,7 +21,7 @@ Description: Standard Definitions and overrides for other libraries
 
 (defparameter *xplan-api-version*
   #.(with-open-file (str (make-pathname :name "VERSION" :type "expr" :version :newest :defaults *compile-file-truename*) :direction :input)
-      (read-line str))
+      (read str))
 	      "Version of XPLAN-API Library")
 (defparameter *user-agent* (concatenate 'string "CL-XPLAN-API/" *xplan-api-version*) "User-Agent to send to upstream server.")
 (defparameter *api-call-function* #'drakma:http-request "Low-Level HTTP Request function to make API request.")
