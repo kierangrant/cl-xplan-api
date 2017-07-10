@@ -36,31 +36,12 @@ Description: /case_manager API Functions
 
 ;; case_manager - POST /resourceful/case_manager
 
-(define-entrypoint case_manager :post
-  ()
-  (fields.status fields.createdstamp fields.date_due fields.description fields.creator fields.fua
-		 fields.assignee fields.manual_override_productname fields.locked fields.forecast_fua
-		 fields.navigation_flag fields.instigation_type fields.forecast_ongoing
-		 fields.category fields.likelihood fields.name fields.advice_container
-		 fields.forecast_reveune fields.revenue fields.external_id fields.client
-		 fields.ongoing fields.template fields.manual_override_premium fields.scope
-		 fields.from_template
-		 ((fields.is_joint nil joint-p) :cond joint-p :value (if fields.is_joint 1 0)))
-  :resource "/case_manager")
+(define-entrypoint case_manager :post () (fields) :resource "/case_manager" :single-parms-as-body T)
 
 ;; case_manager - PATCH /resourceful/case_manager/:container_id
 
-(define-entrypoint case_manager :patch
-  (container_id)
-  (fields.status fields.createdstamp fields.date_due fields.description fields.creator fields.fua
-		 fields.assignee fields.manual_override_productname fields.locked fields.forecast_fua
-		 fields.navigation_flag fields.instigation_type fields.forecast_ongoing
-		 fields.category fields.likelihood fields.name fields.advice_container
-		 fields.forecast_revenue fields.revenue fields.external_id fields.client
-		 fields.ongoing fields.template fields.manual_override_premium fields.scope
-		 fields.from_template
-		 ((fields.is_joint nil joint-p) :cond joint-p :value (if fields.is_joint 1 0)))
-  :resource (format NIL "/case_manager/~A" container_id))
+(define-entrypoint case_manager :patch (container_id) (fields) :single-parms-as-body T
+		   :resource (format NIL "/case_manager/~A" container_id))
 
 ;; case_manager - DELETE /resourceful/case_manager/:container_id
 
@@ -77,17 +58,8 @@ Description: /case_manager API Functions
 
 ;; case_manager-v2 - POST /resourceful/case_manager-v2
 
-(define-entrypoint case_manager-v2 :post
-  ()
-  (fields.status fields.createdstamp fields.date_due fields.description fields.creator fields.fua
-		 fields.assignee fields.manual_override_productname fields.locked fields.forecast_fua
-		 fields.navigation_flag fields.instigation_type fields.forecast_ongoing
-		 fields.category fields.likelihood fields.name fields.advice_container
-		 fields.forecast_revenue fields.revenue fields.external_id fields.client
-		 fields.ongoing fields.template fields.manual_override_premium fields.scope
-		 fields.from_template
-		 ((fields.is_joint nil joint-p) :cond joint-p :value (if fields.is_joint 1 0)))
-  :resource "/case_manager-v2")
+(define-entrypoint case_manager-v2 :post () (fields) :resource "/case_manager-v2"
+		   :single-parms-as-body T)
 
 ;;; case_manager/benchmark
 

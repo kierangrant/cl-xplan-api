@@ -153,6 +153,9 @@ Description: Package definition for CL-XPLAN-API
    entity/client/portfolio
    entity/client-v2/portfolio
    entity/client-v3/portfolio
+   entity/client/cashflow
+   entity/client-v2/cashflow
+   entity/client-v3/cashflow
    entity/user
    entity/user-v2
    ;; portfolio
@@ -265,6 +268,9 @@ Description: Package definition for CL-XPLAN-API
    entity/client/portfolio
    entity/client-v2/portfolio
    entity/client-v3/portfolio
+   entity/client/cashflow
+   entity/client-v2/cashflow
+   entity/client-v3/cashflow
    entity/user
    entity/user-v2
    ;; portfolio

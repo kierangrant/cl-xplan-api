@@ -82,6 +82,87 @@ Description: /entity API Functions
 Use ids for multiple Entities (entity/client-v3) else use entity_id (entity/client-v3/:entity_id)"
   :resource (format nil "/entity/client-v3~@[/~A~]" entity_id))
 
+;;; entity/client/cashflow
+
+;; entity/client/cashflow - GET /resourceful/entity/client/:entity_id/cashflow and GET /resourceful/entity/client/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client/cashflow :get
+  (entity_id list_obj_index)
+  ((indexes :cond (and (not list_obj_index) indexes))
+   fields
+   (page :cond (and (not list_obj_index) page)))
+  :resource (format nil "/entity/client/~A/cashflow~@[/~A~]" entity_id list_obj_index))
+
+;; entity/client/cashflow - POST /resourceful/entity/client/:entity_id/cashflow
+(define-entrypoint entity/client/cashflow :post
+  (entity_id)
+  (fields extra_return_fields)
+  :resource (format nil "/entity/client/~A/cashflow" entity_id))
+
+;; entity/client/cashflow - PATCH /resourceful/entity/client/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client/cashflow :patch
+  (entity_id list_obj_id)
+  (fields extra_return_fields)
+  :resource (format nil "/entity/client/~A/cashflow/~A" entity_id list_obj_id))
+
+;; entity/client/cashflow - DELETE /resourceful/entity/client/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client/cashflow :delete
+  (entity_id list_obj_id) ()
+  :resource (format nil "/entity/client/~A/cashflow/~A" entity_id list_obj_id))
+
+;;; entity/client-v2/cashflow
+
+;; entity/client-v2/cashflow - GET /resourceful/entity/client-v2/:entity_id/cashflow and GET /resourceful/entity/client-v2/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client-v2/cashflow :get
+  (entity_id list_obj_index)
+  ((indexes :cond (and (not list_obj_index) indexes))
+   fields
+   (page :cond (and (not list_obj_index) page)))
+  :resource (format nil "/entity/client-v2/~A/cashflow~@[/~A~]" entity_id list_obj_index))
+
+;; entity/client-v2/cashflow - POST /resourceful/entity/client-v2/:entity_id/cashflow
+(define-entrypoint entity/client-v2/cashflow :post
+  (entity_id)
+  (fields extra_return_fields)
+  :resource (format nil "/entity/client-v2/~A/cashflow" entity_id))
+
+;; entity/client-v2/cashflow - PATCH /resourceful/entity/client-v2/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client-v2/cashflow :patch
+  (entity_id list_obj_id)
+  (fields extra_return_fields)
+  :resource (format nil "/entity/client-v2/~A/cashflow/~A" entity_id list_obj_id))
+
+;; entity/client-v2/cashflow - DELETE /resourceful/entity/client-v2/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client-v2/cashflow :delete
+  (entity_id list_obj_id) ()
+  :resource (format nil "/entity/client-v2/~A/cashflow/~A" entity_id list_obj_id))
+
+;;; entity/client-v3/cashflow
+
+;; entity/client-v3/cashflow - GET /resourceful/entity/client-v3/:entity_id/cashflow and GET /resourceful/entity/client-v3/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client-v3/cashflow :get
+  (entity_id list_obj_index)
+  ((indexes :cond (and (not list_obj_index) indexes))
+   fields
+   (page :cond (and (not list_obj_index) page)))
+  :resource (format nil "/entity/client-v3/~A/cashflow~@[/~A~]" entity_id list_obj_index))
+
+;; entity/client-v3/cashflow - POST /resourceful/entity/client-v3/:entity_id/cashflow
+(define-entrypoint entity/client-v3/cashflow :post
+  (entity_id)
+  (fields extra_return_fields)
+  :resource (format nil "/entity/client-v3/~A/cashflow" entity_id))
+
+;; entity/client-v3/cashflow - PATCH /resourceful/entity/client-v3/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client-v3/cashflow :patch
+  (entity_id list_obj_id)
+  (fields extra_return_fields)
+  :resource (format nil "/entity/client-v3/~A/cashflow/~A" entity_id list_obj_id))
+
+;; entity/client-v3/cashflow - DELETE /resourceful/entity/client-v3/:entity_id/cashflow/:list_obj_index
+(define-entrypoint entity/client-v3/cashflow :delete
+  (entity_id list_obj_id) ()
+  :resource (format nil "/entity/client-v3/~A/cashflow/~A" entity_id list_obj_id))
+
 ;; entity/client/portfolio - GET /resourceful/entity/client/:entity_id/portfolio
 (define-entrypoint entity/client/portfolio :get (entity_id) (fields)
 		   :resource (format NIL "/entity/client/~A/portfolio" entity_id))
