@@ -26,6 +26,7 @@ Description: /disclaimer/orders API Functions
   ()
   (((activated nil activated-p) :cond activated-p :value (if activated 1 0))
    content button display_mode)
+  :single-parms-as-body T
   :resource "/disclaimer/orders")
 
 ;; disclaimer/orders - POST /resourceful/disclaimer/orders?_method=accept

@@ -21,22 +21,53 @@ Description: /docnote API Functions
 
 ;; docnote - GET /resourceful/docnote and GET /resourceful/docnote/:docid
 (define-entrypoint docnote :get
-  (docid)
+  (docid created_date.start_date created_date.end_date modified_date.start_date
+	 modified_date.end_date reference_date.start_date reference_date.end_date
+	 firstread.entity_id (firstread.include_read_notes nil read-notes-p)
+	 firstread.read_entity_roles firstread.max_num_entities)
   ((entity_ids :cond (and (not docid) entity_ids))
    (subject :cond (and (not docid) subject))
-   (created_by :cond (and (not docid) created_by))
+   ((created_by nil created_by-p) :cond (not docid)
+    :value
+    (if created_by-p created_by
+	(let ((h (make-hash-table)))
+	  (if created_date.start_date (setf (gethash "start_date" h) created_date.start_date))
+	  (if created_date.end_date (setf (gethash "end_date" h) created_date.end_date))
+	  h)))
    ((has_metadata nil metadata-p) :cond (and (not docid) metadata-p) :value (if has_metadata 1 0))
    (categories :cond (and (not docid) categories))
    (link_thread :cond (and (not docid) link_thread))
    (doctype :cond (and (not docid) doctype))
    (docsubtype :cond (and (not docid) docsubtype))
-   (modified_by :cond (and (not docid) modified_by))
+   ((modified_by nil modified_by-p) :cond (not docid)
+    :value
+    (if modified_by-p modified_by
+	(let ((h (make-hash-table)))
+	  (if modified_date.start_date (setf (gethash "start_date" h) modified_date.start_date))
+	  (if modified_date.end_date (setf (gethash "end_date" h) modified_date.end_date))
+	  h)))
    (keywords :cond (and (not docid) keywords))
    (created_date :cond (and (not docid) created_date))
    (modified_date :cond (and (not docid) modified_date))
-   (reference_date :cond (and (not docid) reference_date))
+   ((reference_date nil reference_date-p) :cond (not docid)
+    :value
+    (if reference_date-p reference_date
+	(let ((h (make-hash-table)))
+	  (if reference_date.start_date (setf (gethash "start_date" h) reference_date.start_date))
+	  (if reference_date.end_date (setf (gethash "end_date" h) reference_date.start_date))
+	  h)))
    ((session_info nil sinfo-p) :cond (and (not docid) sinfo-p) :value (if session_info 1 0))
-   (firstread :cond (and (not docid) firstread))
+   ((firstread nil firstread-p) :cond (not docid)
+    :value
+    (if firstread-p firstread
+	(let ((h (make-hash-table)))
+	  (if firstread.entity_id (setf (gethash "entity_id" h) firstread.entity_id))
+	  (if read-notes-p (setf (gethash "include_read_notes" h) firstread.include_read_notes))
+	  (if firstread.read_entity_roles
+	      (setf (gethash "read_entity_roles" h) firstread.read_entity_roles))
+	  (if firstread.max_num_entities
+	      (setf (gethash "max_num_entities" h) firstread.max_num_entities))
+	  h)))
    (page_size :cond (and (not docid) page_size))
    (page_sort :cond (and (not docid) page_sort))
    (page_bookmark :cond (and (not docid) page_bookmark))
@@ -108,7 +139,10 @@ Description: /docnote API Functions
 
 ;; docnote-v2 - GET /resourceful/docnote-v2 and GET /resourceful/docnote-v2/:docid
 (define-entrypoint docnote-v2 :get
-  (docid)
+  (docid created_date.start_date created_date.end_date modified_date.start_date modified_date.end_date
+	 reference_date.start_date reference_date.end_date firstread.entity_id
+	 (firstread.include_read_notes nil include-read-p) firstread.read_entity_roles
+	 firstread.max_num_entities)
   ((entity_ids :cond (and (not docid) entity_ids))
    (subject :cond (and (not docid) subject))
    (created_by :cond (and (not docid) created_by))
@@ -119,16 +153,40 @@ Description: /docnote API Functions
    (docsubtype :cond (and (not docid) docsubtype))
    (modified_by :cond (and (not docid) modified_by))
    (keywords :cond (and (not docid) keywords))
-   (created_date.start_date :cond (and (not docid) created_date.start_date))
-   (created_date.end_date :cond (and (not docid) created_date.end_date))
-   (modified_date.start_date :cond (and (not docid) modified_date.start_date))
-   (modified_date.end_date :cond (and (not docid) modified_date.end_date))
-   (reference_date.start_date :cond (and (not docid) reference_date.start_date))
-   (reference_date.end_date :cond (and (not docid) reference_date.end_date))
+   ((created_date nil created_date-p) :cond (not docid)
+    :value
+    (if created_date-p created_date
+	(let ((h (make-hash-table)))
+	  (if created_date.start_date (setf (gethash "start_date" h) created_date.start_date))
+	  (if created_date.end_date (setf (gethash "end_date" h) created_date.end_date))
+	  h)))
+   ((modified_date nil modified_date-p) :cond (not docid)
+    :value
+    (if modified_date-p modified_date
+	(let ((h (make-hash-table)))
+	  (if modified_date.start_date (setf (gethash "start_date" h) modified_date.start_date))
+	  (if modified_date.end_date (setf (gethash "end_date" h) modified_date.end_date))
+	  h)))
+   ((reference_date nil reference_date-p) :cond (not docid)
+    :value
+    (if reference_date-p reference_date
+	(let ((h (make-hash-table)))
+	  (if reference_date.start_date (setf (gethash "start_date" h) reference_date.start_date))
+	  (if reference_date.end_date (setf (gethash "end_date" h) reference_date.end_date))
+	  h)))
    ((session_info nil sinfo-p) :cond (and (not docid) sinfo-p) :value (if session_info 1 0))
-   (firstread.entity_id :cond (and (not docid) firstread.entity_id))
-   ((firstread.include_read_notes nil include-read-p) :cond (and (not include-read-p))
-    :value (if firstread.include_read_notes 1 0))
+   ((firstread nil firstread-p) :cond (not docid)
+    :value
+    (if firstread-p firstread
+	(let ((h (make-hash-table)))
+	  (if firstread.entity_id (setf (gethash "entity_id" h) firstread.entity_id))
+	  (if include-read-p (setf (gethash "include_read_notes" h)
+				   (if firstread.include_read_notes 1 0)))
+	  (if firstread.read_entity_roles
+	      (setf (gethash "read_entity_roles" h) firstread.read_entity_roles))
+	  (if firstread.max_num_entities
+	      (setf (gethash "max_num_entities" h) firstread.max_num_entities))
+	  h)))
    (page_size :cond (and (not docid) page_size))
    (page_sort :cond (and (not docid) page_sort))
    (page_bookmark :cond (and (not docid) page_bookmark))
