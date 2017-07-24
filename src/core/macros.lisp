@@ -86,7 +86,7 @@ field -> (if field `((\"field\" . ,field)))
 	   `((defmethod ,name ((session xplan-session) (method (eql ,method))
 			       &key ,@(if (not inhibit-transaction) '(request-transaction))
 				 inhibit-auth inhibit-json-decode return-request
-				 ,@extra-parms ,@field-entries &allow-other-keys)
+				 ,@extra-parms ,@field-entries)
 	       ,@(if documentation `(,documentation))
 	       (let ((res
 		      (xplan-api-call
@@ -106,7 +106,7 @@ field -> (if field `((\"field\" . ,field)))
 	   `((defmethod ,name ((session xplan-request-bulk) (method (eql ,method))
 			       &key request-name
 				 ,@(if (not inhibit-transaction) '(request-transaction))
-				 ,@extra-parms ,@field-entries &allow-other-keys)
+				 ,@extra-parms ,@field-entries)
 	       ,@(if documentation `(,documentation))
 	       (prepare-request
 		session
