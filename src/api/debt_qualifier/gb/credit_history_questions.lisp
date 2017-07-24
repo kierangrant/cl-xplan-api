@@ -11,16 +11,15 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/assumption_set.lisp
-Description: /assumption_set API Functions
+File: src/api/debt_qualifier/gb/credit_history_questions.lisp
+Description: /debt_qualifier/gb/credit_history_questions API Functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;;; assumption_set
+;;; debt_qualifier/gb/credit_history_questions
 
-;; assumption_set - GET /resourceful/assumption_set and GET /resourceful/assumption_set/:assumption_set_name
-
-(define-entrypoint assumption_set :get (assumption_set_name) ()
-		   :resource (format NIL "/assumption_set~@[/~A~]" assumption_set_name))
-
+;; debt_qualifier/gb/credit_history_questions - GET /resourceful/debt_qualifier/gb/credit_history_questions
+(define-entrypoint debt_qualifier/gb/credit_history_questions :get
+  () () :resource "/debt_qualifier/gb/credit_history_questions"
+  :documentation "Get list of predefined credit history questions")

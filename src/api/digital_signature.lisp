@@ -17,8 +17,6 @@ Description: /digital_signature API Functions
 
 (in-package :cl-xplan-api/api)
 
-;;; digital_signature
-
 ;; digital_signature - GET /resourceful/digital_signature and GET /resourceful/digital_signature/:digital_signature_id
 (define-entrypoint digital_signature :get
   (digital_signature_id)
@@ -33,49 +31,3 @@ Description: /digital_signature API Functions
    (page_bookmark :cond (and (not digital_signature_id) page_bookmark))
    (page_dir :cond (and (not digital_signature_id) page_dir)))
   :resource (format nil "/digital_signature~@[/~A~]" digital_signature_id))
-
-;;; digital_signature/content
-
-;; digital_signature/content - GET /resourceful/digital_signature/:digital_signature_id/content
-(define-entrypoint digital_signature/content :get (digital_signature_id) ()
-		   :resource (format nil "/digital_signature/~A/content" digital_signature_id))
-
-;;; digital_signature/content_path
-
-;; digital_signature/content_path -  /resourceful/digital_signature/:digital_signature_id/content_path
-(define-entrypoint digital_signature/content_path :get (digital_signature_id) ()
-		   :resource (format nil "/digital_signature/~A/content_path" digital_signature_id))
-
-;;; digital_signature/notify
-
-;; digital_signature/notify - POST /resourceful/digital_signature/:digital_signature_id/notify?_method=post
-(define-entrypoint digital_signature/notify :post (digital_signature_id) ()
-		   :resource (format nil "/digital_signature/~A/notify" digital_signature_id))
-
-;;; digital_signature/signatories
-
-;; digital_signature/signatories - GET /resourceful/digital_signature/:digital_signature_id/signatories
-(define-entrypoint digital_signature/signatories :get (digital_signature_id) ()
-		   :resource (format nil "/digital_signature/~A/signatories" digital_signature_id))
-
-;;; digital_signature/signatories/generate_code
-
-;; digital_signature/signatories/generate_code - POST /resourceful/digital_signature/:digital_signature_id/signatories/:signatory_id/generate_code?_method=post
-(define-entrypoint digital_signature/signatories/generate_code :post
-  (digital_signature_id signatory_id) ()
-  :single-resource (format nil "/digital_signature/~A/signatories/~A/generate_code?_method=post"
-			   digital_signature_id signatory_id)
-  :single-parms-as-body T
-  :bulk-resource (format nil "/digital_signature/~A/signatories/~A/generate_code"
-			 digital_signature_id signatory_id))
-
-;;; digital_signature/signatories/sign
-
-;; digital_signature/signatories/sign - POST /resourceful/digital_signature/:digital_signature_id/signatories/:signatory_id/sign?_method=post
-(define-entrypoint digital_signature/signatories/sign :post
-  (digital_signature_id signatory_id) (signing_method secure_data otp)
-  :single-resource (format nil "/digital_signature/~A/signatories/~A/sign?_method=post"
-			   digital_signature_id signatory_id)
-  :single-parms-as-body T
-  :bulk-resource (format nil "/digital_signature/~A/signatories/~A/sign"
-			 digital_signature_id signatory_id))

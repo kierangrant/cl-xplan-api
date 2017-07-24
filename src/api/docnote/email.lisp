@@ -11,16 +11,18 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/assumption_set.lisp
-Description: /assumption_set API Functions
+File: src/api/docnote/email.lisp
+Description: /docnote/email API Functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;;; assumption_set
-
-;; assumption_set - GET /resourceful/assumption_set and GET /resourceful/assumption_set/:assumption_set_name
-
-(define-entrypoint assumption_set :get (assumption_set_name) ()
-		   :resource (format NIL "/assumption_set~@[/~A~]" assumption_set_name))
-
+;; docnote-v2/email - POST /resourceful/docnote-v2/:docid/email?_method=send
+(define-entrypoint docnote-v2/email :send
+  (docid) (email_address template)
+  :single-resource (format nil "/docnote-v2/~A/email?_method=send" docid)
+  :single-method :post
+  :single-parms-as-body T
+  :bulk-resource (format nil "/docnote-v2/~A/email" docid)
+  :bulk-method :send
+  :documentation "Send an email based on a specified email template. Attachments on the note will be sent as email attachments")

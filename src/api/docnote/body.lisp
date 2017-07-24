@@ -11,16 +11,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/assumption_set.lisp
-Description: /assumption_set API Functions
+File: src/api/docnote/body.lisp
+Description: /docnote/body API Functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;;; assumption_set
-
-;; assumption_set - GET /resourceful/assumption_set and GET /resourceful/assumption_set/:assumption_set_name
-
-(define-entrypoint assumption_set :get (assumption_set_name) ()
-		   :resource (format NIL "/assumption_set~@[/~A~]" assumption_set_name))
-
+;; docnote-v2/body - GET /resourceful/docnote-v2/:docid/body
+(define-entrypoint docnote-v2/body :get
+  (docid) ()
+  :resource (format nil "/docnote-v2/~A/body" docid))

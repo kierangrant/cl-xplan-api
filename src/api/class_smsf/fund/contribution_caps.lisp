@@ -11,16 +11,12 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/assumption_set.lisp
-Description: /assumption_set API Functions
+File: src/api/class_smsf/fund/contribution_caps.lisp
+Description: /class_smsf/fund/contribution_caps API Functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;;; assumption_set
-
-;; assumption_set - GET /resourceful/assumption_set and GET /resourceful/assumption_set/:assumption_set_name
-
-(define-entrypoint assumption_set :get (assumption_set_name) ()
-		   :resource (format NIL "/assumption_set~@[/~A~]" assumption_set_name))
-
+;; class_smsf/fund/contribution_caps - GET /resourceful/class_smsf/fund/:fund/contribution_caps
+(define-entrypoint class_smsf/fund/contribution_caps :get (fund) (year)
+		   :resource (format nil "/class_smsf/fund/~A/contribution_caps" fund))

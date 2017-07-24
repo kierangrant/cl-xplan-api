@@ -11,19 +11,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/access.lisp
-Description: /access API functions
+File: src/api/digital_signature/content_path.lisp
+Description: /digital_signature/content_path API Functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;;; access
-
-;; access - POST /resourceful/access/client/:entityid
-
-(define-entrypoint access/client :post
-  (entityid)
-  (userid passwd login_mode expiry
-	  ((change_passwd nil passwd-p) :cond passwd-p :value (if change_passwd 1 0)))
-  :documentation "Create a client resource. Enables COA for a client."
-  :resource (format NIL "/access/client/~D" entityid))
+;; digital_signature/content_path -  /resourceful/digital_signature/:digital_signature_id/content_path
+(define-entrypoint digital_signature/content_path :get
+  (digital_signature_id) ()
+  :resource (format nil "/digital_signature/~A/content_path" digital_signature_id))

@@ -11,16 +11,12 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/assumption_set.lisp
-Description: /assumption_set API Functions
+File: src/api/case_manager/benchmark.lisp
+Description: /case_manager/benchmark API Functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;;; assumption_set
-
-;; assumption_set - GET /resourceful/assumption_set and GET /resourceful/assumption_set/:assumption_set_name
-
-(define-entrypoint assumption_set :get (assumption_set_name) ()
-		   :resource (format NIL "/assumption_set~@[/~A~]" assumption_set_name))
-
+;; case_manager/benchmark - GET /resourceful/case_manager/:container_id/benchmark
+(define-entrypoint case_manager/benchmark :get (container_id) ()
+		   :resource (format NIL "/case_manager/~A/benchmark" container_id))

@@ -17,8 +17,6 @@ Description: /currency API functions
 
 (in-package :cl-xplan-api/api)
 
-;;; currency
-
 ;; currency - POST /resourceful/currency?_method=convert
 (define-entrypoint currency :convert
   ()

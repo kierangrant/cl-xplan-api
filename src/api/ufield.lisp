@@ -17,12 +17,12 @@ Description: /ufield API Functions
 
 (in-package :cl-xplan-api/api)
 
-;;; ufield
-
 ;; ufield - GET /resourceful/ufield/:group_name and GET /resourceful/ufield/:group_name/:field_name
 (define-entrypoint ufield :get
   (group_name field_name)
   ((fields :cond (and (not field_name) fields))
-   ((include_choices nil choices-p) :cond (and (not field_name) choices-p) :value (if include_choices 1 0))
-   ((include_dependencies nil dependant-p) :cond (and (not field_name) dependant-p) :value (if include_dependencies 1 0)))
+   ((include_choices nil choices-p) :cond (and (not field_name) choices-p)
+    :value (if include_choices 1 0))
+   ((include_dependencies nil dependant-p) :cond (and (not field_name) dependant-p)
+    :value (if include_dependencies 1 0)))
   :resource (format nil "/ufield/~A~@[/~A~]" group_name field_name))

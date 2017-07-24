@@ -11,16 +11,17 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/assumption_set.lisp
-Description: /assumption_set API Functions
+File: src/api/access/client.lisp
+Description: /access/client API functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;;; assumption_set
+;; access - POST /resourceful/access/client/:entityid
 
-;; assumption_set - GET /resourceful/assumption_set and GET /resourceful/assumption_set/:assumption_set_name
-
-(define-entrypoint assumption_set :get (assumption_set_name) ()
-		   :resource (format NIL "/assumption_set~@[/~A~]" assumption_set_name))
-
+(define-entrypoint access/client :post
+  (entityid)
+  (userid passwd login_mode expiry
+	  ((change_passwd nil passwd-p) :cond passwd-p :value (if change_passwd 1 0)))
+  :documentation "Create a client resource. Enables COA for a client."
+  :resource (format NIL "/access/client/~D" entityid))

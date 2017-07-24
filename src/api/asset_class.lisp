@@ -11,13 +11,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/asset_class.lisp
+File: src/api/asset_class/asset_class.lisp
 Description: /asset_class API functions
 |#
 
 (in-package :cl-xplan-api/api)
-
-;;; asset_class
 
 ;; asset_class - GET /resourceful/asset_class and GET /resourceful/asset_class/:xplan_id
 
