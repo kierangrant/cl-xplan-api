@@ -11,11 +11,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/api/docnote/body.lisp
-Description: /docnote/body API Functions
+File: src/api/capability.lisp
+Description: /capability API Functions
 |#
 
 (in-package :cl-xplan-api/api)
 
-;; docnote-v2/body - GET /resourceful/docnote-v2/:docid/body
-(define-entrypoint docnote-v2/body :get (docid) () :resource (format nil "/docnote-v2/~A/body" docid))
+;; session/capability - GET /resourceful/session/capability
+(define-entrypoint session/capability :get () ()
+		   :resource "/session/capability"
+		   :documentation "Fetch a list of capabilities visible to the current session.")

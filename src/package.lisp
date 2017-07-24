@@ -114,6 +114,7 @@ Description: Package definition for CL-XPLAN-API
    ;; debt_qualifier
    debt_qualifier/au/lender_document
    debt_qualifier/au/lender_document_report
+   debt_qualifier/gb/broker_fee
    debt_qualifier/gb/browse_product
    debt_qualifier/gb/credit_history_questions
    debt_qualifier/gb/custom_panel
@@ -164,6 +165,8 @@ Description: Package definition for CL-XPLAN-API
    portfolio/transaction
    portfolio/transaction_types
    ;; session
+   session/capability
+   session/password
    session/transaction
    ;; ufield
    ufield
@@ -229,6 +232,7 @@ Description: Package definition for CL-XPLAN-API
    ;; debt_qualifier
    debt_qualifier/au/lender_document
    debt_qualifier/au/lender_document_report
+   debt_qualifier/gb/broker_fee
    debt_qualifier/gb/browse_product
    debt_qualifier/gb/credit_history_questions
    debt_qualifier/gb/custom_panel
@@ -279,6 +283,8 @@ Description: Package definition for CL-XPLAN-API
    portfolio/transaction
    portfolio/transaction_types
    ;; session
+   session/capability
+   session/password
    session/transaction
    ;; ufield
    ufield

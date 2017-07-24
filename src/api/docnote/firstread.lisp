@@ -18,11 +18,9 @@ Description: /docnote/firstread API Functions
 (in-package :cl-xplan-api/api)
 
 ;; docnote-v2/firstread - GET /resourceful/docnote-v2/:docid/firstread and GET /resourceful/docnote-v2/:docid/firstread/:entityid
-(define-entrypoint docnote-v2/firstread :get
-  (docid entityid) ()
-  :resource (format nil "/docnote-v2/~A/firstread~@[/~A~]" docid entityid))
+(define-entrypoint docnote-v2/firstread :get (docid entityid) ()
+		   :resource (format nil "/docnote-v2/~A/firstread~@[/~A~]" docid entityid))
 
 ;; docnote-v2/firstread - POST /resourceful/docnote-v2/:docid/firstread
-(define-entrypoint docnote-v2/firstread :post
-  (docid) ()
-  :resource (format nil "/docnote-v2/~A/firstread" docid))
+(define-entrypoint docnote-v2/firstread :post (docid) ()
+		   :resource (format nil "/docnote-v2/~A/firstread" docid))

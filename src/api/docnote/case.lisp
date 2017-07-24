@@ -18,6 +18,4 @@ Description: /docnote/case API Functions
 (in-package :cl-xplan-api/api)
 
 ;; docnote-v2/case
-(define-entrypoint docnote-v2/case :get
-  (docid) ()
-  :resource (format nil "/docnote-v2/~A/case" docid))
+(define-entrypoint docnote-v2/case :get (docid) () :resource (format nil "/docnote-v2/~A/case" docid))

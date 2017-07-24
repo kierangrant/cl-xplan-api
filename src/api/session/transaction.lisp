@@ -17,8 +17,6 @@ Description: /session/transaction API Functions
 
 (in-package :cl-xplan-api/api)
 
-;; use delete-session to delete a session
-
 ;; session/transaction - We only support with normal non-bulk requests
 
 ;; session/transaction - POST /resourceful/session/transaction
