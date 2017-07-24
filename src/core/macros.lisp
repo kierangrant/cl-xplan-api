@@ -21,7 +21,18 @@ Description: Client and API Macros
 
 ;; Define an API entrypoint.
 
-(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist) &key documentation resource inhibit-bulk inhibit-single inhibit-transaction single-parms-as-body (single-method method) (single-resource resource) (bulk-method method) (bulk-resource resource) hidden-single-parameters hidden-bulk-parameters)
+(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist)
+			     &key documentation resource inhibit-bulk inhibit-single
+			       inhibit-transaction single-parms-as-body (single-method method)
+			       (single-resource resource) (bulk-method method) (bulk-resource resource)
+			       hidden-single-parameters hidden-bulk-parameters
+			       (content nil content-p) content-type inhibit-json-decode
+			       (single-content content single-content-p)
+			       (single-content-type content-type)
+			       (single-inhibit-json-decode inhibit-json-decode)
+			       (bulk-content content bulk-content-p)
+			       (bulk-content-type content-type)
+			       (bulk-inhibit-json-decode inhibit-json-decode))
   "Defines an API entry point.
 
 extra-parms are extra keyword parameters for use in expressions for different parameters, used for parameters that MUST NOT come out in API parameters call.
@@ -32,6 +43,16 @@ hidden-bulk-parameters is like hidden-single-parameters, but it's parameters are
 single-parms-as-body forces paramters to instead by inserted as content.
 Content-Type will be 'application/json'. The content of parameters is convert to JSON using
 json:encode-json-to-string. You must convert to XPLAN Types yourself where needed.
+
+{single-,bulk-}content and {single-,bulk-}content-type are overrides, they override all normal processing of arglist. If supplied, the following parameters to define-entrypoint are ignored:
+hidden-single-parameters, hidden-bulk-parameters, single-parms-as-body.
+You must also specify content-type if you use these fields.
+If you specify content and content-type, it is default for single/bulk content and content-type.
+If you do not specify content and content-type but specify one of the single-/bulk- variety, the one
+you did not specify (as long as not inhibited by inhibit-single or inhibit-bulk) will process arguments
+like normal.
+
+{,single-,bulk-}inhibit-json-decode sets default value for inhibit-json-decode.
 
 arglist is of form ({field|(field &key field-string cond-expr value-expr)}*):
 
@@ -46,8 +67,15 @@ field -> (if field `((\"field\" . ,field)))
 ((field nil field-p)) -> (if field `((\"field\" . ,field))) ; will not automatically use field-p
 (field :field-string \"Field\" :value-expr (symbol-name field)) -> (if field `((\"Field\" . ,(symbol-name field))))
 ((field \"Something\" field-p) :field-string \"Field_Thing\" :cond-expr (and field-p (not (string= field \"Blarg\"))) :value-expr (somefunc field)) -> (if (and field-p (not (string= field \"Blarg\"))) `((\"Field_Thing\" . ,(somefunc field))))"
+;; If content is provided, set {single/bulk}-content-p as if manually provided
+;; *-content-type is required if *-content is provided !!
 (let* ((field-entries (loop for item in arglist collecting (if (typep item 'symbol) item (car item))))
        sparms bparms)
+  (if content-p
+      (setf single-content-p t
+	    bulk-content-p t))
+  (if (and bulk-content-p (not (string= bulk-content-type "application/json")))
+      (error "XPLAN API Batch request currently only support JSON body"))
   (macrolet
       ((parm-processor (inhibit hidden)
 	 `(if (not ,inhibit)
@@ -85,20 +113,30 @@ field -> (if field `((\"field\" . ,field)))
      ,@(if (not inhibit-single)
 	   `((defmethod ,name ((session xplan-session) (method (eql ,method))
 			       &key ,@(if (not inhibit-transaction) '(request-transaction))
-				 inhibit-auth inhibit-json-decode return-request
-				 ,@extra-parms ,@field-entries)
+				 inhibit-auth
+				 (inhibit-json-decode ,single-inhibit-json-decode)
+				 return-request ,@extra-parms ,@field-entries)
 	       ,@(if documentation `(,documentation))
 	       (let ((res
-		      (xplan-api-call
-		       session
-		       :inhibit-auth inhibit-auth
-		       :inhibit-json-decode inhibit-json-decode
-		       :method ,single-method
-		       :resource ,single-resource
-		       ,@(if (not single-parms-as-body) `(:parameters ,sparms))
-		       ,@(if single-parms-as-body
-			     `(:content-type "application/json"
-					     :content (json:encode-json-to-string ,sparms))))))
+		      ,(if single-content-p
+			   `(xplan-api-call
+			     session
+			     :inhibit-auth inhibit-auth
+			     :inhibit-json-decode inhibit-json-decode
+			     :method ,single-method
+			     :resource ,single-resource
+			     :content ,single-content
+			     :content-type ,single-content-type)
+			   `(xplan-api-call
+			     session
+			     :inhibit-auth inhibit-auth
+			     :inhibit-json-decode inhibit-json-decode
+			     :method ,single-method
+			     :resource ,single-resource
+			     ,@(if (not single-parms-as-body) `(:parameters ,sparms))
+			     ,@(if single-parms-as-body
+				   `(:content-type "application/json"
+						   :content (json:encode-json-to-string ,sparms)))))))
 		 (if return-request
 		     res
 		     (response res))))))
@@ -106,6 +144,7 @@ field -> (if field `((\"field\" . ,field)))
 	   `((defmethod ,name ((session xplan-request-bulk) (method (eql ,method))
 			       &key request-name
 				 ,@(if (not inhibit-transaction) '(request-transaction))
+				 (inhibit-json-decode ,bulk-inhibit-json-decode)
 				 ,@extra-parms ,@field-entries)
 	       ,@(if documentation `(,documentation))
 	       (prepare-request
@@ -113,7 +152,9 @@ field -> (if field `((\"field\" . ,field)))
 		:name request-name
 		:method ,bulk-method
 		:resource ,bulk-resource
-		:parameters ,bparms)))))))
+		:inhibit-json-decode inhibit-json-decode
+		:parameters ,(if bulk-content-p bulk-content bparms))))))))
+
 
 (defmacro with-xplan-api-json-handlers (&body body)
   `(let ((json:*beginning-of-object-handler* #'object-begin)

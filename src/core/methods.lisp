@@ -295,7 +295,7 @@ This makes sense when you look at the call to list:
     request))
 
 (defgeneric prepare-request (request &key resource method parameters &allow-other-keys))
-(defmethod prepare-request ((request xplan-request-bulk) &key resource method parameters name omit-results-on-success)
+(defmethod prepare-request ((request xplan-request-bulk) &key resource method parameters name omit-results-on-success inhibit-json-decode)
   (with-slots (state requests) request
     (if (not (eq state :prepare))
 	(error 'xplan-api-error :request request
@@ -307,7 +307,8 @@ This makes sense when you look at the call to list:
 		    :method method
 		    :parameters parameters
 		    :name name
-		    :omit-results-on-success omit-results-on-success)
+		    :omit-results-on-success omit-results-on-success
+		    :inhibit-json-decode inhibit-json-decode)
      requests)))
 
 (defgeneric delete-session (session) (:documentation "Deletes a session, ignores HTTP 401 errors, returns T if session was delted, otherwise NIL. On non 401 Errors a XPLAN-API-ERROR condition is thrown."))
@@ -331,8 +332,9 @@ This makes sense when you look at the call to list:
 (defgeneric process-request (request &key inhibit-auth &allow-other-keys)
   (:documentation "Process the request, if inhibit-auth is T, override all other parameters and refuse to reauthenticate on HTTP 401"))
 
-(defmethod process-request ((request xplan-request-bulk) &key inhibit-auth inhibit-json-decode
-							   ignore-subrequest-errors)
+(defmethod process-request ((request xplan-request-bulk)
+			    &key inhibit-auth (inhibit-json-decode nil inhibit-json-decode-p)
+			      ignore-subrequest-errors)
   (with-slots (state session) request
     (if (not (eq state :prepare))
 	(error 'xplan-api-error
@@ -379,11 +381,13 @@ This makes sense when you look at the call to list:
 	       (progn
 		 (format *xplan-api-debug* "Server returned a request name that I don't have, name: ~a~%" (gethash "name" res))
 		 (error 'xplan-api-error :reason-message "Server returned a request name that I don't have" :status-code 500 :request request)))
-	   (with-slots (response response-msg response-code response-headers name time)
+	   (with-slots (response response-msg response-code response-headers name time
+				 inhibit-json-decode-default)
 	       (get-request-by-name request (gethash "name" res))
 	     (setf response
 		   (if (gethash "body" res)
-		       (if inhibit-json-decode
+		       (if (or (and inhibit-json-decode-p inhibit-json-decode)
+			       (and (not inhibit-json-deocode-p) inhibit-json-decode-default))
 			   (gethash "body" res)
 			   (with-xplan-api-json-handlers
 			     (convert-bulk-to-native
