@@ -298,7 +298,9 @@ This makes sense when you look at the call to list:
 (defmethod prepare-request ((request xplan-request-bulk) &key resource method parameters name omit-results-on-success)
   (with-slots (state requests) request
     (if (not (eq state :prepare))
-	(error "Cannot prepare a request once BULK request is processing or is finished"))
+	(error 'xplan-api-error :request request
+	       :reason-message "Cannot prepare a request once BULK request is processing or is finished"
+	       :status-code 400))
     (vector-push-extend
      (make-instance 'xplan-request-bulk-requests
 		    :resource (concatenate 'string "/resourceful" resource)
@@ -329,10 +331,14 @@ This makes sense when you look at the call to list:
 (defgeneric process-request (request &key inhibit-auth &allow-other-keys)
   (:documentation "Process the request, if inhibit-auth is T, override all other parameters and refuse to reauthenticate on HTTP 401"))
 
-(defmethod process-request ((request xplan-request-bulk) &key inhibit-auth inhibit-json-decode)
+(defmethod process-request ((request xplan-request-bulk) &key inhibit-auth inhibit-json-decode
+							   ignore-subrequest-errors)
   (with-slots (state session) request
     (if (not (eq state :prepare))
-	(error "Cannot process request already being processed or finished processing."))
+	(error 'xplan-api-error
+	       :status-code 400
+	       :request request
+	       :reason-message "Cannot process request already being processed or finished processing."))
     (setf state :processing)
     (let (response decoded-response)
       (if inhibit-auth
@@ -389,8 +395,9 @@ This makes sense when you look at the call to list:
 		   time (gethash "time" res)))))
     ;; Now we have populated the Bulk Request object with the results, let's see if any subrequests had an error and throw an exception if they did
     (loop for req across (requests request) do
-	 (if (>= (response-code req) 400)
-	     (error
+	 (if (and (not ignore-subrequest-errors) (>= (response-code req) 400))
+	     (cerror
+	      "Continue processing sub-requests"
 	      'xplan-api-error
 	      :request req
 	      :reason-message
