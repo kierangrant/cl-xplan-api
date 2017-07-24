@@ -22,4 +22,5 @@ Description: /client_message API Functions
 ;; client_message - POST /resourceful/client_message
 (define-entrypoint client_message :post () (subject content adviser_id attachments attachment_names)
 		   :resource "/client_message"
+		   :single-parms-as-body T
 		   :documentation "Send a message to the client's adviser.")
