@@ -39,7 +39,8 @@ Description: XPLAN API Classes
    (state :initform :prepare)
    (session :accessor session :initarg :session :documentation "xplan-session object this request uses")
    (content :accessor content :initarg :content :initform NIL :documentation "Body of request (POST only)")
-   (content-type :accessor content-type :initarg :content-type :initform NIL :documentation "Content-type of Body content (POST only)")))
+   (content-type :accessor content-type :initarg :content-type :initform NIL :documentation "Content-type of Body content (POST only)")
+   (request-uri)))
 
 (defclass xplan-request-bulk-requests ()
   ((response :accessor response :initform NIL)

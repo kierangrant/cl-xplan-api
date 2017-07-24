@@ -47,51 +47,38 @@ field -> (if field `((\"field\" . ,field)))
 (field :field-string \"Field\" :value-expr (symbol-name field)) -> (if field `((\"Field\" . ,(symbol-name field))))
 ((field \"Something\" field-p) :field-string \"Field_Thing\" :cond-expr (and field-p (not (string= field \"Blarg\"))) :value-expr (somefunc field)) -> (if (and field-p (not (string= field \"Blarg\"))) `((\"Field_Thing\" . ,(somefunc field))))"
 (let* ((field-entries (loop for item in arglist collecting (if (typep item 'symbol) item (car item))))
-       (sparms
-	(if (not inhibit-single)
-	    `(append
-	      ,@(if (not inhibit-transaction)
-		    `((if request-transaction
-			  (list (cons "_transaction" request-transaction)))))
-	      (list ,@(loop for item in hidden-single-parameters collecting
-			   `(cons ,(car item) ,(cdr item))))
-	      ,@(loop for item in arglist collecting
-		     (if (typep item 'symbol)
-			 `(if ,item
-			      (list (cons ,(string-downcase (symbol-name item)) ,item)))
-			 (destructuring-bind (field &key (string nil string-p)
-						    (cond field cond-p) (value field value-p))
-			     item
-			   ;; fixup defaults
-			   (if (typep field 'symbol)
-			       (setf string (if string-p
-						string (string-downcase (symbol-name field))))
-			       (setf string (if string-p string
-						(string-downcase (symbol-name (car field))))
-				     cond (if cond-p cond (car field))
-				     value (if value-p value (car field))))
-			   `(if ,cond (list (cons ,string ,value)))))))))
-       (bparms
-	(if (not inhibit-bulk)
-	    `(append
-	      ,@(if (not inhibit-transaction)
-		    `((if request-transaction (list (cons "_transaction" request-transaction)))))
-	      (list ,@(loop for item in hidden-bulk-parameters collecting
-			   `(cons ,(car item) ,(cdr item))))
-	      ,@(loop for item in arglist collecting
-		     (if (typep item 'symbol)
-			 `(if ,item (list (cons ,(string-downcase (symbol-name item)) ,item)))
-			 (destructuring-bind (field &key (string nil string-p) (cond field cond-p)
-						    (value field value-p))
-			     item
-			   ;; fixup defaults
-			   (if (typep field 'symbol)
-			       (if (not string-p) (setf string (string-downcase (symbol-name field))))
-			       (setf string (if string-p
-						string (string-downcase (symbol-name (car field))))
-				     cond (if cond-p cond (car field))
-				     value (if value-p value (car field))))
-			   `(if ,cond (list (cons ,string ,value))))))))))
+       sparms bparms)
+  (macrolet
+      ((parm-processor (inhibit hidden)
+	 `(if (not ,inhibit)
+	      `(let ((h (make-hash-table :test #'equal)))
+		 ,@(if (not inhibit-transaction)
+		       `((if request-transaction
+			     (setf (gethash "_transaction" h) request-transaction))))
+		 ,@(loop for item in ,hidden collecting
+			`(setf (gethash ,(car item) h) ,(cdr item)))
+		 ,@(loop for item in arglist collecting
+			(let (s c v)
+			  (if (typep item 'symbol)
+			      (setf s (string-downcase (symbol-name item))
+				    c item
+				    v item)
+			      (destructuring-bind
+				    (f &key (string nil s-p) (cond f c-p) (value f v-p)) item
+				(setf
+				 s
+				 (if s-p string
+				     (string-downcase
+				      (symbol-name
+				       (if (typep f 'symbol) f (car f)))))
+				 c
+				 (if c-p cond (if (typep f 'symbol) f (car f)))
+				 v
+				 (if v-p value (if (typep f 'symbol) f (car f))))))
+			  `(if ,c (setf (gethash ,s h) ,v))))
+		 h))))
+    (setf sparms (parm-processor inhibit-single hidden-single-parameters)
+	  bparms (parm-processor inhibit-bulk hidden-bulk-parameters)))
   `(progn
      ,@(if (not (boundp name))
 	   `((defgeneric ,name (session method &key &allow-other-keys))))

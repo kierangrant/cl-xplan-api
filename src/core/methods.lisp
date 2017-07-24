@@ -40,31 +40,114 @@ Description: Methods for Classes
 	 (request-call (json:encode-json-to-string request-call-obj)))
     request-call))
 
-(defun alist-to-url-encoding (alist)
-  "Takes an alist, and converts it to a URL-encoded list, converts sequences to correct form"
-  (if (null alist) (return-from alist-to-url-encoding nil))
-  (let (strings)
-    (loop for (key . value) in alist do
-	 (typecase value
-	   (string
-	    (setf strings (append strings (cons (concatenate 'string key "=" value) nil))))
-	   (integer
-	    (setf strings
-		  (append strings
-			  (cons (concatenate 'string key "=" (format NIL "~D" value)) NIL))))
-	   (vector
-	    (loop
-	       for item across value
-	       for index from 0 to (1- (length value)) do
-		 (setf strings (append strings (cons (format nil "~a.~D=~a" key index item) nil)))))
-	   (sequence
-	    (loop
-	       for item in value
-	       for index from 0 to (1- (length value)) do
-		 (setf strings (append strings (cons (format nil "~a.~D=~a" key index item) nil)))))
-	   (t
-	    (setf strings (append strings (cons key nil))))))
-    (format nil "~{~a~^&~}" strings)))
+#|
+Takes an object, and returns a flattened hash-table (test EQUAL).
+Keys in returned hash-table are strings.
+Keys in passed object must be either a string, integer or a symbol.
+Passed object can consist of Strings, Integers, Symbols, Hash-tables, sequences, a-lists, p-list, NIL or T. (CLOS Objects, structures, conditions and functions are *NOT* supported)
+
+Duplicate keys (test is EQUAL on key string) result in last value being used.
+
+A list is treated a p-list if it's first element is a keyword, otherwise it is treated like a sequence. This means you cannot pass a list of keywords and expect it to be treated as a sequence.
+
+Eg:
+(flatten-structure '(:foo 100 :bar (:foobar 200)))
+--> Hash-table with key, value pairs:
+foo: 100
+bar.foobar: 200
+(flatten-structure '((:foo . 100) ("baR" . "cool") (:test . #(100 200 300))))
+--> Hash-table with key, value pairs:
+foo: 100
+baR: "cool"
+test.0: 100
+test:1: 200
+test:2: 300
+(flatten-structure '(:foo NIL :bar T))
+--> Hash-table with key, value pairs:
+foo: NIL
+bar: T
+(flatten-structure #(100 200 (:foo "bar")))
+--> Hash-table with key, value pairs:
+"0": 100
+"1": 200
+"2.foo": "bar"
+
+Also, be careful with cons cells... you can easily confuse yourself, take for example:
+(list (cons ("foo" (list "mee" (list :foo "bar")))))
+--> (("foo" "mee" (:FOO "bar")))
+(flatten-list (("foo" "mee" (:FOO "bar"))))
+--> Hash-table with key, value pairs:
+foo.0: "mee"
+foo.1.foo: "bar"
+
+This makes sense when you look at the call to list:
+1) It makes an a-list, with one item, key "foo"
+2) It's value is a list, non-keyword first value, so treated as a sequence
+3) Sequence first value is a string
+4) Sequence second value is a p-list
+|#
+(defun flatten-structure (object)
+  (let ((pairs (make-hash-table :test #'equal)) (key (make-array 0 :adjustable t :fill-pointer 0)))
+    (if (null object) (return-from flatten-structure pairs))
+    (labels
+	((integer-to-string (int) (with-output-to-string (s) (print-object int s)))
+	 (key-to-string (key)
+	   (etypecase key
+	     (integer (integer-to-string key))
+	     (symbol (string-downcase (symbol-name key)))
+	     (string key)))
+	 (process-object (item)
+	   (cond
+	     ((or (null item) (eq item T) (typep item 'string) (typep item 'integer)
+		  (typep item 'symbol))
+	      (process-atom item))
+	     ((typep item 'hash-table)
+	      (maphash
+	       (lambda (k v)
+		 (vector-push-extend (key-to-string k) key)
+		 (process-object v)
+		 (vector-pop key))
+	       item))
+	     ((typep item 'cons)
+	      (if (not (atom (car item)))
+		  ;; are an a-list, as is of form ((ATOM . VALUE) (ATOM . VALUE) ...)
+		  (loop for (k . v) in item do
+		       (vector-push-extend (key-to-string k) key)
+		       (process-object v)
+		       (vector-pop key))
+		  ;; need to detect difference between plist and non p-list, use first element as test
+		  (if (symbolp (car item))
+		      ;; are a p-list, as is of form (ATOM VALUE ATOM VALUE ...)
+		      (loop until (= (length item) 0) do
+			   (vector-push-extend (key-to-string (pop item)) key)
+			   (process-object (pop item))
+			   (vector-pop key))
+		      ;; otherwise treat as a regular sequence
+		      (dotimes (i (length item))
+			(vector-push-extend (integer-to-string i) key)
+			(process-object (elt item i))
+			(vector-pop key)))))
+	     ((typep item 'sequence)
+	      (dotimes (i (length item))
+		(vector-push-extend (integer-to-string i) key)
+		(process-object (elt item i))
+		(vector-pop key)))
+	     (T (error 'type-error
+		       :expected-type '(or string integer symbol vector cons hash-table null
+					(member T))
+		       :datum item))))
+	 (process-atom (item)
+	   (setf
+	    (gethash
+	     (with-output-to-string (s)
+	       (dotimes (i (1- (length key)))
+		 (write-string (elt key i) s)
+		 (write-char #\. s))
+	       (write-string (elt key (1- (length key))) s))
+	     pairs)
+	    item)))
+      (process-object object))
+    pairs))
 
 (defgeneric %process-request (request &key))
 
@@ -114,14 +197,29 @@ Description: Methods for Classes
 	(values-list response)))))
 
 (defmethod %process-request ((request xplan-request) &key do-auth)
-  (with-slots (resource method parameters state session content content-type) request
+  (with-slots (resource method parameters state session content content-type request-uri) request
     (with-slots (session-state base-url transport-version api-key
 			       username password drakma-settings force-init-auth)
 	session
-      (let ((drakma-response)
-	    (request-url
-	     (format NIL "~a/resourceful-v~D~a~:[~;?~:*~a~]" base-url transport-version resource
-		     (alist-to-url-encoding parameters))))
+      (let (drakma-response)
+	;; we manual build up URI, just in case we need 'GET' parameters mixed with POST data
+	(setf request-uri
+	      (format nil "~a/resourceful-v~D~a~@[~a~]" base-url transport-version resource
+		      (with-output-to-string (out)
+			(with-hash-table-iterator (getitem (flatten-structure parameters))
+			  (let ((result (multiple-value-list (getitem))))
+			    (if (car result) (format out "?~a~@[=~a~]" (elt result 1) (elt result 2)))
+			    (setf result (multiple-value-list (getitem)))
+			    (loop while (car result) do
+				 (format out "&~a~@[=~a~]" (elt result 1)
+					 (etypecase (elt result 2)
+					   (string (elt result 2))
+					   (integer
+					    (decimals:format-decimal-number (elt result 2)
+									    :round-magnitude -20))
+					   (symbol (string-downcase (symbol-name (elt result 2))))
+					   ((member nil) nil)))
+				 (setf result (multiple-value-list (getitem)))))))))
 	(if (or do-auth force-init-auth)
 	    (progn
 	      ;; disable force-init-auth on first chance
@@ -131,7 +229,7 @@ Description: Methods for Classes
 		    (multiple-value-list
 		     (apply
 		      *api-call-function*
-		      request-url
+		      request-uri
 		      :method method
 		      :force-binary T
 		      :cookie-jar session-state
@@ -149,7 +247,7 @@ Description: Methods for Classes
 		  (multiple-value-list
 		   (apply
 		    *api-call-function*
-		    request-url
+		    request-uri
 		    :method method
 		    :force-binary T
 		    :cookie-jar session-state
