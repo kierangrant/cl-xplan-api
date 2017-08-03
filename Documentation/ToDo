@@ -1,0 +1,40 @@
+The following entry-points are not yet available in this library, and will be added over time:
+
+/eapplications*
+/email*
+/entity* ; except entity/client{,-v2,-v3},{,/portfolio,/cashflow}
+/error_report*
+/event*
+/family_tree*
+/forgot*
+/forgotten_password*
+/id_verification*
+/interface*
+/job_queue*
+/knowledge_centre*
+/lead*
+/news*
+/online_meeting*
+/other_allocation*
+/pagination_test*
+/payment_gateway*
+/portfolio* ; except /portfolio/{position,profit_analysis/detail,transaction,transaction_types}
+/questionnaire*
+/riskresearcher*
+/savings*
+/session* ; except /session/{capability,password,transaction}
+/site*
+/sticky_note*
+/supersolver*
+/sysadmin*
+/task*
+/task_template*
+/thread*
+/trading*
+/ufield* ; except for /ufield itself
+/user_message*
+/utilities*
+/view_config*
+/xmerge*
+
+As you can see, this library is still in it's early stages

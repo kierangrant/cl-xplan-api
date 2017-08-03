@@ -1,4 +1,4 @@
-CL-XPAN-API is a LISP library that makes it easier to interact with IRESS XPLAN API.
+CL-XPLAN-API is a LISP library that makes it easier to interact with IRESS XPLAN API.
 
 Whilst this software is released under the LLGPL, to actually connect to an IRESS XPLAN API Server requires you to have an API Key from them.
 
@@ -6,7 +6,7 @@ You need a use agreement with IRESS, though, nothing stops you using this librar
 
 Note: As of 04/07/2017 you need to patch JSON with json-patch.diff, alternatively you can load json-patch.lisp, after loading CL-JSON manually.
 
-Documentation for XPLAN API is avaliable (after registration) at:
+Documentation for XPLAN API is available (after registration) at:
 https://insights.iressconnect.com/docs/DOC-7376 - Getting Started with XPLAN API
 https://insights.iressconnect.com/docs/DOC-7377 - XPLAN API Transaction
 https://insights.iressconnect.com/docs/DOC-7378#jive_content_id_Specifying_Request_Dependencies - XPLAN API Batched Requests
@@ -17,31 +17,6 @@ This setting is stored in the drakma-settings on the xplan-session.
 EG:
 (setf (getf (cl-xplan-api/core:drakma-settings *sess*) :ca-file) "/Path/to/cacert.perm")
 
-Example usage of API:
-(defpackage :test (:use :cl :cl-xplan-api))
-(in-package :test)
-
-(with-xplan-session (sess nil nil :username "USERNAME" :password "PASSWORD" :base-url "https://an-xplan-api-server.com" :api-key "YOUR-API-KEY")
-  (with-bulk-request (sess req)
-    (entity/client-v3
-     req
-     :get
-     :request-name "client"
-     :fields #("first_name" "last_name" "client_adviser")
-     :entity_id entity-id)
-    (entity/user-v2
-     req
-     :get
-     :request-name "adviser"
-     :fields #("first_name" "last_name")
-     :entity_id "{result=client:$.client_adviser}")
-    (process-request req)
-    (let ((client (response (get-request-by-name req "client")))
-	  (adviser (response (get-request-by-name req "adviser"))))
-      `(:client
-	(:first-name ,(gethash "first_name" client) :last-name ,(gethash "last_name" client))
-	:adviser
-	(:first-name ,(gethash "first_name" adviser) :last-name ,(gethash "last_name" adviser))))))
--->
-(:CLIENT (:FIRST-NAME "Test" :LAST-NAME "KTestclient") :ADVISER
- (:FIRST-NAME "Kieran" :LAST-NAME "Grant"))
+Please note, new entry-points are added all the time in newer XPlan Versions.
+There is no way to keep track of this other then continually reading release notes, even worse, according to IRESS, we cannot version test for an entry-point.
+We must just accept a HTTP 404 as probably meaning it isn't implemented on that version.
