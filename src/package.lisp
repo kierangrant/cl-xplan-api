@@ -171,6 +171,9 @@ Description: Package definition for CL-XPLAN-API
    entity/user-v2
    ;; error_report
    error_report
+   ;; event
+   event
+   event-v2
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
@@ -301,6 +304,9 @@ Description: Package definition for CL-XPLAN-API
    entity/user-v2
    ;; error_report
    error_report
+   ;; event
+   event
+   event-v2
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail

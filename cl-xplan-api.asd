@@ -118,6 +118,8 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "entity/user")
 		     ;; error_report
 		     (:file "error_report")
+		     ;; event
+		     (:file "event")
 		     ;; portfolio
 		     (:file "portfolio/position")
 		     (:file "portfolio/profit_analysis/detail")
