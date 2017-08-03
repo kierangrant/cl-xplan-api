@@ -129,6 +129,10 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "family_tree/person")
 		     (:file "family_tree/person/linked_entity")
 		     (:file "family_tree/relation")
+		     ;; forgot
+		     (:file "forgot/username")
+		     ;; forgotten_password
+		     (:file "forgotten_password")
 		     ;; portfolio
 		     (:file "portfolio/position")
 		     (:file "portfolio/profit_analysis/detail")

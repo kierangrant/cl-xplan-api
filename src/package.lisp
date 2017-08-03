@@ -185,6 +185,10 @@ Description: Package definition for CL-XPLAN-API
    family_tree/person/linked_entity
    family_tree/person-v2/linked_entity
    family_tree/relation
+   ;; forgot
+   forgot/username
+   ;; forgotten_password
+   forgotten_password
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
@@ -329,6 +333,10 @@ Description: Package definition for CL-XPLAN-API
    family_tree/person/linked_entity
    family_tree/person-v2/linked_entity
    family_tree/relation
+   ;; forgot
+   forgot/username
+   ;; forgotten_password
+   forgotten_password
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
