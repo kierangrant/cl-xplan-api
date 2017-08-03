@@ -54,19 +54,19 @@ like normal.
 
 {,single-,bulk-}inhibit-json-decode sets default value for inhibit-json-decode.
 
-arglist is of form ({field|(field &key field-string cond-expr value-expr)}*):
+arglist is of form ({field|(field &key string cond value)}*):
 
 field is as per lambda list as a keyword argument. Thus instead of a symbol it could be a list, in which case (car field) will be taken as field for the defaults for following.
-field-string, if given will provide the string to use in the field, defaults to (STRING-DOWNCASE (SYMBOL-NAME field))
-cond-expr is expression used to determine if field will be included, defaults to field
-value-expr is expression to use for value of field, defaults to field
+string, if given will provide the string to use in the field, defaults to (STRING-DOWNCASE (SYMBOL-NAME field))
+cond is expression used to determine if field will be included, defaults to field
+value is expression to use for value of field, defaults to field
 
 Examples of an arglist entry:
 field -> (if field `((\"field\" . ,field)))
 (field) -> (if field `((\"field\" . ,field)))
 ((field nil field-p)) -> (if field `((\"field\" . ,field))) ; will not automatically use field-p
-(field :field-string \"Field\" :value-expr (symbol-name field)) -> (if field `((\"Field\" . ,(symbol-name field))))
-((field \"Something\" field-p) :field-string \"Field_Thing\" :cond-expr (and field-p (not (string= field \"Blarg\"))) :value-expr (somefunc field)) -> (if (and field-p (not (string= field \"Blarg\"))) `((\"Field_Thing\" . ,(somefunc field))))"
+(field :string \"Field\" :value (symbol-name field)) -> (if field `((\"Field\" . ,(symbol-name field))))
+((field \"Something\" field-p) :string \"Field_Thing\" :cond (and field-p (not (string= field \"Blarg\"))) :value (somefunc field)) -> (if (and field-p (not (string= field \"Blarg\"))) `((\"Field_Thing\" . ,(somefunc field))))"
 (if (not (eq :external (elt (multiple-value-list (find-symbol (symbol-name name))) 1)))
     (warn "Symbol ~S is not external in package ~A" name (package-name *package*)))
 ;; If content is provided, set {single/bulk}-content-p as if manually provided
