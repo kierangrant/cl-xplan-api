@@ -154,6 +154,9 @@ Description: Package definition for CL-XPLAN-API
    eapplications/vendor/product
    eapplications/vendor/product/option
    eapplications/vendor/service
+   ;; email
+   email/email
+   email/template
    ;; entity
    entity/client
    entity/client-v2
@@ -279,6 +282,9 @@ Description: Package definition for CL-XPLAN-API
    eapplications/vendor/product
    eapplications/vendor/product/option
    eapplications/vendor/service
+   ;; email
+   email/email
+   email/template
    ;; entity
    entity/client
    entity/client-v2

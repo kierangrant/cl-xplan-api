@@ -108,6 +108,9 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "eapplications/vendor/product")
 		     (:file "eapplications/vendor/product/option")
 		     (:file "eapplications/vendor/service")
+		     ;; email
+		     (:file "email/email")
+		     (:file "email/template")
 		     ;; entity
 		     (:file "entity/client")
 		     (:file "entity/client/cashflow")
