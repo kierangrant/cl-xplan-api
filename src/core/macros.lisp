@@ -67,6 +67,8 @@ field -> (if field `((\"field\" . ,field)))
 ((field nil field-p)) -> (if field `((\"field\" . ,field))) ; will not automatically use field-p
 (field :field-string \"Field\" :value-expr (symbol-name field)) -> (if field `((\"Field\" . ,(symbol-name field))))
 ((field \"Something\" field-p) :field-string \"Field_Thing\" :cond-expr (and field-p (not (string= field \"Blarg\"))) :value-expr (somefunc field)) -> (if (and field-p (not (string= field \"Blarg\"))) `((\"Field_Thing\" . ,(somefunc field))))"
+(if (not (eq :external (elt (multiple-value-list (find-symbol (symbol-name name))) 1)))
+    (warn "Symbol ~S is not external in package ~A" name (package-name *package*)))
 ;; If content is provided, set {single/bulk}-content-p as if manually provided
 ;; *-content-type is required if *-content is provided !!
 (let* ((field-entries (loop for item in arglist collecting (if (typep item 'symbol) item (car item))))

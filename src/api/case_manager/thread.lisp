@@ -22,7 +22,7 @@ Description: /case_manager/thread API Functions
 		   :resource (format nil "/case_manager/~A/thread" container_id))
 
 ;; case_manager/thread - POST /resourceful/case_manager/:container_id/thread
-(define-entrypoint case_manager/threasd :post (container_id) (thread_id)
+(define-entrypoint case_manager/thread :post (container_id) (thread_id)
 		   :resource (format nil "/case_manager/~A/thread" container_id))
 
 ;; case_manager/thread - DELETE /resourceful/case_manager/:container_id/thread/:thread_id

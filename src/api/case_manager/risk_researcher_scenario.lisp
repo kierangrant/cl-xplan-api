@@ -29,6 +29,6 @@ Description: /case_manager/risk_researcher_scenario API Functions
   :resource (format NIL "/case_manager/~A/risk_researcher_scenario" container_id))
 
 ;; case_manager/risk_researcher_scenario - DELETE /resourceful/case_manager/:container_id/risk_researcher_scenario/:linked_obj_id
-(define-entrypoint case_manager/risk_researcher_scenairo :delete
+(define-entrypoint case_manager/risk_researcher_scenario :delete
   (container_id linked_obj_id) ()
   :resource (format NIL "/case_manager/~A/risk_researcher_scenario/~A" container_id linked_obj_id))

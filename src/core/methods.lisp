@@ -387,7 +387,7 @@ This makes sense when you look at the call to list:
 	     (setf response
 		   (if (gethash "body" res)
 		       (if (or (and inhibit-json-decode-p inhibit-json-decode)
-			       (and (not inhibit-json-deocode-p) inhibit-json-decode-default))
+			       (and (not inhibit-json-decode-p) inhibit-json-decode-default))
 			   (gethash "body" res)
 			   (with-xplan-api-json-handlers
 			     (convert-bulk-to-native
