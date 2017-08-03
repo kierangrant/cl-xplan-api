@@ -19,7 +19,7 @@ Description: /eapplications/vendor/product API functions
 
 ;; GET /resourceful/eapplications/vendor/:vendor_code/product and GET /resourceful/eapplications/vendor/:vendor_code/product/:product_code
 (define-entrypoint eapplications/vendor/product :get
-  (vendor_code product_code)
+  (vendor_code product_code) ()
   :resource (format nil "/eapplications/vendor/~A/product~@[/~A~]" vendor_code product_code))
 
 ;; POST /resourceful/eapplications/vendor/:vendor_code/product

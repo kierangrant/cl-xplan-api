@@ -101,6 +101,13 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "docnote/category")
 		     (:file "docnote/email")
 		     (:file "docnote/firstread")
+		     ;; eapplications
+		     (:file "eapplications/product")
+		     (:file "eapplications/product_type")
+		     (:file "eapplications/vendor")
+		     (:file "eapplications/vendor/product")
+		     (:file "eapplications/vendor/product/option")
+		     (:file "eapplications/vendor/service")
 		     ;; entity
 		     (:file "entity/client")
 		     (:file "entity/client/cashflow")
