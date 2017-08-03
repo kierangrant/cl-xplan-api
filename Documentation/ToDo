@@ -1,7 +1,6 @@
 The following entry-points are not yet available in this library, and will be added over time:
 
 /entity* ; except entity/client{,-v2,-v3},{,/portfolio,/cashflow}
-/family_tree*
 /forgot*
 /forgotten_password*
 /id_verification*

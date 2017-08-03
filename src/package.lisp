@@ -174,6 +174,17 @@ Description: Package definition for CL-XPLAN-API
    ;; event
    event
    event-v2
+   ;; family_tree
+   family_tree
+   family_tree/association
+   family_tree/dependant
+   family_tree/model
+   family_tree/owner
+   family_tree/person
+   family_tree/person-v2
+   family_tree/person/linked_entity
+   family_tree/person-v2/linked_entity
+   family_tree/relation
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
@@ -307,6 +318,17 @@ Description: Package definition for CL-XPLAN-API
    ;; event
    event
    event-v2
+   ;; family_tree
+   family_tree
+   family_tree/association
+   family_tree/dependant
+   family_tree/model
+   family_tree/owner
+   family_tree/person
+   family_tree/person-v2
+   family_tree/person/linked_entity
+   family_tree/person-v2/linked_entity
+   family_tree/relation
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail

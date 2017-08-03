@@ -120,6 +120,15 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "error_report")
 		     ;; event
 		     (:file "event")
+		     ;; family_tree
+		     (:file "family_tree")
+		     (:file "family_tree/association")
+		     (:file "family_tree/dependant")
+		     (:file "family_tree/model")
+		     (:file "family_tree/owner")
+		     (:file "family_tree/person")
+		     (:file "family_tree/person/linked_entity")
+		     (:file "family_tree/relation")
 		     ;; portfolio
 		     (:file "portfolio/position")
 		     (:file "portfolio/profit_analysis/detail")
