@@ -116,6 +116,8 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "entity/client/cashflow")
 		     (:file "entity/client/portfolio")
 		     (:file "entity/user")
+		     ;; error_report
+		     (:file "error_report")
 		     ;; portfolio
 		     (:file "portfolio/position")
 		     (:file "portfolio/profit_analysis/detail")

@@ -169,6 +169,8 @@ Description: Package definition for CL-XPLAN-API
    entity/client-v3/cashflow
    entity/user
    entity/user-v2
+   ;; error_report
+   error_report
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
@@ -297,6 +299,8 @@ Description: Package definition for CL-XPLAN-API
    entity/client-v3/cashflow
    entity/user
    entity/user-v2
+   ;; error_report
+   error_report
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
