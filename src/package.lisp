@@ -147,6 +147,13 @@ Description: Package definition for CL-XPLAN-API
    docnote-v2/category
    docnote-v2/email
    docnote-v2/firstread
+   ;; eapplications
+   eapplications/product
+   eapplications/product_type
+   eapplications/vendor
+   eapplications/vendor/product
+   eapplications/vendor/product/option
+   eapplications/vendor/service
    ;; entity
    entity/client
    entity/client-v2
@@ -265,6 +272,13 @@ Description: Package definition for CL-XPLAN-API
    docnote-v2/category
    docnote-v2/email
    docnote-v2/firstread
+   ;; eapplications
+   eapplications/product
+   eapplications/product_type
+   eapplications/vendor
+   eapplications/vendor/product
+   eapplications/vendor/product/option
+   eapplications/vendor/service
    ;; entity
    entity/client
    entity/client-v2
