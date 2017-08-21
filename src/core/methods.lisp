@@ -308,7 +308,7 @@ This makes sense when you look at the call to list:
 		    :parameters parameters
 		    :name name
 		    :omit-results-on-success omit-results-on-success
-		    :inhibit-json-decode inhibit-json-decode)
+		    :inhibit-json-decode-default inhibit-json-decode)
      requests)))
 
 (defgeneric delete-session (session) (:documentation "Deletes a session, ignores HTTP 401 errors, returns T if session was delted, otherwise NIL. On non 401 Errors a XPLAN-API-ERROR condition is thrown."))

@@ -53,7 +53,7 @@ Description: XPLAN API Classes
    (name :accessor name :initarg :name :documentation "Name for this request")
    (omit-results-on-success :accessor omit-results-on-success :initform T :initarg :omit-results-on-success :documentation "For a stand-alone request, the response will be omitted only when this value is explicitly specified to True. For a dependent request, the response will be omitted unless this value is explicitly specified to false.")
    (time :accessor response-time :initform NIL :documentation "Time spent on this request, if reported")
-   (inhibit-json-decode-default :initform NIL :documentation "Default value to use in process-request for inhibit-json-decode if user doesn't supply a value.")))
+   (inhibit-json-decode-default :initarg :inhibit-json-decode-default :initform NIL :documentation "Default value to use in process-request for inhibit-json-decode if user doesn't supply a value.")))
 
 ;; requests is array of actual requests, the requests themselves store the response
 ;; state is one of :prepare :processing :done
