@@ -159,6 +159,10 @@ Description: Package definition for CL-XPLAN-API
    eapplications/vendor/product
    eapplications/vendor/product/option
    eapplications/vendor/service
+   ;; educational_content
+   educational_content/category
+   educational_content/content
+   educational_content/content/body
    ;; email
    email/email
    email/template
@@ -312,6 +316,10 @@ Description: Package definition for CL-XPLAN-API
    eapplications/vendor/product
    eapplications/vendor/product/option
    eapplications/vendor/service
+   ;; educational_content
+   educational_content/category
+   educational_content/content
+   educational_content/content/body
    ;; email
    email/email
    email/template

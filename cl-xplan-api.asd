@@ -112,6 +112,10 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "eapplications/vendor/product")
 		     (:file "eapplications/vendor/product/option")
 		     (:file "eapplications/vendor/service")
+		     ;; educational_content
+		     (:file "educational_content/category")
+		     (:file "educational_content/content")
+		     (:file "educational_content/content/body")
 		     ;; email
 		     (:file "email/email")
 		     (:file "email/template")
