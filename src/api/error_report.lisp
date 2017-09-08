@@ -17,7 +17,7 @@ Description: /error_report API functions
 
 (in-package :cl-xplan-api/api)
 
-;; POST /resourceful/error_report
+;; error_report - POST /resourceful/error_report
 (define-entrypoint error_report :post
   () (situation ((logfile nil logfile-p) :cond logfile-p :value (if logfile 1 0)))
   :resource "/error_report"

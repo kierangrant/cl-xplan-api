@@ -25,19 +25,19 @@ Note that regardless of differences between reset processes of different user ty
 3. PATCH call with the answers to the secret questions and the new password
 |#
 
-;; GET /resourceful/forgotten_password
+;; forgotten_password - GET /resourceful/forgotten_password
 (define-entrypoint forgotten_password :get
   () (user_id reset_code)
   :resource "/forgotten_password"
   :documentation "Given the reset code, return a given user's secret questions")
 
-;; POST /resourceful/forgotten_password
+;; forgotten_password - POST /resourceful/forgotten_password
 (define-entrypoint forgotten_password :post
   () (user_id)
   :resource "/forgotton_password"
   :documentation "Prompt a random reset code to be emailed to a user to commence the password reset process, this code expires after 20 minutes.")
 
-;; PATCH /resourceful/forgotten_password
+;; forgotten_password - PATCH /resourceful/forgotten_password
 (define-entrypoint forgotten_password :patch
   () (user_id new_password answers reset_code)
   :resource "/forgotten_password"

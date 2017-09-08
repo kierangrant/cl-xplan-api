@@ -17,12 +17,12 @@ Description: /eapplications/vendor/product API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/eapplications/vendor/:vendor_code/product and GET /resourceful/eapplications/vendor/:vendor_code/product/:product_code
+;; eapplications/vendor/product - GET /resourceful/eapplications/vendor/:vendor_code/product and GET /resourceful/eapplications/vendor/:vendor_code/product/:product_code
 (define-entrypoint eapplications/vendor/product :get
   (vendor_code product_code) ()
   :resource (format nil "/eapplications/vendor/~A/product~@[/~A~]" vendor_code product_code))
 
-;; POST /resourceful/eapplications/vendor/:vendor_code/product
+;; eapplications/vendor/product - POST /resourceful/eapplications/vendor/:vendor_code/product
 (define-entrypoint eapplications/vendor/product :post
   (vendor_code)
   (((is_lite nil is_lite-p) :cond is_lite-p :value (if is_lite 1 0))
@@ -38,7 +38,7 @@ Description: /eapplications/vendor/product API functions
   "properties, services, statuses, user_groups and external_system_codes are arrays of objects, please construct them with hash-tables, a-lists or p-lists, with keys being the string of their sub-components as per API documentation"
   :resource (format nil "/eapplications/vendor/~A/product" vendor_code))
 
-;; PATCH /resourceful/eapplications/vendor/:vendor_code/product/:product_code
+;; eapplications/vendor/product - PATCH /resourceful/eapplications/vendor/:vendor_code/product/:product_code
 (define-entrypoint eapplications/vendor/product :patch
   (vendor_code product_code)
   (((is_lite nil is_lite-p) :cond is_lite-p :value (if is_lite 1 0))

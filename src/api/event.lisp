@@ -17,7 +17,7 @@ Description: /event API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/event and GET /resourceful/event/:eventid
+;; event - GET /resourceful/event and GET /resourceful/event/:eventid
 (define-entrypoint event :get
   (eventid)
   ((clients :cond (and (not eventid) clients))
@@ -30,7 +30,7 @@ Description: /event API functions
    (fields :cond (and eventid fields)))
   :resource (format nil "/event~@[/~A~]" eventid))
 
-;; POST /resourceful/event
+;; event - POST /resourceful/event
 (define-entrypoint event :post
   ()
   (((isAllDayEvent nil isAllDayEvent-p) :string "isAllDayEvent" :cond isAllDayEvent-p
@@ -42,7 +42,7 @@ Description: /event API functions
    from_template title event_start event_end description clients users organiser locations locations_plain)
   :resource "/event")
 
-;; PATCH /resourceful/event/:eventid
+;; event - PATCH /resourceful/event/:eventid
 (define-entrypoint event :patch
   (eventid)
   (((isAllDayEvent nil isAllDayEvent-p) :string "isAllDayEvent" :cond isAllDayEvent-p
@@ -54,17 +54,17 @@ Description: /event API functions
    from_template title event_start event_end description clients users category organiser locations locations_plain)
   :resource (format nil "/event/~A" eventid))
 
-;; DELETE /resourceful/event/:eventid
+;; event - DELETE /resourceful/event/:eventid
 (define-entrypoint event :delete (eventid) () :resource (format nil "/event/~A" eventid))
 
-;; GET /resourceful/event-v2
+;; event-v2 - GET /resourceful/event-v2
 (define-entrypoint event-v2 :get
   ()
   (clients users start end timezone link_thread page_size page_sort page_bookmark page_dir)
   :documentation "Collection of diary events visible to the current user version 2. Allows sorting and pagination."
   :resource "/event-v2")
 
-;; POST /resourceful/event-v2
+;; event-v2 - POST /resourceful/event-v2
 (define-entrypoint event-v2 :post
   ()
   (((isAllDayEvent nil isAllDayEvent-p) :string "isAllDayEvent" :cond isAllDayEvent-p

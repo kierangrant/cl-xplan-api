@@ -17,12 +17,12 @@ Description: /family_tree/dependant API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/family_tree/:family_tree_id/dependant
+;; family_tree/dependant - GET /resourceful/family_tree/:family_tree_id/dependant
 (define-entrypoint family_tree/dependant :get
   (family_tree_id) ()
   :resource (format nil "/family_tree/~A/dependant" family_tree_id))
 
-;; POST /resourceful/family_tree/:family_tree_id/dependant
+;; family_tree/dependant - POST /resourceful/family_tree/:family_tree_id/dependant
 (define-entrypoint family_tree/dependant :post
   (family_tree_id)
   (index dependent_entityid)

@@ -17,7 +17,7 @@ Description: /access/client API functions
 
 (in-package :cl-xplan-api/api)
 
-;; access - POST /resourceful/access/client/:entityid
+;; access/client - POST /resourceful/access/client/:entityid
 
 (define-entrypoint access/client :post
   (entityid)

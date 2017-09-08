@@ -17,7 +17,7 @@ Description: /forgot/username API functions
 
 (in-package :cl-xplan-api/api)
 
-;; POST /resourceful/forgot/username
+;; forgot/username - POST /resourceful/forgot/username
 (define-entrypoint forgot/username :post
   () (preferred_email role_type first_name last_name dob)
   :resource "/forgot/username"

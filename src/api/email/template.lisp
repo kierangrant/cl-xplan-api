@@ -17,7 +17,7 @@ Description: /email/template API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/email/template and GET /resourceful/email/template/:templateid
+;; email/template - GET /resourceful/email/template and GET /resourceful/email/template/:templateid
 (define-entrypoint email/template :GET
   (templateid)
   ((entity_type :cond (and (not templateid) entity_type))

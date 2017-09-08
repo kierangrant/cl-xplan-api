@@ -17,14 +17,14 @@ Description: /family_tree API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/family_tree and GET /resourceful/family_tree/:family_tree_id
+;; family_tree - GET /resourceful/family_tree and GET /resourceful/family_tree/:family_tree_id
 (define-entrypoint family_tree :get
   (family_tree_id) ((owner :cond (and (not family_tree_id) owner)))
   :resource (format nil "/family_tree~@[/~A~]" family_tree_id))
 
-;; POST /resourceful/family_tree
+;; family_tree - POST /resourceful/family_tree
 (define-entrypoint family_tree :post () (owner) :resource "/family_tree")
 
-;; DELETE /resourceful/family_tree/:family_tree_id
+;; family_tree - DELETE /resourceful/family_tree/:family_tree_id
 (define-entrypoint family_tree :delete (family_tree_id) () :resource (format nil "/family_tree/~A" family_tree_id))
 

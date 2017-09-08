@@ -17,12 +17,12 @@ Description: /family_tree/model API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/family_tree/:family_tree_id/model
+;; family_tree/model - GET /resourceful/family_tree/:family_tree_id/model
 (define-entrypoint family_tree/model :get
   (family_tree_id) ()
   :resource (format nil "/family_tree/~A/model" family_tree_id))
 
-;; PATCH /resourceful/family_tree/:family_tree_id/model
+;; family_tree/model - PATCH /resourceful/family_tree/:family_tree_id/model
 (define-entrypoint family_tree/model :patch
   (family_tree_id) (model)
   :resource (format nil "/family_tree/~A/model" family_tree_id))

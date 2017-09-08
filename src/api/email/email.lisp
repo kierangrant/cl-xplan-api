@@ -17,7 +17,7 @@ Description: /email/email API functions
 
 (in-package :cl-xplan-api/api)
 
-;; POST /resourceful/email/email?_method=send
+;; email/email - POST /resourceful/email/email?_method=send
 (define-entrypoint email/email :send
   ((note_param.add_to_note nil add_to_note-p)
    (note_param.note_accessible nil note_accessible-p)

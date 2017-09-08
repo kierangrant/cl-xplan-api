@@ -17,12 +17,12 @@ Description: /family_tree/owner API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/family_tree/:family_tree_id/owner
+;; family_tree/owner - GET /resourceful/family_tree/:family_tree_id/owner
 (define-entrypoint family_tree/owner :get
   (family_tree_id) ()
   :resource (format nil "/family_tree/~A" family_tree_id))
 
-;; PUT /resourceful/family_tree/:family_tree_id/owner
+;; family_tree/owner - PUT /resourceful/family_tree/:family_tree_id/owner
 (define-entrypoint family_tree/owner :put
   (family_tree_id) (owner_ids)
   :resource (format nil "/family_tree/~A" family_tree_id))

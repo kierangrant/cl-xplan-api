@@ -17,18 +17,18 @@ Description: /eapplications/vendor API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/eapplications/vendor and GET /resourceful/eapplications/vendor/:vendor_code
+;; eapplications/vendor - GET /resourceful/eapplications/vendor and GET /resourceful/eapplications/vendor/:vendor_code
 (define-entrypoint eapplications/vendor :get
   (vendor_code) ()
   :resource (format nil "/eapplications/vendor~@[/~A~]" vendor_code))
 
-;; POST /resourceful/eapplications/vendor
+;; eapplications/vendor - POST /resourceful/eapplications/vendor
 (define-entrypoint eapplications/vendor :post
   () (code name properties)
   :documentation "properties is an array of object with parameters 'type', 'code' and 'value'. Use Hash-table, a-list or a p-list to construct this"
   :resource "/eapplications/vendor")
 
-;; PATCH /resourceful/eapplications/vendor/:vendor_code
+;; eapplications/vendor - PATCH /resourceful/eapplications/vendor/:vendor_code
 (define-entrypoint eapplications/vendor :patch
   (vendor_code) (code name properties)
   :documentation "properties is an array of object with parameters 'type', 'code' and 'value'. Use Hash-table, a-list or a p-list to construct this"

@@ -17,7 +17,7 @@ Description: /eapplications/product API functions
 
 (in-package :cl-xplan-api/api)
 
-;; GET /resourceful/eapplications/product and GET /resourceful/eapplications/product/:product_code
+;; eapplications/product - GET /resourceful/eapplications/product and GET /resourceful/eapplications/product/:product_code
 
 (define-entrypoint eapplications/product :get
   (product_code)
