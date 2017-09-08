@@ -198,11 +198,55 @@ Description: Package definition for CL-XPLAN-API
    forgot/username
    ;; forgotten_password
    forgotten_password
+   ;; id_verification
+   id_verification/driver_license
+   id_verification/passport
+   ;; interface
+   interface
+   interface/page
+   interface/page/element
+   interface/page/element/XiledGroup
+   interface/visibility
+   interface/wizard
+   interface/wizard/behaviour/execute
+   interface/wizard/subpage
+   interface/wizard/subpage/element
+   interface/wizard/subpage/element/XiledGroup
+   interface/wizard/subpage/visibility
+   interface/wizard/target
+   ;; job_queue
+   job_queue/completed_job
+   ;; knowledge_centre
+   knowledge_centre/category
+   knowledge_centre/category/content/innergi
+   knowledge_centre/category/content/innergi/question
+   knowledge_centre/category/content/innergi/resource
+   ;; lead
+   lead
+   lead/case_manager
+   ;; news
+   news
+   ;; online_meeting
+   online_meeting/meeting
+   online_meeting/meeting/attendee
+   ;; other_allocation
+   other_allocation
+   ;; pagination_test
+   pagination_test
+   ;; payment_gateway
+   payment_gateway/worldpay/payment
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
    portfolio/transaction
    portfolio/transaction_types
+   ;; questionnaire
+   questionnaire
+   questionnaire/custom
+   ;; recaptcha
+   recaptcha
+   ;; savings
+   savings/scenario
    ;; session
    session/capability
    session/feature_access
@@ -217,6 +261,10 @@ Description: Package definition for CL-XPLAN-API
    session/user/assumption_set
    session/user/assumption_set/risk_profile
    session/user/assumption_set/risk_profile/asset_class
+   ;; site
+   site
+   ;; sticky_note
+   sticky_note
    ;; ufield
    ufield
    ufield/choice
@@ -367,11 +415,55 @@ Description: Package definition for CL-XPLAN-API
    forgot/username
    ;; forgotten_password
    forgotten_password
+   ;; id_verification
+   id_verification/driver_license
+   id_verification/passport
+   ;; interface
+   interface
+   interface/page
+   interface/page/element
+   interface/page/element/XiledGroup
+   interface/visibility
+   interface/wizard
+   interface/wizard/behaviour/execute
+   interface/wizard/subpage
+   interface/wizard/subpage/element
+   interface/wizard/subpage/element/XiledGroup
+   interface/wizard/subpage/visibility
+   interface/wizard/target
+   ;; job_queue
+   job_queue/completed_job
+   ;; knowledge_centre
+   knowledge_centre/category
+   knowledge_centre/category/content/innergi
+   knowledge_centre/category/content/innergi/question
+   knowledge_centre/category/content/innergi/resource
+   ;; lead
+   lead
+   lead/case_manager
+   ;; news
+   news
+   ;; online_meeting
+   online_meeting/meeting
+   online_meeting/meeting/attendee
+   ;; other_allocation
+   other_allocation
+   ;; pagination_test
+   pagination_test
+   ;; payment_gateway
+   payment_gateway/worldpay/payment
    ;; portfolio
    portfolio/position
    portfolio/profit_analysis/detail
    portfolio/transaction
    portfolio/transaction_types
+   ;; questionnaire
+   questionnaire
+   questionnaire/custom
+   ;; recaptcha
+   recaptcha
+   ;; savings
+   savings/scenario
    ;; session
    session/capability
    session/feature_access
@@ -386,6 +478,10 @@ Description: Package definition for CL-XPLAN-API
    session/user/assumption_set
    session/user/assumption_set/risk_profile
    session/user/assumption_set/risk_profile/asset_class
+   ;; site
+   site
+   ;; sticky_note
+   sticky_note
    ;; ufield
    ufield
    ufield/choice

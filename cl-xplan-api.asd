@@ -141,11 +141,55 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "forgot/username")
 		     ;; forgotten_password
 		     (:file "forgotten_password")
+		     ;; id_verification
+		     (:file "id_verification/driver_license")
+		     (:file "id_verification/passport")
+		     ;; interface
+		     (:file "interface")
+		     (:file "interface/page")
+		     (:file "interface/page/element")
+		     (:file "interface/page/element/XiledGroup")
+		     (:file "interface/visibility")
+		     (:file "interface/wizard")
+		     (:file "interface/wizard/behaviour/execute")
+		     (:file "interface/wizard/subpage")
+		     (:file "interface/wizard/subpage/element")
+		     (:file "interface/wizard/subpage/element/XiledGroup")
+		     (:file "interface/wizard/subpage/visibility")
+		     (:file "interface/wizard/target")
+		     ;; job_queue
+		     (:file "job_queue/completed_job")
+		     ;; knowledge_centre
+		     (:file "knowledge_centre/category")
+		     (:file "knowledge_centre/category/content/innergi")
+		     (:file "knowledge_centre/category/content/innergi/question")
+		     (:file "knowledge_centre/category/content/innergi/resource")
+		     ;; lead
+		     (:file "lead")
+		     (:file "lead/case_manager")
+		     ;; news
+		     (:file "news")
+		     ;; online_meeting
+		     (:file "online_meeting/meeting")
+		     (:file "online_meeting/meeting/attendee")
+		     ;; other_allocation
+		     (:file "other_allocation")
+		     ;; pagination_test
+		     (:file "pagination_test")
+		     ;; payment_gateway
+		     (:file "payment_gateway/worldpay/payment")
 		     ;; portfolio
 		     (:file "portfolio/position")
 		     (:file "portfolio/profit_analysis/detail")
 		     (:file "portfolio/transaction")
 		     (:file "portfolio/transaction_types")
+		     ;; questionnaire
+		     (:file "questionnaire")
+		     (:file "questionnaire/custom")
+		     ;; recaptcha
+		     (:file "recaptcha")
+		     ;; savings
+		     (:file "savings/scenario")
 		     ;; session
 		     (:file "session/capability")
 		     (:file "session/feature_access")
@@ -160,6 +204,10 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "session/user/assumption_set")
 		     (:file "session/user/assumption_set/risk_profile")
 		     (:file "session/user/assumption_set/risk_profile/asset_class")
+		     ;; site
+		     (:file "site")
+		     ;; sticky_note
+		     (:file "sticky_note")
 		     ;; ufield
 		     (:file "ufield")
 		     (:file "ufield/choice")
