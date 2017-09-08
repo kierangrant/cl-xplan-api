@@ -30,4 +30,4 @@ Description: /session/password_reset_questions API Functions
   :content combos
   :content-type "application/json"
   :resource "/session/password_reset_questions"
-  :documentation "Override password reset questions. Or create new questions if not existing. combos is an array of objects containing the fields '..' and '..'")
+  :documentation "Override password reset questions. Or create new questions if not existing. combos is an array of objects containing the fields 'question' and 'answer'")

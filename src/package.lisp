@@ -205,8 +205,18 @@ Description: Package definition for CL-XPLAN-API
    portfolio/transaction_types
    ;; session
    session/capability
+   session/feature_access
    session/password
+   session/password_reset_questions
    session/transaction
+   session/user
+   session/user/adviser
+   session/user/adviser/address
+   session/user/adviser/contact
+   session/user/app_storage
+   session/user/assumption_set
+   session/user/assumption_set/risk_profile
+   session/user/assumption_set/risk_profile/asset_class
    ;; ufield
    ufield
    ))
@@ -362,8 +372,18 @@ Description: Package definition for CL-XPLAN-API
    portfolio/transaction_types
    ;; session
    session/capability
+   session/feature_access
    session/password
+   session/password_reset_questions
    session/transaction
+   session/user
+   session/user/adviser
+   session/user/adviser/address
+   session/user/adviser/contact
+   session/user/app_storage
+   session/user/assumption_set
+   session/user/assumption_set/risk_profile
+   session/user/assumption_set/risk_profile/asset_class
    ;; ufield
    ufield
    ))

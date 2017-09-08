@@ -148,8 +148,18 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "portfolio/transaction_types")
 		     ;; session
 		     (:file "session/capability")
+		     (:file "session/feature_access")
 		     (:file "session/transaction")
 		     (:file "session/password")
+		     (:file "session/password_reset_questions")
+		     (:file "session/user")
+		     (:file "session/user/adviser")
+		     (:file "session/user/adviser/address")
+		     (:file "session/user/adviser/contact")
+		     (:file "session/user/app_storage")
+		     (:file "session/user/assumption_set")
+		     (:file "session/user/assumption_set/risk_profile")
+		     (:file "session/user/assumption_set/risk_profile/asset_class")
 		     ;; ufield
 		     (:file "ufield"))
 		    :depends-on ("core" "package")))))
