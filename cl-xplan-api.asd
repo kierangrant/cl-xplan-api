@@ -78,6 +78,7 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "debt_qualifier/au/lender_document_report")
 		     (:file "debt_qualifier/gb/broker_fee")
 		     (:file "debt_qualifier/gb/browse_product")
+		     (:file "debt_qualifier/gb/column_setting/trigold")
 		     (:file "debt_qualifier/gb/credit_history_questions")
 		     (:file "debt_qualifier/gb/custom_panel")
 		     (:file "debt_qualifier/gb/kfi_complaint_setting")
