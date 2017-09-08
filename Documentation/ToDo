@@ -13,9 +13,9 @@ The following entry-points are not yet available in this library, and will be ad
 /payment_gateway*
 /portfolio* ; except /portfolio/{position,profit_analysis/detail,transaction,transaction_types}
 /questionnaire*
+/recaptcha
 /riskresearcher*
 /savings*
-/session* ; except /session/{capability,password,transaction}
 /site*
 /sticky_note*
 /supersolver*
@@ -24,7 +24,6 @@ The following entry-points are not yet available in this library, and will be ad
 /task_template*
 /thread*
 /trading*
-/ufield* ; except for /ufield itself
 /user_message*
 /utilities*
 /view_config*
