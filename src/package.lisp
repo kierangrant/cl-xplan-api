@@ -219,6 +219,8 @@ Description: Package definition for CL-XPLAN-API
    session/user/assumption_set/risk_profile/asset_class
    ;; ufield
    ufield
+   ufield/choice
+   ufield/choice_category_dependence
    ))
 
 (defpackage :cl-xplan-api
@@ -386,4 +388,6 @@ Description: Package definition for CL-XPLAN-API
    session/user/assumption_set/risk_profile/asset_class
    ;; ufield
    ufield
+   ufield/choice
+   ufield/choice_category_dependence
    ))

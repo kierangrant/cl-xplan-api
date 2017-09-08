@@ -161,6 +161,8 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "session/user/assumption_set/risk_profile")
 		     (:file "session/user/assumption_set/risk_profile/asset_class")
 		     ;; ufield
-		     (:file "ufield"))
+		     (:file "ufield")
+		     (:file "ufield/choice")
+		     (:file "ufield/choice_category_dependence"))
 		    :depends-on ("core" "package")))))
     :depends-on (:drakma :cl-json :babel :decimals :cl-base64 :rw-ut :split-sequence))
