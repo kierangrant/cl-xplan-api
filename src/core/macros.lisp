@@ -45,7 +45,7 @@ Content-Type will be 'application/json'. The content of parameters is convert to
 json:encode-json-to-string. You must convert to XPLAN Types yourself where needed.
 
 {single-,bulk-}content and {single-,bulk-}content-type are overrides, they override all normal processing of arglist. If supplied, the following parameters to define-entrypoint are ignored:
-hidden-single-parameters, hidden-bulk-parameters, single-parms-as-body.
+hidden-single-parameters, hidden-bulk-parameters, single-parms-as-body and inhibit-transaction.
 You must also specify content-type if you use these fields.
 If you specify content and content-type, it is default for single/bulk content and content-type.
 If you do not specify content and content-type but specify one of the single-/bulk- variety, the one
@@ -114,7 +114,8 @@ field -> (if field `((\"field\" . ,field)))
 	   `((defgeneric ,name (session method &key &allow-other-keys))))
      ,@(if (not inhibit-single)
 	   `((defmethod ,name ((session xplan-session) (method (eql ,method))
-			       &key ,@(if (not inhibit-transaction) '(request-transaction))
+			       &key ,@(if (not (or inhibit-transaction single-content-p))
+					  '(request-transaction))
 				 inhibit-auth
 				 (inhibit-json-decode ,single-inhibit-json-decode)
 				 return-request ,@extra-parms ,@field-entries)
@@ -145,7 +146,8 @@ field -> (if field `((\"field\" . ,field)))
      ,@(if (not inhibit-bulk)
 	   `((defmethod ,name ((session xplan-request-bulk) (method (eql ,method))
 			       &key request-name
-				 ,@(if (not inhibit-transaction) '(request-transaction))
+				 ,@(if (not (or inhibit-transaction bulk-content-p))
+				       '(request-transaction))
 				 (inhibit-json-decode ,bulk-inhibit-json-decode)
 				 ,@extra-parms ,@field-entries)
 	       ,@(if documentation `(,documentation))
