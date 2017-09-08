@@ -99,6 +99,7 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "docnote")
 		     (:file "docnote/attachment")
 		     (:file "docnote/attachment/content")
+		     (:file "docnote/attachment/digital_signature")
 		     (:file "docnote/body")
 		     (:file "docnote/case")
 		     (:file "docnote/category")

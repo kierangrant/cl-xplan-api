@@ -144,6 +144,8 @@ Description: Package definition for CL-XPLAN-API
    docnote-v2/attachment-v3
    docnote/attachment-v3/content
    docnote-v2/attachment-v3/content
+   docnote/attachment-v3/digital_signature
+   docnote-v2/attachment-v3/digital_signature
    docnote-v2/body
    docnote-v2/case
    docnote/category
@@ -295,6 +297,8 @@ Description: Package definition for CL-XPLAN-API
    docnote-v2/attachment-v3
    docnote/attachment-v3/content
    docnote-v2/attachment-v3/content
+   docnote/attachment-v3/digital_signature
+   docnote-v2/attachment-v3/digital_signature
    docnote-v2/body
    docnote-v2/case
    docnote/category
