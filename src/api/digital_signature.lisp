@@ -31,3 +31,8 @@ Description: /digital_signature API Functions
    (page_bookmark :cond (and (not digital_signature_id) page_bookmark))
    (page_dir :cond (and (not digital_signature_id) page_dir)))
   :resource (format nil "/digital_signature~@[/~A~]" digital_signature_id))
+
+;; digital_signature - PATCH /resourceful/digital_signature/:digital_signature_id
+(define-entrypoint digital_signature :patch
+  (digital_signature_id) (due_in_days)
+  :resource (format nil "/digital_signature/~A" digital_signature_id))

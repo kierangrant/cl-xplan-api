@@ -87,10 +87,12 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "digital_signature")
 		     (:file "digital_signature/content")
 		     (:file "digital_signature/content_path")
+		     (:file "digital_signature/finalise")
 		     (:file "digital_signature/notify")
 		     (:file "digital_signature/signatories")
 		     (:file "digital_signature/signatories/generate_code")
 		     (:file "digital_signature/signatories/sign")
+		     (:file "digital_signature/void")
 		     ;; disclaimer
 		     (:file "disclaimer/orders")
 		     ;; docnote

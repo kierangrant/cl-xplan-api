@@ -21,3 +21,13 @@ Description: /digital_signature/signatories API Functions
 (define-entrypoint digital_signature/signatories :get
   (digital_signature_id) ()
   :resource (format nil "/digital_signature/~A/signatories" digital_signature_id))
+
+;; digital_signature/signatories - POST /resourceful/digital_signature/:digital_signature_id/signatories
+(define-entrypoint digital_signature/signatories :post
+  (digital_signature_id) (entityid)
+  :resource (format nil "/digital_signature/~A/signatories" digital_signature_id))
+
+;; digital_signature/signatories - DELETE /resourceful/digital_signature/:digital_signature_id/signatories/:signatory_id
+(define-entrypoint digital_signature/signatories :delete
+  (digital_signature_id signatory_id) ()
+  :resource (format nil "/digital_signature/~A/signatories/~A" digital_signature_id signatory_id))

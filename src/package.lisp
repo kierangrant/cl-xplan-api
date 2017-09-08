@@ -125,10 +125,12 @@ Description: Package definition for CL-XPLAN-API
    digital_signature
    digital_signature/content
    digital_signature/content_path
+   digital_signature/finalise
    digital_signature/notify
    digital_signature/signatories
    digital_signature/signatories/generate_code
    digital_signature/signatories/sign
+   digital_signature/void
    ;; disclaimer
    disclaimer/orders
    ;; docnote
@@ -274,10 +276,12 @@ Description: Package definition for CL-XPLAN-API
    digital_signature
    digital_signature/content
    digital_signature/content_path
+   digital_signature/finalise
    digital_signature/notify
    digital_signature/signatories
    digital_signature/signatories/generate_code
    digital_signature/signatories/sign
+   digital_signature/void
    ;; disclaimer
    disclaimer/orders
    ;; docnote
