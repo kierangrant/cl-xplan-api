@@ -19,6 +19,15 @@ Description: Client and API Macros
 
 ;;; INTERNAL API
 
+;; cond-hash - Conditionally build-up hash-table. Body is of forms (cond subitem-str &optional (value cond))
+(defmacro cond-hash (&body items)
+  (let ((struct (gensym)))
+    `(let ((,struct (make-hash-table :test #'equal)))
+       ,@(loop for item in items collecting
+	      (destructuring-bind (cond subitem-str &optional (value cond)) item
+		`(if ,cond (setf (gethash ,subitem-str ,struct) ,value))))
+       ,struct)))
+
 ;; Define an API entrypoint.
 
 (defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist)

@@ -64,15 +64,15 @@ Description: Package definition for CL-XPLAN-API
    ;; macros
    with-xplan-session
    with-bulk-request
-   define-entrypoint
    ;; variables
    *max-rounding*
    *xplan-api-debug*
-   ))
+   )
+  (:intern "DEFINE-ENTRYPOINT" "COND-HASH"))
 
 (defpackage :cl-xplan-api/api
   (:use :cl)
-  (:import-from :cl-xplan-api/core :define-entrypoint)
+  (:import-from :cl-xplan-api/core :define-entrypoint :cond-hash)
   (:export
    ;; access
    access/client
