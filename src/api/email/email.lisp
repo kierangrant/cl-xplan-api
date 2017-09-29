@@ -32,16 +32,14 @@ Description: /email/email API functions
    ((note_param nil note_param-p) :cond T
     :value
     (if note_param-p note_param
-	(let ((h (make-hash-table)))
-	  (if add_to_note-p (setf (gethash "add_to_note" h) (if note_param.add_to_note 1 0)))
-	  (if note_accessible-p (setf (gethash "note_accessible" h) (if note_param.note_accessible 1 0)))
-	  (if note_param.note_type (setf (gethash "note_type" h) note_param.note_type))
-	  (if note_param.note_subtype (setf (gethash "note_subtype" h) note_param.note_subtype))
-	  (if note_param.permission (setf (gethash "permission" h) note_param.permission))
-	  (if note_param.groups (setf (gethash "groups" h) note_param.groups))
-	  (if note_param.note_container_tpl_id (setf (gethash "note_container_tpl_id" h)
-						     note_param.note_container_tpl_id))
-	  h))))
+	(cond-hash
+	  (add_to_note-p "add_to_note" (if note_param.add_to_note 1 0))
+	  (note_accessible-p "note_accessible" (if note_param.note_accessible 1 0))
+	  (note_param.note_type "note_type")
+	  (note_param.note_subtype "note_subtype")
+	  (note_param.permission "permission")
+	  (note_param.groups "groups")
+	  (note_param.note_container_tpl_id "note_container_tpl_id")))))
   :documentation
   "to, cc, bcc and attachments are array of objects, please construct using hash-tables, a-lists or p-lists"
   :single-method :post

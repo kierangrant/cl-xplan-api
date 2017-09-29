@@ -31,16 +31,15 @@ Description: /payment_gateway/worldpay/payment API functions
 		     billing_address.postal_code billing_address.country_code billing_address.telephone_number)
 	   :value
 	   (if billing_address billing_address
-	       (let ((h (make-hash-table)))
-		 (if billing_address.address1 (setf (gethash "address1" h) billing_address.address1))
-		 (if billing_address.address2 (setf (gethash "address2" h) billing_address.address2))
-		 (if billing_address.address3 (setf (gethash "address3" h) billing_address.address3))
-		 (if billing_address.city (setf (gethash "city" h) billing_address.city))
-		 (if billing_address.state (setf (gethash "state" h) billing_address.state))
-		 (if billing_address.postal_code (setf (gethash "postal_code" h) billing_address.postal_code))
-		 (if billing_address.country_code (setf (gethash "country_code" h) billing_address.country_code))
-		 (if billing_address.telephone_number (setf (gethash "telephone_number" h) billing_address.telephone_number))
-		 h))))
+	       (cond-hash
+		 (billing_address.address1 "address1")
+		 (billing_address.address2 "address2")
+		 (billing_address.address3 "address3")
+		 (billing_address.city "city")
+		 (billing_address.state "state")
+		 (billing_address.postal_code "postal_code")
+		 (billing_address.country_code "country_code")
+		 (billing_address.telephone_number "telephone_number")))))
   :resource "payment_gateway/worldpay/payment"
   :documentation "Send a payment order to the worldpay gateway and return the payment status."
   :single-parms-as-body T)

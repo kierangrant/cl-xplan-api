@@ -30,18 +30,16 @@ Description: /sticky_note API functions
 	  :cond (or position position.top position.left)
 	  :value
 	  (if position position
-	      (let ((h (make-hash-table)))
-		(if position.top (setf (gethash "top" h) position.top))
-		(if position.left (setf (gethash "left" h) position.left))
-		h)))
+	      (cond-hash
+		(position.top "top")
+		(position.left "left"))))
 	 (size
 	  :cond (or size size.width size.height)
 	  :value
 	  (if size size
-	      (let ((h (make-hash-table)))
-		(if size.width (setf (gethash "width" h) size.width))
-		(if size.height (setf (gethash "height" h) size.height))
-		h)))
+	      (cond-hash
+		(size.width "width")
+		(size.height "height"))))
 	 colour
 	 ((warning nil warning-p) :cond warning-p :value (if warning 1 0))
 	 entity_id)
@@ -55,18 +53,16 @@ Description: /sticky_note API functions
 	  :cond (or position position.top position.left)
 	  :value
 	  (if position position
-	      (let ((h (make-hash-table)))
-		(if position.top (setf (gethash "top" h) position.top))
-		(if position.left (setf (gethash "left" h) position.left))
-		h)))
+	      (cond-hash
+		(position.top "top")
+		(position.left "left"))))
 	 (size
 	  :cond (or size size.width size.height)
 	  :value
 	  (if size size
-	      (let ((h (make-hash-table)))
-		(if size.width (setf (gethash "width" h) size.width))
-		(if size.height (setf (gethash "height" h) size.height))
-		h)))
+	      (cond-hash
+		(size.width "width")
+		(size.height "height"))))
 	 colour
 	 ((warning nil warning-p) :cond warning-p :value (if warning 1 0)))
   :resource (format nil "/sticky_note/~A" note_id))
