@@ -4,7 +4,7 @@ Whilst this software is released under the LLGPL, to actually connect to an IRES
 
 You need a use agreement with IRESS, though, nothing stops you using this library with a server that duplicates their API.
 
-Note: As of 04/07/2017 you need to patch JSON with json-patch.diff, alternatively you can load json-patch.lisp, after loading CL-JSON manually.
+Note: As of 2017-10-20 you need to patch JSON with json-patch.diff, alternatively you can load json-patch.lisp, after loading CL-JSON manually.
 
 Documentation for XPLAN API is available (after registration) at:
 https://insights.iressconnect.com/docs/DOC-7376 - Getting Started with XPLAN API
