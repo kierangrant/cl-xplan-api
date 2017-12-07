@@ -13,7 +13,7 @@
 ;; we will close session after use.
 (with-xplan-session (sess *session*)
   ;; let's do a bulk request
-  (with-bulk-request (sess req)
+  (with-bulk-request (req sess)
     ;; first request is GET /entity/client-v3/:entity_id
     (entity/client-v3
      req
