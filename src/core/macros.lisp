@@ -63,12 +63,14 @@ like normal.
 
 {,single-,bulk-}inhibit-json-decode sets default value for inhibit-json-decode.
 
-arglist is of form ({field|(field &key string cond value)}*):
+arglist is of form ({field|(field &key string cond value documentation)}*):
 
 field is as per lambda list as a keyword argument. Thus instead of a symbol it could be a list, in which case (car field) will be taken as field for the defaults for following.
 string, if given will provide the string to use in the field, defaults to (STRING-DOWNCASE (SYMBOL-NAME field))
 cond is expression used to determine if field will be included, defaults to field
 value is expression to use for value of field, defaults to field
+
+documentation in arglist is documentation for that particular parameter. Currently this does nothing, but in the future it may be possible to look this information up.
 
 Examples of an arglist entry:
 field -> (if field `((\"field\" . ,field)))
@@ -103,7 +105,8 @@ field -> (if field `((\"field\" . ,field)))
 				    c item
 				    v item)
 			      (destructuring-bind
-				    (f &key (string nil s-p) (cond f c-p) (value f v-p)) item
+				    (f &key (string nil s-p) (cond f c-p) (value f v-p) documentation) item
+				(declare (ignore documentation))
 				(setf
 				 s
 				 (if s-p string
