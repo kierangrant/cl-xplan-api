@@ -20,15 +20,39 @@ Description: /case_manager API Functions
 ;; case_manager - GET /resourceful/case_manager and GET /resourceful/case_manager/:container_id
 
 (define-entrypoint case_manager :get
-  (container_id)
+  (container_id due_date.start_date due_date.end_date modified_date.start_date modified_date.end_date
+		activated_date.start_date activated_date.end_date)
   ((fields :cond (and container_id fields))
    (clientid :cond (and (not container_id) clientid))
    (template :cond (and (not container_id) template))
    (thread_type :cond (and (not container_id) thread_type))
    (templateid :cond (and (not container_id) templateid))
+   (templateids :cond (and (not container_id) templateids))
+   (categories :cond (and (not container_id) categories))
+   ((due_date nil due_date-p) :cond (and (not container_id) (or due_date due_date.start_date due_date.end_date))
+    :value
+    (if due_date-p due_date
+	(cond-hash
+	  (due_date.start_date "start_date")
+	  (due_date.end_date "end_date"))))
+   ((modified_date nil modified_date-p)
+    :cond (and (not container_id) (or modified_date modified_date.start_date modified_date.end_date))
+    :value
+    (if modified_date-p modified_date
+	(cond-hash
+	  (modified_date.start_date "start_date")
+	  (modified_date.end_date "end_date"))))
+   ((activated_date nil activated_date-p)
+    :cond (and (not container_id) (or activated_date activated_date.start_date activated_date.end_date))
+    :value
+    (if activated_date-p activated_date
+	(cond-hash
+	  (activated_date.start_date "start_date")
+	  (activated_date.end_date "end_date"))))
    (assigneeid :cond (and (not container_id) assigneeid))
    (status :cond (and (not container_id) status))
    (current_past :cond (and (not container_id) current_past))
+   (scope :cond (and (not container_id) scope))
    (page :cond (and (not container_id) page)))
   :resource (format NIL "/case_manager~@[/~A~]" container_id))
 
@@ -124,9 +148,31 @@ Description: /case_manager API Functions
 ;; case_manager-v2 - GET /resourceful/case_manager-v2
 
 (define-entrypoint case_manager-v2 :get
-  ()
-  (clientid template thread_type templateid assigneeid status current_past page page_size page_sort
-	    page_bookmark page_dir)
+  (due_date.start_date due_date.end_date modified_date.start_date modified_date.end_date
+		       activated_date.start_date activated_date.end_date)
+  (clientid template thread_type templateid templateids categories
+	    ((due_date nil due_date-p)
+	     :cond (and (not container_id) (or due_date due_date.start_date due_date.end_date))
+	     :value
+	     (if due_date-p due_date
+		 (cond-hash
+		   (due_date.start_date "start_date")
+		   (due_date.end_date "end_date"))))
+	    ((modified_date nil modified_date-p)
+	     :cond (and (not container_id) (or modified_date modified_date.start_date modified_date.end_date))
+	     :value
+	     (if modified_date-p modified_date
+		 (cond-hash
+		   (modified_date.start_date "start_date")
+		   (modified_date.end_date "end_date"))))
+	    ((activated_date nil activated_date-p)
+	     :cond (and (not container_id) (or activated_date activated_date.start_date activated_date.end_date))
+	     :value
+	     (if activated_date-p activated_date
+		 (cond-hash
+		   (activated_date.start_date "start_date")
+		   (activated_date.end_date "end_date"))))
+	    assigneeid status current_past scope page page_size page_sort page_bookmark page_dir)
   :resource "/case_manager-v2")
 
 ;; case_manager-v2 - POST /resourceful/case_manager-v2

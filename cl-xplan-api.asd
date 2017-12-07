@@ -71,6 +71,19 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "class_smsf/fund_link")
 		     ;; client_message
 		     (:file "client_message")
+		     ;; commission
+		     (:file "commission/account/referral")
+		     (:file "commission/adviser/account")
+		     (:file "commission/client")
+		     (:file "commission/control_item")
+		     (:file "commission/fee")
+		     (:file "commission/lodgement_summary")
+		     (:file "commission/policy")
+		     (:file "commission/policy/feefacilitation")
+		     (:file "commission/product_category")
+		     (:file "commission/product")
+		     (:file "commission/supplier")
+		     (:file "commission/supplier/product")
 		     ;; currency
 		     (:file "currency")
 		     ;; debt_qualifier

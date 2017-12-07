@@ -108,6 +108,19 @@ Description: Package definition for CL-XPLAN-API
    class_smsf/fund_link
    ;; client_message
    client_message
+   ;; commission
+   commission/account/referral
+   commission/adviser/account
+   commission/client
+   commission/control_item
+   commission/fee
+   commission/lodgement_summary
+   commission/policy
+   commission/policy/feefacilitation
+   commission/product_category
+   commission/product
+   commission/supplier
+   commission/supplier/product
    ;; currency
    currency
    currency-v2
@@ -325,6 +338,19 @@ Description: Package definition for CL-XPLAN-API
    class_smsf/fund_link
    ;; client_message
    client_message
+   ;; commission
+   commission/account/referral
+   commission/adviser/account
+   commission/client
+   commission/control_item
+   commission/fee
+   commission/lodgement_summary
+   commission/policy
+   commission/policy/feefacilitation
+   commission/product_category
+   commission/product
+   commission/supplier
+   commission/supplier/product
    ;; currency
    currency
    currency-v2

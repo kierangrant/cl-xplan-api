@@ -21,7 +21,7 @@ Description: /asset_class API functions
 
 (define-entrypoint asset_class :get
   (xplan_id)
-  (fields ((include_other nil other-p) :cond other-p :value (if include_other 1 0)))
+  (fields ((include_other nil other-p) :cond (and (not xplan_id) other-p) :value (if include_other 1 0)))
   :documentation "Retrieve a collection of asset_class resources.
 If xplan-id is specified, only that asset class is retrieved and include-other is ignored.
 Otherwise, returns a collection, and include-other, if T, \"other\" asset classes will be included."
