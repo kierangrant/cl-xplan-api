@@ -18,7 +18,7 @@ Description: /digital_signature/void API functions
 (in-package :cl-xplan-api/api)
 
 ;; digital_signature/void - POST /resourceful/digital_signature/:digital_signature_id/void?_method=post
-(define-entrypoint digital_signature/finalise :post
+(define-entrypoint digital_signature/void :post
   (digital_signature_id) ()
   :single-resource (format nil "/digital_signature/~A/void?_method=post" digital_signature_id)
   :bulk-resource (format nil "/digital_signature/~A/void" digital_signature_id))

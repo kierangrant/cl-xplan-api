@@ -152,21 +152,21 @@ Description: /case_manager API Functions
 		       activated_date.start_date activated_date.end_date)
   (clientid template thread_type templateid templateids categories
 	    ((due_date nil due_date-p)
-	     :cond (and (not container_id) (or due_date due_date.start_date due_date.end_date))
+	     :cond (or due_date due_date.start_date due_date.end_date)
 	     :value
 	     (if due_date-p due_date
 		 (cond-hash
 		   (due_date.start_date "start_date")
 		   (due_date.end_date "end_date"))))
 	    ((modified_date nil modified_date-p)
-	     :cond (and (not container_id) (or modified_date modified_date.start_date modified_date.end_date))
+	     :cond (or modified_date modified_date.start_date modified_date.end_date)
 	     :value
 	     (if modified_date-p modified_date
 		 (cond-hash
 		   (modified_date.start_date "start_date")
 		   (modified_date.end_date "end_date"))))
 	    ((activated_date nil activated_date-p)
-	     :cond (and (not container_id) (or activated_date activated_date.start_date activated_date.end_date))
+	     :cond (or activated_date activated_date.start_date activated_date.end_date)
 	     :value
 	     (if activated_date-p activated_date
 		 (cond-hash
