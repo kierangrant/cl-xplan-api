@@ -30,19 +30,8 @@ Description: Client and API Macros
 
 ;; Define an API entrypoint.
 
-(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist)
-			     &key documentation resource inhibit-bulk inhibit-single
-			       inhibit-transaction single-parms-as-body (single-method method)
-			       (single-resource resource) (bulk-method method) (bulk-resource resource)
-			       hidden-single-parameters hidden-bulk-parameters
-			       (content nil content-p) content-type inhibit-json-decode
-			       (single-content content single-content-p)
-			       (single-content-type content-type)
-			       (single-inhibit-json-decode inhibit-json-decode)
-			       (bulk-content content bulk-content-p)
-			       (bulk-content-type content-type)
-			       (bulk-inhibit-json-decode inhibit-json-decode))
-  "Defines an API entry point.
+#|
+Defines an API entry point.
 
 extra-parms are extra keyword parameters for use in expressions for different parameters, used for parameters that MUST NOT come out in API parameters call.
 
@@ -73,104 +62,116 @@ value is expression to use for value of field, defaults to field
 documentation in arglist is documentation for that particular parameter. Currently this does nothing, but in the future it may be possible to look this information up.
 
 Examples of an arglist entry:
-field -> (if field `((\"field\" . ,field)))
-(field) -> (if field `((\"field\" . ,field)))
-((field nil field-p)) -> (if field `((\"field\" . ,field))) ; will not automatically use field-p
-(field :string \"Field\" :value (symbol-name field)) -> (if field `((\"Field\" . ,(symbol-name field))))
-((field \"Something\" field-p) :string \"Field_Thing\" :cond (and field-p (not (string= field \"Blarg\"))) :value (somefunc field)) -> (if (and field-p (not (string= field \"Blarg\"))) `((\"Field_Thing\" . ,(somefunc field))))"
-(if (not (eq :external (elt (multiple-value-list (find-symbol (symbol-name name))) 1)))
-    (warn "Symbol ~S is not external in package ~A" name (package-name *package*)))
-;; If content is provided, set {single/bulk}-content-p as if manually provided
-;; *-content-type is required if *-content is provided !!
-(let* ((field-entries (loop for item in arglist collecting (if (typep item 'symbol) item (car item))))
-       sparms bparms)
-  (if content-p
-      (setf single-content-p t
-	    bulk-content-p t))
-  (if (and bulk-content-p (not (string= bulk-content-type "application/json")))
-      (error "XPLAN API Batch request currently only support JSON body"))
-  (macrolet
-      ((parm-processor (inhibit hidden)
-	 `(if (not ,inhibit)
-	      `(let ((h (make-hash-table :test #'equal)))
-		 ,@(if (not inhibit-transaction)
-		       `((if request-transaction
-			     (setf (gethash "_transaction" h) request-transaction))))
-		 ,@(loop for item in ,hidden collecting
-			`(setf (gethash ,(car item) h) ,(cdr item)))
-		 ,@(loop for item in arglist collecting
-			(let (s c v)
-			  (if (typep item 'symbol)
-			      (setf s (string-downcase (symbol-name item))
-				    c item
-				    v item)
-			      (destructuring-bind
-				    (f &key (string nil s-p) (cond f c-p) (value f v-p) documentation) item
-				(declare (ignore documentation))
-				(setf
-				 s
-				 (if s-p string
-				     (string-downcase
-				      (symbol-name
-				       (if (typep f 'symbol) f (car f)))))
-				 c
-				 (if c-p cond (if (typep f 'symbol) f (car f)))
-				 v
-				 (if v-p value (if (typep f 'symbol) f (car f))))))
-			  `(if ,c (setf (gethash ,s h) ,v))))
-		 h))))
-    (setf sparms (parm-processor inhibit-single hidden-single-parameters)
-	  bparms (parm-processor inhibit-bulk hidden-bulk-parameters)))
-  `(progn
-     ,@(if (not (boundp name))
-	   `((defgeneric ,name (session method &key &allow-other-keys))))
-     ,@(if (not inhibit-single)
-	   `((defmethod ,name ((session xplan-session) (method (eql ,method))
-			       &key ,@(if (not (or inhibit-transaction single-content-p))
-					  '(request-transaction))
-				 inhibit-auth
-				 (inhibit-json-decode ,single-inhibit-json-decode)
-				 return-request ,@extra-parms ,@field-entries)
-	       ,@(if documentation `(,documentation))
-	       (let ((res
-		      ,(if single-content-p
-			   `(xplan-api-call
-			     session
-			     :inhibit-auth inhibit-auth
-			     :inhibit-json-decode inhibit-json-decode
-			     :method ,single-method
-			     :resource ,single-resource
-			     :content ,single-content
-			     :content-type ,single-content-type)
-			   `(xplan-api-call
-			     session
-			     :inhibit-auth inhibit-auth
-			     :inhibit-json-decode inhibit-json-decode
-			     :method ,single-method
-			     :resource ,single-resource
-			     ,@(if (not single-parms-as-body) `(:parameters ,sparms))
-			     ,@(if single-parms-as-body
-				   `(:content-type "application/json"
-						   :content (json:encode-json-to-string ,sparms)))))))
-		 (if return-request
-		     res
-		     (response res))))))
-     ,@(if (not inhibit-bulk)
-	   `((defmethod ,name ((session xplan-request-bulk) (method (eql ,method))
-			       &key request-name
-				 ,@(if (not (or inhibit-transaction bulk-content-p))
-				       '(request-transaction))
-				 (inhibit-json-decode ,bulk-inhibit-json-decode)
-				 ,@extra-parms ,@field-entries)
-	       ,@(if documentation `(,documentation))
-	       (prepare-request
-		session
-		:name request-name
-		:method ,bulk-method
-		:resource ,bulk-resource
-		:inhibit-json-decode inhibit-json-decode
-		:parameters ,(if bulk-content-p bulk-content bparms))))))))
-
+field -> (if field `(("field" . ,field)))
+(field) -> (if field `(("field" . ,field)))
+((field nil field-p)) -> (if field `(("field" . ,field))) ; will not automatically use field-p
+(field :string "Field" :value (symbol-name field)) -> (if field `(("Field" . ,(symbol-name field))))
+((field "Something" field-p) :string "Field_Thing" :cond (and field-p (not (string= field "Blarg"))) :value (somefunc field)) -> (if (and field-p (not (string= field "Blarg"))) `(("Field_Thing" . ,(somefunc field))))
+|#
+(defmacro define-entrypoint (name method (&rest extra-parms) (&rest arglist)
+			     &key documentation resource inhibit-bulk inhibit-single
+			       inhibit-transaction single-parms-as-body (single-method method)
+			       (single-resource resource) (bulk-method method) (bulk-resource resource)
+			       hidden-single-parameters hidden-bulk-parameters
+			       (content nil content-p) content-type inhibit-json-decode
+			       (single-content content single-content-p)
+			       (single-content-type content-type)
+			       (single-inhibit-json-decode inhibit-json-decode)
+			       (bulk-content content bulk-content-p)
+			       (bulk-content-type content-type)
+			       (bulk-inhibit-json-decode inhibit-json-decode))
+  (if (not (eq :external (elt (multiple-value-list (find-symbol (symbol-name name))) 1)))
+      (warn "Symbol ~S is not external in package ~A" name (package-name *package*)))
+  ;; If content is provided, set {single/bulk}-content-p as if manually provided
+  ;; *-content-type is required if *-content is provided !!
+  (let* ((field-entries (loop for item in arglist collecting (if (typep item 'symbol) item (car item))))
+	 sparms bparms)
+    (if content-p
+	(setf single-content-p t
+	      bulk-content-p t))
+    (if (and bulk-content-p (not (string= bulk-content-type "application/json")))
+	(error "XPLAN API Batch request currently only support JSON body"))
+    (macrolet
+	((parm-processor (inhibit hidden)
+	   `(if (not ,inhibit)
+		`(let ((h (make-hash-table :test #'equal)))
+		   ,@(if (not inhibit-transaction)
+			 `((if request-transaction
+			       (setf (gethash "_transaction" h) request-transaction))))
+		   ,@(loop for item in ,hidden collecting
+			  `(setf (gethash ,(car item) h) ,(cdr item)))
+		   ,@(loop for item in arglist collecting
+			  (let (s c v)
+			    (if (typep item 'symbol)
+				(setf s (string-downcase (symbol-name item))
+				      c item
+				      v item)
+				(destructuring-bind
+				      (f &key (string nil s-p) (cond f c-p) (value f v-p) documentation) item
+				  (declare (ignore documentation))
+				  (setf
+				   s
+				   (if s-p string
+				       (string-downcase
+					(symbol-name
+					 (if (typep f 'symbol) f (car f)))))
+				   c
+				   (if c-p cond (if (typep f 'symbol) f (car f)))
+				   v
+				   (if v-p value (if (typep f 'symbol) f (car f))))))
+			    `(if ,c (setf (gethash ,s h) ,v))))
+		   h))))
+      (setf sparms (parm-processor inhibit-single hidden-single-parameters)
+	    bparms (parm-processor inhibit-bulk hidden-bulk-parameters)))
+    `(progn
+       ,@(if (not (boundp name))
+	     `((defgeneric ,name (session method &key &allow-other-keys))))
+       ,@(if (not inhibit-single)
+	     `((defmethod ,name ((session xplan-session) (method (eql ,method))
+				 &key ,@(if (not (or inhibit-transaction single-content-p))
+					    '(request-transaction))
+				   inhibit-auth
+				   (inhibit-json-decode ,single-inhibit-json-decode)
+				   return-request ,@extra-parms ,@field-entries)
+		 ,@(if documentation `(,documentation))
+		 (let ((res
+			,(if single-content-p
+			     `(xplan-api-call
+			       session
+			       :inhibit-auth inhibit-auth
+			       :inhibit-json-decode inhibit-json-decode
+			       :method ,single-method
+			       :resource ,single-resource
+			       :content ,single-content
+			       :content-type ,single-content-type)
+			     `(xplan-api-call
+			       session
+			       :inhibit-auth inhibit-auth
+			       :inhibit-json-decode inhibit-json-decode
+			       :method ,single-method
+			       :resource ,single-resource
+			       ,@(if (not single-parms-as-body) `(:parameters ,sparms))
+			       ,@(if single-parms-as-body
+				     `(:content-type "application/json"
+						     :content (json:encode-json-to-string ,sparms)))))))
+		   (if return-request
+		       res
+		       (response res))))))
+       ,@(if (not inhibit-bulk)
+	     `((defmethod ,name ((session xplan-request-bulk) (method (eql ,method))
+				 &key request-name
+				   ,@(if (not (or inhibit-transaction bulk-content-p))
+					 '(request-transaction))
+				   (inhibit-json-decode ,bulk-inhibit-json-decode)
+				   ,@extra-parms ,@field-entries)
+		 ,@(if documentation `(,documentation))
+		 (prepare-request
+		  session
+		  :name request-name
+		  :method ,bulk-method
+		  :resource ,bulk-resource
+		  :inhibit-json-decode inhibit-json-decode
+		  :parameters ,(if bulk-content-p bulk-content bparms))))))))
 
 (defmacro with-xplan-api-json-handlers (&body body)
   `(let ((json:*beginning-of-object-handler* #'object-begin)
