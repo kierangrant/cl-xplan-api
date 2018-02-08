@@ -61,13 +61,11 @@ Description: /entity/client API Functions
   :resource "/entity/client-v2")
 
 ;; entity/client-v2 - PATCH /resourceful/entity/client-v2/:entity_id
-(define-entrypoint entity/client-v3 :patch (entity_id) (fields)
+(define-entrypoint entity/client-v2 :patch (entity_id) (fields)
 		   :resource (format NIL "/entity/client-v2/~A" entity_id))
 
 ;; entity/client-v3 - GET /resourceful/entity/client-v3 and GET /resourceful/entity/client-v3/:entity_id
-(define-entrypoint
-    entity/client-v3
-    :get
+(define-entrypoint entity/client-v3 :get
   (entity_id)
   (fields ((images_as_base64 nil base64-p) :cond base64-p :value (if images_as_base64 1 0))
 	  (ids :cond (and (not entity_id) ids))
@@ -80,6 +78,8 @@ Description: /entity/client API Functions
 	  (profadviser_name :cond (and (not entity_id) profadviser_name))
 	  (group_ids :cond (and (not entity_id) group_ids))
 	  (group_name :cond (and (not entity_id) group_name))
+	  ((include_sub_groups nil include_sub_groups-p)
+	   :cond (and (not entity_id) include_sub_groups-p) :value (if include_sub_groups 1 0))
 	  (page_size :cond (and (not entity_id) page_size))
 	  (page_sort :cond (and (not entity_id) page_sort))
 	  (page_bookmark :cond (and (not entity_id) page_bookmark))
@@ -87,3 +87,40 @@ Description: /entity/client API Functions
   :documentation "Retrieve a collection of clients.
 Use ids for multiple Entities (entity/client-v3) else use entity_id (entity/client-v3/:entity_id)"
   :resource (format nil "/entity/client-v3~@[/~A~]" entity_id))
+
+;; entity/client-v3 - POST /resourceful/entity/client-v3
+(define-entrypoint entity/client-v3 :post
+  () (fields)
+  :resource "/entity/client-v3"
+  :documentation "fields = StringKeyedDict ≡ Dictionary(String → (any)). Returns Entity ID")
+
+;; entity/client-v3 - POST /resourceful/entity/client-v3?_method=signup
+(define-entrypoint entity/client-v3 :signup
+  (recaptcha_data.response recaptcha_data.remoteip coa_data.user_id coa_data.email (coa_data.log_in nil log_in-p))
+  (fields
+   ((recaptcha_data nil recaptcha_data-p) :cond T
+    :value (if recaptcha_data-p recaptcha_data
+	       (cond-hash
+		 (recaptcha_data.response "response")
+		 (recaptcha_data.remoteip "remoteid"))))
+   ((coa_data nil coa_data-p) :cond T
+    :value (if coa_data-p coa_data
+	       (cond-hash
+		 (coa_data.user_id "user_id")
+		 (coa_data.email "email")
+		 (coa_data.log_in "log_in" (if log_in-p 1 0))))))
+  :documentation "Create a new client without a session (self-registration)."
+  :single-method :post
+  :single-parms-as-body T
+  :single-resource "/entity/client-v3?_method=signup"
+  :bulk-resource "/entity/client-v3")
+
+;; entity/client-v3 - PATCH /resourceful/entity/client-v3/:entity_id
+(define-entrypoint entity/client-v3 :patch
+  (entity_id) (fields)
+  :resource (format nil "/entity/client-v3/~A" entity_id))
+
+;; entity/client-v3 - DELETE /resourceful/entity/client-v3/:entity_id
+(define-entrypoint entity/client-v3 :delete
+  (entity_id) ()
+  :resource (format nil "/entity/client-v3/~A" entity_id))
