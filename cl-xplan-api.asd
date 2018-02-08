@@ -1,7 +1,7 @@
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2017 Kieran Grant
+Copyright (C) 2018 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -15,7 +15,7 @@ File: cl-xplan-api.asd
 Description: cl-xplan-api ASDF system definition file
 |#
 
-(defsystem :cl-xplan-api
+(defsystem "cl-xplan-api"
     :version (:read-file-form "src/core/VERSION.expr")
     :author "Kieran Grant"
     :license "LLGPL"
@@ -114,6 +114,7 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "docnote/attachment")
 		     (:file "docnote/attachment/content")
 		     (:file "docnote/attachment/digital_signature")
+		     (:file "docnote/attachment/potential_signatories")
 		     (:file "docnote/body")
 		     (:file "docnote/case")
 		     (:file "docnote/category")
@@ -228,4 +229,4 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "ufield/choice_category_dependence"))
 		    :depends-on ("core" "package")))
 		  :depends-on ("json-patch")))
-    :depends-on (:drakma :cl-json :babel :decimals :cl-base64 :rw-ut :split-sequence))
+    :depends-on ("drakma" "cl-json" "babel" "decimals" "cl-base64" "rw-ut" "split-sequence"))
