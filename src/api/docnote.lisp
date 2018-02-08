@@ -27,26 +27,26 @@ Description: /docnote API Functions
 	 firstread.read_entity_roles firstread.max_num_entities)
   ((entity_ids :cond (and (not docid) entity_ids))
    (subject :cond (and (not docid) subject))
-   ((created_by nil created_by-p) :cond (not docid)
-    :value
-    (if created_by-p created_by
-	(cond-hash
-	  (created_date.start_date "start_date")
-	  (created_date.end_date "end_date"))))
+   (created_by :cond (and (not docid) created_by))
    ((has_metadata nil metadata-p) :cond (and (not docid) metadata-p) :value (if has_metadata 1 0))
    (categories :cond (and (not docid) categories))
    (link_thread :cond (and (not docid) link_thread))
    (doctype :cond (and (not docid) doctype))
    (docsubtype :cond (and (not docid) docsubtype))
-   ((modified_by nil modified_by-p) :cond (not docid)
+   (modified_by :cond (and (not docid) modified_by))
+   (keywords :cond (and (not docid) keywords))
+   ((created_date nil created_date-p) :cond (not docid)
     :value
-    (if modified_by-p modified_by
+    (if created_date-p created_date
+	(cond-hash
+	  (created_date.start_date "start_date")
+	  (created_date.end_date "end_date"))))
+   ((modified_date nil modified_date-p) :cond (not docid)
+    :value
+    (if modified_date-p modified_date
 	(cond-hash
 	  (modified_date.start_date "start_date")
 	  (modified_date.end_date "end_date"))))
-   (keywords :cond (and (not docid) keywords))
-   (created_date :cond (and (not docid) created_date))
-   (modified_date :cond (and (not docid) modified_date))
    ((reference_date nil reference_date-p) :cond (not docid)
     :value
     (if reference_date-p reference_date
@@ -174,6 +174,10 @@ Description: /docnote API Functions
 	  (include-read-p "include_read_notes" (if firstread.include_read_notes 1 0))
 	  (firstread.read_entity_roles "read_entity_roles")
 	  (firstread.max_num_entities "max_num_entities"))))
+   (doctype_exclude :cond (and (not docid) doctype_exclude))
+   (docsubtype_exclude :cond (and (not docid) docsubtype_exclude))
+   ((has_digital_signature nil has_digital_signature-p) :cond (and (not docid) has_digital_signature-p)
+    :value (if has_digital_signature 1 0))
    (page_size :cond (and (not docid) page_size))
    (page_sort :cond (and (not docid) page_sort))
    (page_bookmark :cond (and (not docid) page_bookmark))
