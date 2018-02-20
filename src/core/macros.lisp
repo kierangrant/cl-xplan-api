@@ -173,6 +173,33 @@ field -> (if field `(("field" . ,field)))
 		  :inhibit-json-decode inhibit-json-decode
 		  :parameters ,(if bulk-content-p bulk-content bparms))))))))
 
+#| define-dynamiclike-entrypoints
+Creates entrypoints of the same style of <dynamic> but for named handlers
+Used to create of form item-prefix/:enttiy_id/item-name/...{/item-postfix} for specified requests
+Parameters:
+name         - name of entrypoint to create
+item-name    - name of specific item being created
+item-prefix  - prefix of entrypoint url (eg: entity/client or entity/user-v2)
+item-postfix - postfix of entrypoint url (eg entity/client/somethnig/'attachment')
+|#
+(defmacro define-dynamiclike-entrypoints (name item-name item-prefix &optional item-postfix)
+  `(progn
+     (define-entrypoint ,name :get
+       (entity_id list_obj_index)
+       ((indexes :cond (and (not list_obj_index) indexes))
+	fields
+	(page :cond (and (not list_obj_index) page)))
+       :resource (format nil ,(format nil "~A/~~A/~A/~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index))
+     (define-entrypoint ,name :post
+       (entity_id) (fields extra_return_fields)
+       :resource (format nil ,(format nil "~A/~~A/~A~@[/~A~]" item-prefix item-name item-postfix) entity_id))
+     (define-entrypoint ,name :patch
+       (entity_id list_obj_index) (fields extra_return_fields)
+       :resource (format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index))
+     (define-entrypoint ,name :delete
+       (entity_id list_obj_index) ()
+       :resource (format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index))))
+
 (defmacro with-xplan-api-json-handlers (&body body)
   `(let ((json:*beginning-of-object-handler* #'object-begin)
 	 (json:*end-of-object-handler* #'object-end)

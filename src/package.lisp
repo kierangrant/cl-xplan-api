@@ -68,11 +68,11 @@ Description: Package definition for CL-XPLAN-API
    *max-rounding*
    *xplan-api-debug*
    )
-  (:intern "DEFINE-ENTRYPOINT" "COND-HASH"))
+  (:intern "DEFINE-ENTRYPOINT" "COND-HASH" "DEFINE-DYNAMICLIKE-ENTRYPOINTS"))
 
 (defpackage :cl-xplan-api/api
   (:use :cl)
-  (:import-from :cl-xplan-api/core :define-entrypoint :cond-hash)
+  (:import-from :cl-xplan-api/core #:define-entrypoint #:cond-hash #:define-dynamiclike-entrypoints)
   (:export
    ;; access
    #:access/client
@@ -185,6 +185,36 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client
    #:entity/client-v2
    #:entity/client-v3
+   #:entity/client/<dynamic>
+   #:entity/client-v2/<dynamic>
+   #:entity/client-v3/<dynamic>
+   #:entity/client/<dynamic>/attachment
+   #:entity/client-v2/<dynamic>/attachment
+   #:entity/client-v3/<dynamic>/attachment
+   #:entity/client/action_to_proceed
+   #:entity/client-v2/action_to_proceed
+   #:entity/client-v3/action_to_proceed
+   #:entity/client/address
+   #:entity/client-v2/address
+   #:entity/client-v3/address
+   #:entity/client/adviser_identified_needs
+   #:entity/client-v2/adviser_identified_needs
+   #:entity/client-v3/adviser_identified_needs
+   #:entity/client/annuity
+   #:entity/client-v2/annuity
+   #:entity/client-v3/annuity
+   #:entity/client/annuity/beneficiary
+   #:entity/client-v2/annuity/beneficiary
+   #:entity/client-v3/annuity/beneficiary
+   #:entity/client/annuity/owner
+   #:entity/client-v2/annuity/owner
+   #:entity/client-v3/annuity/owner
+   #:entity/client/annuity/payee
+   #:entity/client-v2/annuity/payee
+   #:entity/client-v3/annuity/payee
+   #:entity/client/appendices
+   #:entity/client-v2/appendices
+   #:entity/client-v3/appendices
    #:entity/client/portfolio
    #:entity/client-v2/portfolio
    #:entity/client-v3/portfolio
@@ -417,6 +447,36 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client
    #:entity/client-v2
    #:entity/client-v3
+   #:entity/client/<dynamic>
+   #:entity/client-v2/<dynamic>
+   #:entity/client-v3/<dynamic>
+   #:entity/client/<dynamic>/attachment
+   #:entity/client-v2/<dynamic>/attachment
+   #:entity/client-v3/<dynamic>/attachment
+   #:entity/client/action_to_proceed
+   #:entity/client-v2/action_to_proceed
+   #:entity/client-v3/action_to_proceed
+   #:entity/client/adviser_identified_needs
+   #:entity/client-v2/adviser_identified_needs
+   #:entity/client-v3/adviser_identified_needs
+   #:entity/client/address
+   #:entity/client-v2/address
+   #:entity/client-v3/address
+   #:entity/client/annuity
+   #:entity/client-v2/annuity
+   #:entity/client-v3/annuity
+   #:entity/client/annuity/beneficiary
+   #:entity/client-v2/annuity/beneficiary
+   #:entity/client-v3/annuity/beneficiary
+   #:entity/client/annuity/owner
+   #:entity/client-v2/annuity/owner
+   #:entity/client-v3/annuity/owner
+   #:entity/client/annuity/payee
+   #:entity/client-v2/annuity/payee
+   #:entity/client-v3/annuity/payee
+   #:entity/client/appendices
+   #:entity/client-v2/appendices
+   #:entity/client-v3/appendices
    #:entity/client/portfolio
    #:entity/client-v2/portfolio
    #:entity/client-v3/portfolio
