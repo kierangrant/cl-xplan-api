@@ -17,6 +17,6 @@ Description: /entity/client/appendices API functions
 
 (in-package :cl-xplan-api/api)
 
-(define-dynamiclike-entrypoints entity/client/appendices "appendices" "/entity/client")
-(define-dynamiclike-entrypoints entity/client-v2/appendices "appendices" "/entity/client-v2")
-(define-dynamiclike-entrypoints entity/client-v3/appendices "appendices" "/entity/client-v3")
+(define-dynamiclike-entrypoints (entity/client/appendices "appendices" "/entity/client"))
+(define-dynamiclike-entrypoints (entity/client-v2/appendices "appendices" "/entity/client-v2"))
+(define-dynamiclike-entrypoints (entity/client-v3/appendices "appendices" "/entity/client-v3"))

@@ -17,6 +17,6 @@ Description: /entity/client/action_to_proceed API functions
 
 (in-package :cl-xplan-api/api)
 
-(define-dynamiclike-entrypoints entity/client/action_to_proceed "action_to_proceed" "/entity/client")
-(define-dynamiclike-entrypoints entity/client-v2/action_to_proceed "action_to_proceed" "/entity/client-v2")
-(define-dynamiclike-entrypoints entity/client-v3/action_to_proceed "action_to_proceed" "/entity/client-v3")
+(define-dynamiclike-entrypoints (entity/client/action_to_proceed "action_to_proceed" "/entity/client"))
+(define-dynamiclike-entrypoints (entity/client-v2/action_to_proceed "action_to_proceed" "/entity/client-v2"))
+(define-dynamiclike-entrypoints (entity/client-v3/action_to_proceed "action_to_proceed" "/entity/client-v3"))

@@ -180,64 +180,91 @@ Parameters:
 name              - name of entrypoint to create
 item-name         - name of specific item being created
 item-prefix       - prefix of entrypoint url (eg: entity/client or entity/user-v2)
-item-postfix      - postfix of entrypoint url (eg entity/client/somethnig/'attachment')
-extra-args        - Extra arguments for all requests
-extra-get-args    - Extra arguments for :get requests
-extra-post-args   - Extra arguments for :post request
-extra-patch-args  - Extra arguments for :patch request
-extra-delete-args - Extra arguments for :delete request
 subitem-name      - Subitem Name. If non-NILL, changes output to be for a subitem of item-name.
+item-postfix      - postfix of entrypoint url (eg entity/client/somethnig/'attachment')
 
 subitem-name is useful for "/entity/client/:entity_id/item-name/:list_obj_index/subitem-name/...
+
+Extra Options
+extra-args        - Extra arguments for requests
+list-obj-field    - Field for list obj. defaults to 'list_obj_index
+sublist-obj-field - Field for sublist obj. defaults to 'sublist_obj_index
+default-args      - Default for arguments for request*
+
+Extra options are used in request-defaults, get-defaults, post-defaults, patch-defaults and delete-defeaults
+with request-defaults setting values for all if thier value is omitted.
+
+*default-args is only available on get-defaults, post-defaults, patch-defaults and delete-defaults
 |#
-(defmacro define-dynamiclike-entrypoints (name item-name item-prefix
-					  &optional item-postfix extra-args (extra-get-args extra-args)
-					    (extra-post-args extra-args) (extra-patch-args extra-args)
-					    (extra-delete-args extra-args) subitem-name)
-  `(progn
-     (define-entrypoint ,name :get
-       ,(if subitem-name
-	    '(entity_id list_obj_index sublist_obj_index)
-	    '(entity_id list_obj_index))
-       ,(if subitem-name
-	    (append '((indexes :cond (and (not sublist_obj_index) indexes))
-		      fields
-		      (page :cond (and (not sublist_obj_index) page)))
-		    extra-get-args)
-	    (append '((indexes :cond (and (not list_obj_index) indexes))
-		      fields
-		      (page :cond (and (not list_obj_index) page)))
-		    extra-get-args))
-       :resource
-       ,(if subitem-name
-	    `(format nil
-		     ,(format nil "~A/~~A/~A/~~A/~A~~@[/~~A~~]~@[/~A~]" item-prefix item-name subitem-name item-postfix)
-		     entity_id list_obj_index sublist_obj_index)
-	    `(format nil
-		     ,(format nil "~A/~~A/~A/~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
-		     entity_id list_obj_index)))
-     (define-entrypoint ,name :post
-       ,(if subitem-name '(entity_id list_obj_index) '(entity_id))
-       ,(append '(fields extra_return_fields) extra-post-args)
-       :resource
-       ,(if subitem-name
-	    `(format nil ,(format nil "~A/~~A/~A/~~A/~A~@[/~A~]" item-prefix item-name subitem-name item-postfix)
-		     entity_id list_obj_index)
-	    `(format nil ,(format nil "~A/~~A/~A~@[/~A~]" item-prefix item-name item-postfix) entity_id)))
-     (define-entrypoint ,name :patch
-       ,(if subitem-name '(entity_id list_obj_index sublist_obj_index) '(entity_id list_obj_index))
-       ,(append '(fields extra_return_fields) extra-patch-args)
-       :resource
-       ,(if subitem-name
-	    `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id list_obj_index sublist_obj_index)
-	    `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index)))
-     (define-entrypoint ,name :delete
-       ,(if subitem-name '(entity_id list_obj_index sublist_obj_index) '(entity_id list_obj_index))
-       ,extra-delete-args
-       :resource
-       ,(if subitem-name
-	    `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id list_obj_index sublist_obj_index)
-	    `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index)))))
+(defmacro define-dynamiclike-entrypoints
+    ((name item-name item-prefix &optional subitem-name item-postfix)
+     &key request-defaults get-defaults post-defaults patch-defaults delete-defaults)
+  (destructuring-bind  (&key ((:extra-args extra-args-default))
+			     ((:list-obj-field list-obj-field-default) 'list_obj_index)
+			     ((:sublist-obj-field sublist-obj-field-default) 'sublist_obj_index))
+      request-defaults
+  (destructuring-bind  (&key ((:extra-args get-extra-args) extra-args-default)
+			     ((:list-obj-field get-list-obj-field) list-obj-field-default)
+			     ((:sublist-obj-field get-sublist-obj-field) sublist-obj-field-default)
+			     ((:default-args get-default-args)
+			      (if subitem-name
+				  `((indexes :cond (and (not ,get-sublist-obj-field) indexes))
+				    fields
+				    (page :cond (and (not ,get-sublist-obj-field) page)))
+				  `((indexes :cond (and (not ,get-list-obj-field) indexes))
+				    fields
+				    (page :cond (and (not ,get-list-obj-field) page))))))
+      get-defaults
+  (destructuring-bind  (&key ((:extra-args post-extra-args) extra-args-default)
+			     ((:list-obj-field post-list-obj-field) list-obj-field-default)
+			     ((:default-args post-default-args) '(fields extra_return_fields)))
+      post-defaults
+  (destructuring-bind  (&key ((:extra-args patch-extra-args) extra-args-default)
+			     ((:list-obj-field patch-list-obj-field) list-obj-field-default)
+			     ((:sublist-obj-field patch-sublist-obj-field) sublist-obj-field-default)
+			     ((:default-args patch-default-args) '(fields extra_return_fields)))
+      patch-defaults
+  (destructuring-bind (&key ((:extra-args delete-extra-args) extra-args-default)
+			    ((:list-obj-field delete-list-obj-field) list-obj-field-default)
+			    ((:sublist-obj-field delete-sublist-obj-field) sublist-obj-field-default)
+			    ((:default-args delete-default-args)))
+      delete-defaults
+    `(progn
+       (define-entrypoint ,name :get
+	 ,(if subitem-name
+	      `(entity_id ,get-list-obj-field ,get-sublist-obj-field)
+	      `(entity_id ,get-list-obj-field))
+	 ,(append get-default-args get-extra-args)
+	 :resource
+	 ,(if subitem-name
+	      `(format nil
+		       ,(format nil "~A/~~A/~A/~~A/~A~~@[/~~A~~]~@[/~A~]" item-prefix item-name subitem-name item-postfix)
+		       entity_id ,get-list-obj-field ,get-sublist-obj-field)
+	      `(format nil
+		       ,(format nil "~A/~~A/~A/~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
+		       entity_id ,get-list-obj-field)))
+       (define-entrypoint ,name :post
+	 ,(if subitem-name `(entity_id ,post-list-obj-field) '(entity_id))
+	 ,(append post-default-args post-extra-args)
+	 :resource
+	 ,(if subitem-name
+	      `(format nil ,(format nil "~A/~~A/~A/~~A/~A~@[/~A~]" item-prefix item-name subitem-name item-postfix)
+		       entity_id ,post-list-obj-field)
+	      `(format nil ,(format nil "~A/~~A/~A~@[/~A~]" item-prefix item-name item-postfix) entity_id)))
+       (define-entrypoint ,name :patch
+	 ,(if subitem-name `(entity_id ,patch-list-obj-field ,patch-sublist-obj-field) `(entity_id ,patch-list-obj-field))
+	 ,(append patch-default-args patch-extra-args)
+	 :resource
+	 ,(if subitem-name
+	      `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id ,patch-list-obj-field ,patch-sublist-obj-field)
+	      `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id ,patch-list-obj-field)))
+       (define-entrypoint ,name :delete
+	 ,(if subitem-name `(entity_id ,delete-list-obj-field ,delete-sublist-obj-field) `(entity_id ,delete-list-obj-field))
+	 ,(append delete-default-args delete-extra-args)
+	 :resource
+	 ,(if subitem-name
+	      `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id ,delete-list-obj-field ,delete-sublist-obj-field)
+	      `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id ,delete-list-obj-field))))))))))
 
 (defmacro with-xplan-api-json-handlers (&body body)
   `(let ((json:*beginning-of-object-handler* #'object-begin)
