@@ -186,15 +186,18 @@ item-postfix      - postfix of entrypoint url (eg entity/client/somethnig/'attac
 subitem-name is useful for "/entity/client/:entity_id/item-name/:list_obj_index/subitem-name/...
 
 Extra Options
-extra-args        - Extra arguments for requests
-list-obj-field    - Field for list obj. defaults to 'list_obj_index
-sublist-obj-field - Field for sublist obj. defaults to 'sublist_obj_index
-default-args      - Default for arguments for request*
+extra-args           - Extra arguments for requests
+list-obj-field       - Field for list obj. defaults to 'list_obj_index
+sublist-obj-field    - Field for sublist obj. defaults to 'sublist_obj_index
+subitem-name-inhibit - Inhibits the output of "/subitem-name" in URL's. But still allow sublist items.
+                       Eg: /entity/client-v3/:entity_id/attachment/:field/:attach_id**
+default-args         - Default for arguments for request*
 
 Extra options are used in request-defaults, get-defaults, post-defaults, put-defaults, patch-defaults and delete-defeaults
 with request-defaults setting values for all if thier value is omitted.
 
 *default-args is only available on get-defaults, post-defaults, patch-defaults, patch-defaults and delete-defaults
+**subitem-name-inhibit is only available on request-defaults, get-defaults, patch-defaults, delete-defaults
 |#
 (defmacro define-dynamiclike-entrypoints
     ((name item-name item-prefix &optional subitem-name item-postfix)
@@ -202,7 +205,8 @@ with request-defaults setting values for all if thier value is omitted.
   (destructuring-bind  (&key ((:extra-args extra-args-default))
 			     ((:list-obj-field list-obj-field-default) 'list_obj_index)
 			     ((:sublist-obj-field sublist-obj-field-default) 'sublist_obj_index)
-			     ((:inhibit inhibit-default)))
+			     ((:inhibit inhibit-default))
+			     ((:subitem-name-inhibit subitem-name-inhibit-default)))
       request-defaults
   (destructuring-bind  (&key ((:extra-args get-extra-args) extra-args-default)
 			     ((:list-obj-field get-list-obj-field) list-obj-field-default)
@@ -215,7 +219,8 @@ with request-defaults setting values for all if thier value is omitted.
 				  `((indexes :cond (and (not ,get-list-obj-field) indexes))
 				    fields
 				    (page :cond (and (not ,get-list-obj-field) page)))))
-			     ((:inhibit get-inhibit) inhibit-default))
+			     ((:inhibit get-inhibit) inhibit-default)
+			     ((:subitem-name-inhibit get-subitem-name-inhibit) subitem-name-inhibit-default))
       get-defaults
   (destructuring-bind  (&key ((:extra-args post-extra-args) extra-args-default)
 			     ((:list-obj-field post-list-obj-field) list-obj-field-default)
@@ -231,13 +236,15 @@ with request-defaults setting values for all if thier value is omitted.
 			     ((:list-obj-field patch-list-obj-field) list-obj-field-default)
 			     ((:sublist-obj-field patch-sublist-obj-field) sublist-obj-field-default)
 			     ((:default-args patch-default-args) '(fields extra_return_fields))
-			     ((:inhibit patch-inhibit) inhibit-default))
+			     ((:inhibit patch-inhibit) inhibit-default)
+			     ((:subitem-name-inhibit patch-subitem-name-inhibit) subitem-name-inhibit-default))
       patch-defaults
   (destructuring-bind (&key ((:extra-args delete-extra-args) extra-args-default)
 			    ((:list-obj-field delete-list-obj-field) list-obj-field-default)
 			    ((:sublist-obj-field delete-sublist-obj-field) sublist-obj-field-default)
 			    ((:default-args delete-default-args))
-			    ((:inhibit delete-inhibit) inhibit-default))
+			    ((:inhibit delete-inhibit) inhibit-default)
+			    ((:subitem-name-inhibit delete-subitem-name-inhibit) subitem-name-inhibit-default))
       delete-defaults
     `(progn
    ,@(if (not get-inhibit)
@@ -249,7 +256,8 @@ with request-defaults setting values for all if thier value is omitted.
 	 :resource
 	 ,(if subitem-name
 	      `(format nil
-		       ,(format nil "~A/~~A/~A/~~A/~A~~@[/~~A~~]~@[/~A~]" item-prefix item-name subitem-name item-postfix)
+		       ,(format nil "~A/~~A/~A/~~A~:[/~A~;~*~]~~@[/~~A~~]~@[/~A~]"
+				item-prefix item-name get-subitem-name-inhibit subitem-name item-postfix)
 		       entity_id ,get-list-obj-field ,get-sublist-obj-field)
 	      `(format nil
 		       ,(format nil "~A/~~A/~A/~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
@@ -277,15 +285,20 @@ with request-defaults setting values for all if thier value is omitted.
 	 ,(append patch-default-args patch-extra-args)
 	 :resource
 	 ,(if subitem-name
-	      `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id ,patch-list-obj-field ,patch-sublist-obj-field)
-	      `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id ,patch-list-obj-field)))))
+	      `(format nil ,(format nil "~A/~~A/~A/~~A~:[/~A~;~*~]/~~A~@[/~A~]"
+				    item-prefix item-name patch-subitem-name-inhibit subitem-name item-postfix)
+		       entity_id ,patch-list-obj-field ,patch-sublist-obj-field)
+	      `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix)
+		       entity_id ,patch-list-obj-field)))))
    ,@(if (not delete-inhibit)
      `((define-entrypoint ,name :delete
 	 ,(if subitem-name `(entity_id ,delete-list-obj-field ,delete-sublist-obj-field) `(entity_id ,delete-list-obj-field))
 	 ,(append delete-default-args delete-extra-args)
 	 :resource
 	 ,(if subitem-name
-	      `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id ,delete-list-obj-field ,delete-sublist-obj-field)
+	      `(format nil ,(format nil "~A/~~A/~A/~~A/~:[~A/~;~*~]~~A~@[/~A~]"
+				    item-prefix item-name delete-subitem-name-inhibit subitem-name item-postfix)
+		       entity_id ,delete-list-obj-field ,delete-sublist-obj-field)
 	      `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id ,delete-list-obj-field)))))))))))))
 
 (defmacro with-xplan-api-json-handlers (&body body)
