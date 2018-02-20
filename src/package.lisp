@@ -215,6 +215,33 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/appendices
    #:entity/client-v2/appendices
    #:entity/client-v3/appendices
+   #:entity/client/asset
+   #:entity/client-v2/asset
+   #:entity/client-v3/asset
+   #:entity/client/asset/associate
+   #:entity/client-v2/asset/associate
+   #:entity/client-v3/asset/associate
+   #:entity/client/asset/beneficiary
+   #:entity/client-v2/asset/beneficiary
+   #:entity/client-v3/asset/beneficiary
+   #:entity/client/asset/contribution
+   #:entity/client-v2/asset/contribution
+   #:entity/client-v3/asset/contribution
+   #:entity/client/asset/investment
+   #:entity/client-v2/asset/investment
+   #:entity/client-v3/asset/investment
+   #:entity/client/asset/liability_link
+   #:entity/client-v2/asset/liability_link
+   #:entity/client-v3/asset/liability_link
+   #:entity/client/asset/objective_link
+   #:entity/client-v2/asset/objective_link
+   #:entity/client-v3/asset/objective_link
+   #:entity/client/asset/owner
+   #:entity/client-v2/asset/owner
+   #:entity/client-v3/asset/owner
+   #:entity/client/asset/withdrawal
+   #:entity/client-v2/asset/withdrawal
+   #:entity/client-v3/asset/withdrawal
    #:entity/client/portfolio
    #:entity/client-v2/portfolio
    #:entity/client-v3/portfolio
@@ -477,6 +504,33 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/appendices
    #:entity/client-v2/appendices
    #:entity/client-v3/appendices
+   #:entity/client/asset
+   #:entity/client-v2/asset
+   #:entity/client-v3/asset
+   #:entity/client/asset/associate
+   #:entity/client-v2/asset/associate
+   #:entity/client-v3/asset/associate
+   #:entity/client/asset/beneficiary
+   #:entity/client-v2/asset/beneficiary
+   #:entity/client-v3/asset/beneficiary
+   #:entity/client/asset/contribution
+   #:entity/client-v2/asset/contribution
+   #:entity/client-v3/asset/contribution
+   #:entity/client/asset/investment
+   #:entity/client-v2/asset/investment
+   #:entity/client-v3/asset/investment
+   #:entity/client/asset/liability_link
+   #:entity/client-v2/asset/liability_link
+   #:entity/client-v3/asset/liability_link
+   #:entity/client/asset/objective_link
+   #:entity/client-v2/asset/objective_link
+   #:entity/client-v3/asset/objective_link
+   #:entity/client/asset/owner
+   #:entity/client-v2/asset/owner
+   #:entity/client-v3/asset/owner
+   #:entity/client/asset/withdrawal
+   #:entity/client-v2/asset/withdrawal
+   #:entity/client-v3/asset/withdrawal
    #:entity/client/portfolio
    #:entity/client-v2/portfolio
    #:entity/client-v3/portfolio
