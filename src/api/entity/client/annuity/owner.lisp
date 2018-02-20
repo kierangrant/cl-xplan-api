@@ -17,32 +17,17 @@ Description: /entity/client/annuity/owner API functions
 
 (in-package :cl-xplan-api/api)
 
-;; entity/client/annuity/owner - GET /resourceful/entity/client/:entity_id/annuity/:list_obj_index/owner
-(define-entrypoint entity/client/annuity/owner :get
-  (entity_id list_obj_index) ()
-  :resource (format nil "/entity/client/~A/annuity/~A/owner" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client/annuity/owner "annuity" "/entity/client" "owner")
+    :request-defaults (:inhibit t)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (percentage owner_id) :inhibit nil))
 
-;; entity/client/annuity/owner - PUT /resourceful/entity/client/:entity_id/annuity/:list_obj_index/owner
-(define-entrypoint entity/client/annuity/owner :put
-  (entity_id list_obj_index) (percentage owner_id)
-  :resource (format nil "/entity/client/~A/annuity/~A/owner" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client-v2/annuity/owner "annuity" "/entity/client-v2" "owner")
+    :request-defaults (:inhibit t)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (percentage owner_id) :inhibit nil))
 
-;; entity/client-v2/annuity/owner - GET /resourceful/entity/client-v2/:entity_id/annuity/:list_obj_index/owner
-(define-entrypoint entity/client-v2/annuity/owner :get
-  (entity_id list_obj_index) ()
-  :resource (format nil "/entity/client-v2/~A/annuity/~A/owner" entity_id list_obj_index))
-
-;; entity/client-v2/annuity/owner - PUT /resourceful/entity/client-v2/:entity_id/annuity/:list_obj_index/owner
-(define-entrypoint entity/client-v2/annuity/owner :put
-  (entity_id list_obj_index) (percentage owner_id)
-  :resource (format nil "/entity/client-v2/~A/annuity/~A/owner" entity_id list_obj_index))
-
-;; entity/client-v3/annuity/owner - GET /resourceful/entity/client-v3/:entity_id/annuity/:list_obj_index/owner
-(define-entrypoint entity/client-v3/annuity/owner :get
-  (entity_id list_obj_index) ()
-  :resource (format nil "/entity/client-v3/~A/annuity/~A/owner" entity_id list_obj_index))
-
-;; entity/client-v3/annuity/owner - PUT /resourceful/entity/client-v3/:entity_id/annuity/:list_obj_index/owner
-(define-entrypoint entity/client-v3/annuity/owner :put
-  (entity_id list_obj_index) (percentage owner_id)
-  :resource (format nil "/entity/client-v3/~A/annuity/~A/owner" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client-v3/annuity/owner "annuity" "/entity/client-v3" "owner")
+    :request-defaults (:inhibit t)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (percentage owner_id) :inhibit nil))

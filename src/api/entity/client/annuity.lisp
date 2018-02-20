@@ -17,6 +17,8 @@ Description: /entity/client/annuity API functions
 
 (in-package :cl-xplan-api/api)
 
-(define-dynamiclike-entrypoints (entity/client/annuity "annuity" "/entity/client"))
-(define-dynamiclike-entrypoints (entity/client-v2/annuity "annuity" "/entity/client-v2"))
-(define-dynamiclike-entrypoints (entity/client-v3/annuity "annuity" "/entity/client-v3"))
+(define-dynamiclike-entrypoints (entity/client/annuity "annuity" "/entity/client") :put-defaults (:inhibit T))
+(define-dynamiclike-entrypoints (entity/client-v2/annuity "annuity" "/entity/client-v2")
+    :put-defaults (:inhibit T))
+(define-dynamiclike-entrypoints (entity/client-v3/annuity "annuity" "/entity/client-v3")
+    :put-defaults (:inhibit T))

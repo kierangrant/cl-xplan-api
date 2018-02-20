@@ -17,6 +17,8 @@ Description: /entity/client/address API functions
 
 (in-package :cl-xplan-api/api)
 
-(define-dynamiclike-entrypoints (entity/client/address "address" "/entity/client"))
-(define-dynamiclike-entrypoints (entity/client-v2/address "address" "/entity/client-v2"))
-(define-dynamiclike-entrypoints (entity/client-v3/address "address" "/entity/client-v3"))
+(define-dynamiclike-entrypoints (entity/client/address "address" "/entity/client") :put-defaults (:inhibit T))
+(define-dynamiclike-entrypoints (entity/client-v2/address "address" "/entity/client-v2")
+    :put-defaults (:inhibit T))
+(define-dynamiclike-entrypoints (entity/client-v3/address "address" "/entity/client-v3")
+    :put-defaults (:inhibit T))

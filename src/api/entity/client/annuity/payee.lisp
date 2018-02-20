@@ -17,35 +17,17 @@ Description: /entity/client/annuity/payee API functions
 
 (in-package :cl-xplan-api/api)
 
-;; entity/client/annuity/payee - GET /resourceful/entity/client/:entity_id/annuity/:list_obj_index/payee
-(define-entrypoint entity/client/annuity/payee :get
-  (entity_id list_obj_index) ()
-  :documentation "List of payees of an annuity."
-  :resource (format nil "/entity/client/~A/annuity/~A/payee" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client/annuity/payee "annuity" "/entity/client" "payee")
+    :request-defaults (:inhibit t)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (percentage payee_id payee_name) :inhibit nil))
 
-;; entity/client/annuity/payee - PUT /resourceful/entity/client/:entity_id/annuity/:list_obj_index/payee
-(define-entrypoint entity/client/annuity/payee :put
-  (entity_id list_obj_index) (percentage payee_id payee_name)
-  :resource (format nil "/entity/client/~A/annuity/~A/payee" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client-v2/annuity/payee "annuity" "/entity/client-v2" "payee")
+    :request-defaults (:inhibit t)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (percentage payee_id payee_name) :inhibit nil))
 
-;; entity/client-v2/annuity/payee - GET /resourceful/entity/client-v2/:entity_id/annuity/:list_obj_index/payee
-(define-entrypoint entity/client-v2/annuity/payee :get
-  (entity_id list_obj_index) ()
-  :documentation "List of payees of an annuity."
-  :resource (format nil "/entity/client-v2/~A/annuity/~A/payee" entity_id list_obj_index))
-
-;; entity/client-v2/annuity/payee - PUT /resourceful/entity/client-v2/:entity_id/annuity/:list_obj_index/payee
-(define-entrypoint entity/client-v2/annuity/payee :put
-  (entity_id list_obj_index) (percentage payee_id payee_name)
-  :resource (format nil "/entity/client-v2/~A/annuity/~A/payee" entity_id list_obj_index))
-
-;; entity/client-v3/annuity/payee - GET /resourceful/entity/client-v3/:entity_id/annuity/:list_obj_index/payee
-(define-entrypoint entity/client-v3/annuity/payee :get
-  (entity_id list_obj_index) ()
-  :documentation "List of payees of an annuity."
-  :resource (format nil "/entity/client-v3/~A/annuity/~A/payee" entity_id list_obj_index))
-
-;; entity/client-v3/annuity/payee - PUT /resourceful/entity/client-v3/:entity_id/annuity/:list_obj_index/payee
-(define-entrypoint entity/client-v3/annuity/payee :put
-  (entity_id list_obj_index) (percentage payee_id payee_name)
-  :resource (format nil "/entity/client-v3/~A/annuity/~A/payee" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client-v3/annuity/payee "annuity" "/entity/client-v3" "payee")
+    :request-defaults (:inhibit t)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (percentage payee_id payee_name) :inhibit nil))

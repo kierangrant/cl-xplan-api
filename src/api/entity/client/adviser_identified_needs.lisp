@@ -18,8 +18,11 @@ Description: /entiy/client/adviser_identified_needs API functions
 (in-package :cl-xplan-api/api)
 
 (define-dynamiclike-entrypoints
-    (entity/client/adviser_identified_needs "adviser_identified_needs" "/entity/client"))
+    (entity/client/adviser_identified_needs "adviser_identified_needs" "/entity/client")
+    :put-defaults (:inhibit T))
 (define-dynamiclike-entrypoints
-    (entity/client-v2/adviser_identified_needs "adviser_identified_needs" "/entity/client-v2"))
+    (entity/client-v2/adviser_identified_needs "adviser_identified_needs" "/entity/client-v2")
+    :put-defaults (:inhibit T))
 (define-dynamiclike-entrypoints
-    (entity/client-v3/adviser_identified_needs "adviser_identified_needs" "/entity/client-v3"))
+    (entity/client-v3/adviser_identified_needs "adviser_identified_needs" "/entity/client-v3")
+    :put-defaults (:inhibit T))

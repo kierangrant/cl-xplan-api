@@ -17,65 +17,17 @@ Description: /entity/client/annuity/beneficiary API functions
 
 (in-package :cl-xplan-api/api)
 
-;; entity/client/annuity/beneficiary - GET /resourceful/entity/client/:entity_id/annuity/:list_obj_index/beneficiary
-(define-entrypoint entity/client/annuity/beneficiary :get
-  (entity_id list_obj_index) ()
-  :resource (format nil "/entity/client/~A/annuity/~A/beneficiary" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client/annuity/beneficiary "annuity" "/entity/client" "beneficiary")
+    :request-defaults (:inhibit T)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (beneficiaries) :inhibit nil))
 
-;; entity/client/annuity/beneficiary - PUT /resourceful/entity/client/:entity_id/annuity/:list_obj_index/beneficiary
-(define-entrypoint entity/client/annuity/beneficiary :put
-  (entity_id list_obj_index) (beneficiaries)
-  :documentation "beneficiaries is array of objects. Objects structure:
-Field Name		Type		Optional
-index			Integer		T
-beneficiary_id		EntityID	T
-alias			String		T
-btype			String		T
-percentage		Float		NIL
-in_trust		NullBoolean	T
-divorce_or_court_order	NullBoolean	T
+(define-dynamiclike-entrypoints (entity/client-v2/annuity/beneficiary "annuity" "/entity/client-v2" "beneficiary")
+    :request-defaults (:inhibit T)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (beneficiaries) :inhibit nil))
 
-in_trust and divorce_or_court_order are only in Great Britain"
-  :resource (format nil "/entity/client/~A/annuity/~A/beneficiary" entity_id list_obj_index))
-
-;; entity/client-v2/annuity/beneficiary - GET /resourceful/entity/client-v2/:entity_id/annuity/:list_obj_index/beneficiary
-(define-entrypoint entity/client-v2/annuity/beneficiary :get
-  (entity_id list_obj_index) ()
-  :resource (format nil "/entity/client-v2/~A/annuity/~A/beneficiary" entity_id list_obj_index))
-
-;; entity/client-v2/annuity/beneficiary - PUT /resourceful/entity/client-v2/:entity_id/annuity/:list_obj_index/beneficiary
-(define-entrypoint entity/client-v2/annuity/beneficiary :put
-  (entity_id list_obj_index) (beneficiaries)
-  :documentation "beneficiaries is array of objects. Objects structure:
-Field Name		Type		Optional
-index			Integer		T
-beneficiary_id		EntityID	T
-alias			String		T
-btype			String		T
-percentage		Float		NIL
-in_trust		NullBoolean	T
-divorce_or_court_order	NullBoolean	T
-
-in_trust and divorce_or_court_order are only in Great Britain"
-  :resource (format nil "/entity/client-v2/~A/annuity/~A/beneficiary" entity_id list_obj_index))
-
-;; entity/client-v3/annuity/beneficiary - GET /resourceful/entity/client-v3/:entity_id/annuity/:list_obj_index/beneficiary
-(define-entrypoint entity/client-v3/annuity/beneficiary :get
-  (entity_id list_obj_index) ()
-  :resource (format nil "/entity/client-v3/~A/annuity/~A/beneficiary" entity_id list_obj_index))
-
-;; entity/client-v3/annuity/beneficiary - PUT /resourceful/entity/client-v3/:entity_id/annuity/:list_obj_index/beneficiary
-(define-entrypoint entity/client-v3/annuity/beneficiary :put
-  (entity_id list_obj_index) (beneficiaries)
-  :documentation "beneficiaries is array of objects. Objects structure:
-Field Name		Type		Optional
-index			Integer		T
-beneficiary_id		EntityID	T
-alias			String		T
-btype			String		T
-percentage		Float		NIL
-in_trust		NullBoolean	T
-divorce_or_court_order	NullBoolean	T
-
-in_trust and divorce_or_court_order are only in Great Britain"
-  :resource (format nil "/entity/client-v3/~A/annuity/~A/beneficiary" entity_id list_obj_index))
+(define-dynamiclike-entrypoints (entity/client-v3/annuity/beneficiary "annuity" "/entity/client-v3" "beneficiary")
+    :request-defaults (:inhibit T)
+    :get-defaults (:default-args nil :inhibit nil)
+    :put-defaults (:default-args (beneficiaries) :inhibit nil))
