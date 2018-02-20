@@ -177,37 +177,67 @@ field -> (if field `(("field" . ,field)))
 Creates entrypoints of the same style of <dynamic> but for named handlers
 Used to create of form item-prefix/:enttiy_id/item-name/...{/item-postfix} for specified requests
 Parameters:
-name             - name of entrypoint to create
-item-name        - name of specific item being created
-item-prefix      - prefix of entrypoint url (eg: entity/client or entity/user-v2)
-item-postfix     - postfix of entrypoint url (eg entity/client/somethnig/'attachment')
-extra-args       - Extra arguments for all requests
-extra-get-args   - Extra arguments for :get requests
-extra-post-args  - Extra arguments for :post request
-extra-patch-args - Extra arguments for :patch request
+name              - name of entrypoint to create
+item-name         - name of specific item being created
+item-prefix       - prefix of entrypoint url (eg: entity/client or entity/user-v2)
+item-postfix      - postfix of entrypoint url (eg entity/client/somethnig/'attachment')
+extra-args        - Extra arguments for all requests
+extra-get-args    - Extra arguments for :get requests
+extra-post-args   - Extra arguments for :post request
+extra-patch-args  - Extra arguments for :patch request
 extra-delete-args - Extra arguments for :delete request
+subitem-name      - Subitem Name. If non-NILL, changes output to be for a subitem of item-name.
+
+subitem-name is useful for "/entity/client/:entity_id/item-name/:list_obj_index/subitem-name/...
 |#
 (defmacro define-dynamiclike-entrypoints (name item-name item-prefix
 					  &optional item-postfix extra-args (extra-get-args extra-args)
 					    (extra-post-args extra-args) (extra-patch-args extra-args)
-					    (extra-delete-args extra-args))
+					    (extra-delete-args extra-args) subitem-name)
   `(progn
      (define-entrypoint ,name :get
-       (entity_id list_obj_index)
-       ,(append '((indexes :cond (and (not list_obj_index) indexes))
-		  fields
-		  (page :cond (and (not list_obj_index) page)))
-		extra-get-args)
-       :resource (format nil ,(format nil "~A/~~A/~A/~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index))
+       ,(if subitem-name
+	    '(entity_id list_obj_index sublist_obj_index)
+	    '(entity_id list_obj_index))
+       ,(if subitem-name
+	    (append '((indexes :cond (and (not sublist_obj_index) indexes))
+		      fields
+		      (page :cond (and (not sublist_obj_index) page)))
+		    extra-get-args)
+	    (append '((indexes :cond (and (not list_obj_index) indexes))
+		      fields
+		      (page :cond (and (not list_obj_index) page)))
+		    extra-get-args))
+       :resource
+       ,(if subitem-name
+	    `(format nil
+		     ,(format nil "~A/~~A/~A/~~A/~A~~@[/~~A~~]~@[/~A~]" item-prefix item-name subitem-name item-postfix)
+		     entity_id list_obj_index sublist_obj_index)
+	    `(format nil
+		     ,(format nil "~A/~~A/~A/~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
+		     entity_id list_obj_index)))
      (define-entrypoint ,name :post
-       (entity_id) ,(append '(fields extra_return_fields) extra-post-args)
-       :resource (format nil ,(format nil "~A/~~A/~A~@[/~A~]" item-prefix item-name item-postfix) entity_id))
+       ,(if subitem-name '(entity_id list_obj_index) '(entity_id))
+       ,(append '(fields extra_return_fields) extra-post-args)
+       :resource
+       ,(if subitem-name
+	    `(format nil ,(format nil "~A/~~A/~A/~~A/~A~@[/~A~]" item-prefix item-name subitem-name item-postfix)
+		     entity_id list_obj_index)
+	    `(format nil ,(format nil "~A/~~A/~A~@[/~A~]" item-prefix item-name item-postfix) entity_id)))
      (define-entrypoint ,name :patch
-       (entity_id list_obj_index) ,(append '(fields extra_return_fields) extra-patch-args)
-       :resource (format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index))
+       ,(if subitem-name '(entity_id list_obj_index sublist_obj_index) '(entity_id list_obj_index))
+       ,(append '(fields extra_return_fields) extra-patch-args)
+       :resource
+       ,(if subitem-name
+	    `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id list_obj_index sublist_obj_index)
+	    `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index)))
      (define-entrypoint ,name :delete
-       (entity_id list_obj_index) ,extra-delete-args
-       :resource (format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index))))
+       ,(if subitem-name '(entity_id list_obj_index sublist_obj_index) '(entity_id list_obj_index))
+       ,extra-delete-args
+       :resource
+       ,(if subitem-name
+	    `(format nil ,(format nil "~A/~~A/~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name subitem-name item-postfix) entity_id list_obj_index sublist_obj_index)
+	    `(format nil ,(format nil "~A/~~A/~A/~~A~@[/~A~]" item-prefix item-name item-postfix) entity_id list_obj_index)))))
 
 (defmacro with-xplan-api-json-handlers (&body body)
   `(let ((json:*beginning-of-object-handler* #'object-begin)
