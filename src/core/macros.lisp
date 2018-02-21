@@ -260,7 +260,7 @@ with request-defaults setting values for all if thier value is omitted.
 				item-prefix item-name get-subitem-name-inhibit subitem-name item-postfix)
 		       entity_id ,get-list-obj-field ,get-sublist-obj-field)
 	      `(format nil
-		       ,(format nil "~A/~~A/~A/~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
+		       ,(format nil "~A/~~A/~A~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
 		       entity_id ,get-list-obj-field)))))
    ,@(if (not post-inhibit)
      `((define-entrypoint ,name :post
