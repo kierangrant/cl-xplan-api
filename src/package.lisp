@@ -242,12 +242,36 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/asset/withdrawal
    #:entity/client-v2/asset/withdrawal
    #:entity/client-v3/asset/withdrawal
+   #:entity/client/attachment
+   #:entity/client-v2/attachment
+   #:entity/client-v3/attachment
+   #:entity/client/attorney
+   #:entity/client-v2/attorney
+   #:entity/client-v3/attorney
+   #:entity/client/calm_entities
+   #:entity/client-v2/calm_entities
+   #:entity/client-v3/calm_entities
+   #:entity/client/capability
+   #:entity/client-v2/capability
+   #:entity/client-v3/capability
    #:entity/client/portfolio
    #:entity/client-v2/portfolio
    #:entity/client-v3/portfolio
    #:entity/client/cashflow
    #:entity/client-v2/cashflow
    #:entity/client-v3/cashflow
+   #:entity/client/cashflow/employment
+   #:entity/client-v2/cashflow/employment
+   #:entity/client-v3/cashflow/employment
+   #:entity/client/cashflow/owner
+   #:entity/client-v2/cashflow/owner
+   #:entity/client-v3/cashflow/owner
+   #:entity/client/cheque_disbursement
+   #:entity/client-v2/cheque_disbursement
+   #:entity/client-v3/cheque_disbursement
+   #:entity/client/client_goals_and_objectives
+   #:entity/client-v2/client_goals_and_objectives
+   #:entity/client-v3/client_goals_and_objectives
    #:entity/user
    #:entity/user-v2
    ;; error_report
@@ -531,12 +555,36 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/asset/withdrawal
    #:entity/client-v2/asset/withdrawal
    #:entity/client-v3/asset/withdrawal
+   #:entity/client/attachment
+   #:entity/client-v2/attachment
+   #:entity/client-v3/attachment
+   #:entity/client/attorney
+   #:entity/client-v2/attorney
+   #:entity/client-v3/attorney
+   #:entity/client/calm_entities
+   #:entity/client-v2/calm_entities
+   #:entity/client-v3/calm_entities
+   #:entity/client/capability
+   #:entity/client-v2/capability
+   #:entity/client-v3/capability
    #:entity/client/portfolio
    #:entity/client-v2/portfolio
    #:entity/client-v3/portfolio
    #:entity/client/cashflow
    #:entity/client-v2/cashflow
    #:entity/client-v3/cashflow
+   #:entity/client/cashflow/employment
+   #:entity/client-v2/cashflow/employment
+   #:entity/client-v3/cashflow/employment
+   #:entity/client/cashflow/owner
+   #:entity/client-v2/cashflow/owner
+   #:entity/client-v3/cashflow/owner
+   #:entity/client/cheque_disbursement
+   #:entity/client-v2/cheque_disbursement
+   #:entity/client-v3/cheque_disbursement
+   #:entity/client/client_goals_and_objectives
+   #:entity/client-v2/client_goals_and_objectives
+   #:entity/client-v3/client_goals_and_objectives
    #:entity/user
    #:entity/user-v2
    ;; error_report
