@@ -192,12 +192,16 @@ sublist-obj-field    - Field for sublist obj. defaults to 'sublist_obj_index
 subitem-name-inhibit - Inhibits the output of "/subitem-name" in URL's. But still allow sublist items.
                        Eg: /entity/client-v3/:entity_id/attachment/:field/:attach_id**
 default-args         - Default for arguments for request*
+inhibit-url-itemid   - Inhibits the output of the item (or subitem) ID in the url.
+                       EG: just GET /entity/client-v3/:entity_id/thing with "/:thing_id"***
 
 Extra options are used in request-defaults, get-defaults, post-defaults, put-defaults, patch-defaults and delete-defeaults
 with request-defaults setting values for all if thier value is omitted.
 
 *default-args is only available on get-defaults, post-defaults, patch-defaults, patch-defaults and delete-defaults
 **subitem-name-inhibit is only available on request-defaults, get-defaults, patch-defaults, delete-defaults
+***inhibit-url-itemid is only available on get-defaults. Used for things that there is maybe only 1 of, or
+if it can only by requested by a passed paramter such as thing_ids, and not individually by /:thing_id
 |#
 (defmacro define-dynamiclike-entrypoints
     ((name item-name item-prefix &optional subitem-name item-postfix)
@@ -220,7 +224,8 @@ with request-defaults setting values for all if thier value is omitted.
 				    fields
 				    (page :cond (and (not ,get-list-obj-field) page)))))
 			     ((:inhibit get-inhibit) inhibit-default)
-			     ((:subitem-name-inhibit get-subitem-name-inhibit) subitem-name-inhibit-default))
+			     ((:subitem-name-inhibit get-subitem-name-inhibit) subitem-name-inhibit-default)
+			     ((:inhibit-url-itemid get-inhibit-url-itemid)))
       get-defaults
   (destructuring-bind  (&key ((:extra-args post-extra-args) extra-args-default)
 			     ((:list-obj-field post-list-obj-field) list-obj-field-default)
@@ -249,19 +254,36 @@ with request-defaults setting values for all if thier value is omitted.
     `(progn
    ,@(if (not get-inhibit)
      `((define-entrypoint ,name :get
-	 ,(if subitem-name
-	      `(entity_id ,get-list-obj-field ,get-sublist-obj-field)
-	      `(entity_id ,get-list-obj-field))
+	 ,(cond
+	    ((and subitem-name (not get-inhibit-url-itemid))
+	     `(entity_id ,get-list-obj-field ,get-sublist-obj-field))
+	    ((and subitem-name get-inhibit-url-itemid)
+	     `(entity_id ,get-list-obj-field))
+	    ((and (not subitem-name) (not get-inhibit-url-itemid))
+	     `(entity_id ,get-list-obj-field))
+	    ((and (not subitem-name) get-inhibit-url-itemid)
+	     '(entity_id)))
 	 ,(append get-default-args get-extra-args)
 	 :resource
-	 ,(if subitem-name
-	      `(format nil
-		       ,(format nil "~A/~~A/~A/~~A~:[/~A~;~*~]~~@[/~~A~~]~@[/~A~]"
-				item-prefix item-name get-subitem-name-inhibit subitem-name item-postfix)
-		       entity_id ,get-list-obj-field ,get-sublist-obj-field)
-	      `(format nil
-		       ,(format nil "~A/~~A/~A~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
-		       entity_id ,get-list-obj-field)))))
+	 ,(cond
+	    ((and subitem-name (not get-inhibit-url-itemid))
+	     `(format nil
+		      ,(format nil "~A/~~A/~A/~~A~:[/~A~;~*~]~~@[/~~A~~]~@[/~A~]"
+			       item-prefix item-name get-subitem-name-inhibit subitem-name item-postfix)
+		      entity_id ,get-list-obj-field ,get-sublist-obj-field))
+	    ((and subitem-name get-inhibit-url-itemid)
+	     `(format nil
+		      ,(format nil "~A/~~A/~A/~~A~:[/~A~;~*~]~@[/~A~]"
+			       item-prefix item-name get-subitem-name-inhibit subitem-name item-postfix)
+		      entity_id ,get-list-obj-field))
+	    ((and (not subitem-name) (not get-inhibit-url-itemid))
+	     `(format nil
+		      ,(format nil "~A/~~A/~A~~@[/~~A~~]~@[/~A~]" item-prefix item-name item-postfix)
+		      entity_id ,get-list-obj-field))
+	    ((and (not subitem-name) get-inhibit-url-itemid)
+	     `(format nil
+		      ,(format nil "~A/~~A/~A~@[/~A~]" item-prefix item-name item-postfix)
+		      entity_id))))))
    ,@(if (not post-inhibit)
      `((define-entrypoint ,name :post
 	 ,(if subitem-name `(entity_id ,post-list-obj-field) '(entity_id))
