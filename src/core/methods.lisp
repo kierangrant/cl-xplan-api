@@ -1,7 +1,7 @@
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2017 Kieran Grant
+Copyright (C) 2018 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -11,7 +11,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/methods.lisp
+File: src/core/methods.lisp
 Description: Methods for Classes
 |#
 
@@ -142,10 +142,11 @@ This makes sense when you look at the call to list:
 	      (with-output-to-string (out)
 		(labels ((value-to-string (item)
 			   (etypecase item
-			     (string item)
+			     (string (drakma:url-encode item :utf-8))
 			     (integer
-			      (decimals:format-decimal-number item :round-magnitude -20))
-			     (symbol (string-downcase (symbol-name item)))
+			      (drakma:url-encode
+			       (decimals:format-decimal-number item :round-magnitude -20)  :utf-8))
+			     (symbol (drakma:url-encode (string-downcase (symbol-name item))  :utf-8))
 			     ((member nil) nil))))
 		  (with-hash-table-iterator (getitem (flatten-structure parameters))
 		    (let ((result (multiple-value-list (getitem))))
@@ -214,8 +215,6 @@ This makes sense when you look at the call to list:
 		    request-url
 		    :method method
 		    :force-binary T
-		    :content content
-		    :content-type content-type
 		    :cookie-jar session-state
 		    :user-agent *user-agent*
 		    :additional-headers
@@ -234,8 +233,6 @@ This makes sense when you look at the call to list:
 		  request-url
 		  :method :post
 		  :force-binary T
-		  :content content
-		  :content-type "application/json"
 		  :cookie-jar session-state
 		  :user-agent *user-agent*
 		  :additional-headers
