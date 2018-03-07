@@ -19,27 +19,6 @@ Description: Methods for Classes
 
 ;;; INTERNAL
 
-(defgeneric request-to-json (request))
-(defmethod request-to-json ((request xplan-request-bulk))
-  (let* ((request-call-obj
-	  `((:batch
-	     .
-	     ,(coerce
-	       (loop for item across (requests request) collecting
-		    (let ((result
-			   `((:method . ,(if (symbolp #0=(request-method item))(symbol-name #0#) #0#))
-			     (:url . ,(resource item))
-			     (:omit--results--on--success
-			      .
-			      ,(if (omit-results-on-success item) T json:+json-false+)))))
-		      (if (parameters item) (setf result (acons :body (parameters item) result)))
-		      (if (name item) (setf result (acons :name (name item) result)))
-		      result))
-	       'vector))
-	    (:include_subtimings . ,(if (include-subtimings request) T json:+json-false+))))
-	 (request-call (json:encode-json-to-string request-call-obj)))
-    request-call))
-
 #|
 Takes an object, and returns a flattened hash-table (test EQUAL).
 Keys in returned hash-table are strings.
@@ -149,118 +128,125 @@ This makes sense when you look at the call to list:
       (process-object object))
     pairs))
 
-(defgeneric %process-request (request &key))
+(defgeneric get-request-url (request))
 
-(defmethod %process-request ((request xplan-request-bulk) &key do-auth)
+(defmethod get-request-url ((request xplan-request-bulk))
   (with-slots (session) request
-    (with-slots (session-state base-url transport-version api-key username password drakma-settings force-init-auth)
-	session
-      (let (response
-	    (content (request-to-json request))
-	    (request-url (concatenate 'string base-url (format NIL "/resourceful-v~D" transport-version))))
-	(if (or do-auth force-init-auth)
-	    (progn
-	      ;; disable force-init-auth on first chance
-	      (setf force-init-auth NIL
-		    session-state (make-instance 'drakma:cookie-jar))
-	      (setf response
-		    (multiple-value-list
-		     (apply
-		      *api-call-function*
-		      request-url
-		      :method :post
-		      :force-binary T
-		      :content content
-		      :content-type "application/json"
-		      :cookie-jar session-state
-		      :user-agent *user-agent*
-		      :additional-headers
-		      `(("X-Xplan-App-Id" . ,api-key)
-			("Accept" . "application/json"))
-		      :basic-authorization (list username password)
-		      drakma-settings))))
+    (with-slots (base-url transport-version) session
+      (format NIL "~A/resourceful-v~D" base-url transport-version))))
+
+(defmethod get-request-url ((request xplan-request))
+  (with-slots (resource parameters session) request
+    (with-slots (base-url transport-version) session
+      (format nil "~a/resourceful-v~D~a~@[~a~]" base-url transport-version resource
+	      (with-output-to-string (out)
+		(labels ((value-to-string (item)
+			   (etypecase item
+			     (string item)
+			     (integer
+			      (decimals:format-decimal-number item :round-magnitude -20))
+			     (symbol (string-downcase (symbol-name item)))
+			     ((member nil) nil))))
+		  (with-hash-table-iterator (getitem (flatten-structure parameters))
+		    (let ((result (multiple-value-list (getitem))))
+		      (if (car result)
+			  (format out "?~a~@[=~a~]" (elt result 1) (value-to-string (elt result 2))))
+		      (setf result (multiple-value-list (getitem)))
+		      (loop while (car result) do
+			   (format out "&~a~@[=~a~]" (elt result 1) (value-to-string (elt result 2)))
+			   (setf result (multiple-value-list (getitem))))))))))))
+
+(defgeneric get-request-content (request))
+
+(defmethod get-request-to-content ((request xplan-request-bulk))
+  (let* ((request-call-obj
+	  `((:batch
+	     .
+	     ,(coerce
+	       (loop for item across (requests request) collecting
+		    (let ((result
+			   `((:method . ,(if (symbolp #0=(request-method item))(symbol-name #0#) #0#))
+			     (:url . ,(resource item))
+			     (:omit--results--on--success
+			      .
+			      ,(if (omit-results-on-success item) T json:+json-false+)))))
+		      (if (parameters item) (setf result (acons :body (parameters item) result)))
+		      (if (name item) (setf result (acons :name (name item) result)))
+		      result))
+	       'vector))
+	    (:include_subtimings . ,(if (include-subtimings request) T json:+json-false+))))
+	 (request-call (json:encode-json-to-string request-call-obj)))
+    request-call))
+
+(defmethod get-request-content ((request xplan-request)) (content request))
+
+(defgeneric get-request-content-type (request))
+
+(defmethod get-request-content-type ((request xplan-request-bulk)) "application/json")
+
+(defmethod get-request-content-type ((request xplan-request)) (content-type request))
+
+(defgeneric get-request-method (request))
+
+(defmethod get-request-method ((request xplan-request-bulk)) :post)
+
+(defmethod get-request-method ((request xplan-request)) (request-method request))
+
+(defgeneric %process-request (session request &key do-auth))
+
+(defmethod %process-request ((session xplan-session) request &key do-auth)
+  (with-slots (session-state api-key username password drakma-settings force-init-auth)
+      session
+    (let (response
+	  (content (get-request-content request))
+	  (content-type (get-request-content-type request))
+	  (request-url (get-request-url request))
+	  (method (get-request-method request)))
+      (if (or do-auth force-init-auth)
+	  (progn
+	    ;; disable force-init-auth on first chance
+	    (setf force-init-auth NIL
+		  session-state (make-instance 'drakma:cookie-jar))
 	    (setf response
 		  (multiple-value-list
 		   (apply
 		    *api-call-function*
 		    request-url
-		    :method :post
-		    :force-binary T
-		    :content content
-		    :content-type "application/json"
-		    :cookie-jar session-state
-		    :user-agent *user-agent*
-		    :additional-headers
-		    `(("X-Xplan-App-Id" . ,api-key)
-		      ("Accept" . "application/json"))
-		    drakma-settings))))
-	(values-list response)))))
-
-(defmethod %process-request ((request xplan-request) &key do-auth)
-  (with-slots (resource method parameters state session content content-type request-uri) request
-    (with-slots (session-state base-url transport-version api-key
-			       username password drakma-settings force-init-auth)
-	session
-      (let (drakma-response)
-	;; we manual build up URI, just in case we need 'GET' parameters mixed with POST data
-	(setf request-uri
-	      (format nil "~a/resourceful-v~D~a~@[~a~]" base-url transport-version resource
-		      (with-output-to-string (out)
-			(with-hash-table-iterator (getitem (flatten-structure parameters))
-			  (let ((result (multiple-value-list (getitem))))
-			    (if (car result) (format out "?~a~@[=~a~]" (elt result 1) (elt result 2)))
-			    (setf result (multiple-value-list (getitem)))
-			    (loop while (car result) do
-				 (format out "&~a~@[=~a~]" (elt result 1)
-					 (etypecase (elt result 2)
-					   (string (elt result 2))
-					   (integer
-					    (decimals:format-decimal-number (elt result 2)
-									    :round-magnitude -20))
-					   (symbol (string-downcase (symbol-name (elt result 2))))
-					   ((member nil) nil)))
-				 (setf result (multiple-value-list (getitem)))))))))
-	(if (or do-auth force-init-auth)
-	    (progn
-	      ;; disable force-init-auth on first chance
-	      (setf force-init-auth NIL
-		    session-state (make-instance 'drakma:cookie-jar))
-	      (setf drakma-response
-		    (multiple-value-list
-		     (apply
-		      *api-call-function*
-		      request-uri
-		      :method method
-		      :force-binary T
-		      :cookie-jar session-state
-		      :user-agent *user-agent*
-		      :additional-headers
-		      `(("X-Xplan-App-Id" . ,api-key)
-			("Accept" . "application/json"))
-		      :basic-authorization (list username password)
-		      (if (and content content-type)
-			  (append
-			   `(:content ,content :content-type ,content-type)
-			   drakma-settings)
-			  drakma-settings)))))
-	    (setf drakma-response
-		  (multiple-value-list
-		   (apply
-		    *api-call-function*
-		    request-uri
 		    :method method
 		    :force-binary T
+		    :content content
+		    :content-type content-type
 		    :cookie-jar session-state
 		    :user-agent *user-agent*
 		    :additional-headers
 		    `(("X-Xplan-App-Id" . ,api-key)
 		      ("Accept" . "application/json"))
+		    :basic-authorization (list username password)
 		    (if (and content content-type)
 			(append
 			 `(:content ,content :content-type ,content-type)
 			 drakma-settings)
 			drakma-settings)))))
-	(values-list drakma-response)))))
+	  (setf response
+		(multiple-value-list
+		 (apply
+		  *api-call-function*
+		  request-url
+		  :method :post
+		  :force-binary T
+		  :content content
+		  :content-type "application/json"
+		  :cookie-jar session-state
+		  :user-agent *user-agent*
+		  :additional-headers
+		  `(("X-Xplan-App-Id" . ,api-key)
+		    ("Accept" . "application/json"))
+		  (if (and content content-type)
+		      (append
+		       `(:content ,content :content-type ,content-type)
+		       drakma-settings)
+		      drakma-settings)))))
+      (values-list response))))
 
 ;;; PUBLIC
 
@@ -345,7 +331,7 @@ This makes sense when you look at the call to list:
     (let (response decoded-response)
       (if inhibit-auth
 	  (progn
-	    (setf response (multiple-value-list (%process-request request :do-auth NIL)))
+	    (setf response (multiple-value-list (%process-request session request :do-auth NIL)))
 	    (if (>= (elt response 1) 400)
 		(error 'xplan-api-error
 		       :response-message
@@ -358,7 +344,7 @@ This makes sense when you look at the call to list:
 	  (let (do-auth)
 	    (tagbody
 	     restart
-	       (setf response (multiple-value-list (%process-request request :do-auth do-auth)))
+	       (setf response (multiple-value-list (%process-request session request :do-auth do-auth)))
 	       (if (and (= (elt response 1) 401) (xplan-session-auto-reauth session) (not do-auth))
 		   (progn
 		     (setf do-auth T)
@@ -418,7 +404,7 @@ This makes sense when you look at the call to list:
     (let (%response)
       (if inhibit-auth
 	  (progn
-	    (setf %response (multiple-value-list (%process-request request :do-auth NIL)))
+	    (setf %response (multiple-value-list (%process-request session request :do-auth NIL)))
 	    (if (>= (elt %response 1) 400)
 		(error 'xplan-api-error
 		       :response-message
@@ -432,7 +418,7 @@ This makes sense when you look at the call to list:
 	    ;; handle re-authentication
 	    (tagbody
 	     restart
-	       (setf %response (multiple-value-list (%process-request request :do-auth do-auth)))
+	       (setf %response (multiple-value-list (%process-request session request :do-auth do-auth)))
 	       (if (and (= (elt %response 1) 401) (xplan-session-auto-reauth session) (not do-auth))
 		   (progn
 		     (setf do-auth T)
