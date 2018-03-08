@@ -159,7 +159,7 @@ This makes sense when you look at the call to list:
 
 (defgeneric get-request-content (request))
 
-(defmethod get-request-to-content ((request xplan-request-bulk))
+(defmethod get-request-content ((request xplan-request-bulk))
   (let* ((request-call-obj
 	  `((:batch
 	     .
