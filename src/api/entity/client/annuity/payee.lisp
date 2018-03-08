@@ -18,16 +18,16 @@ Description: /entity/client/annuity/payee API functions
 (in-package :cl-xplan-api/api)
 
 (define-dynamiclike-entrypoints (entity/client/annuity/payee "annuity" "/entity/client" "payee")
-    :request-defaults (:inhibit t)
+    :request-defaults (:inhibit t :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (percentage payee_id payee_name) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v2/annuity/payee "annuity" "/entity/client-v2" "payee")
-    :request-defaults (:inhibit t)
+    :request-defaults (:inhibit t :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (percentage payee_id payee_name) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v3/annuity/payee "annuity" "/entity/client-v3" "payee")
-    :request-defaults (:inhibit t)
+    :request-defaults (:inhibit t :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (percentage payee_id payee_name) :inhibit nil))

@@ -19,7 +19,7 @@ Description: /entity/client/cashflow/employment API functions
 
 (define-dynamiclike-entrypoints (entity/client/cashflow/employment "cashflow" "/entity/client" "employment")
     :request-defaults (:inhibit t :list-obj-field cashflow_index :sublist-obj-field employment_index)
-    :get-defaults (:inhibit nil :default-args nil :inhibit-url-itemid T)
+    :get-defaults (:inhibit nil :default-args nil :inhibit-subitemid T)
     :delete-defaults (:inhibit nil))
 
 (define-entrypoint entity/client/cashflow/employment :post
@@ -28,7 +28,7 @@ Description: /entity/client/cashflow/employment API functions
 
 (define-dynamiclike-entrypoints (entity/client-v2/cashflow/employment "cashflow" "/entity/client-v2" "employment")
     :request-defaults (:inhibit t :list-obj-field cashflow_index :sublist-obj-field employment_index)
-    :get-defaults (:inhibit nil :default-args nil :inhibit-url-itemid T)
+    :get-defaults (:inhibit nil :default-args nil :inhibit-subitemid T)
     :delete-defaults (:inhibit nil))
 
 (define-entrypoint entity/client-v2/cashflow/employment :post
@@ -38,7 +38,7 @@ Description: /entity/client/cashflow/employment API functions
 
 (define-dynamiclike-entrypoints (entity/client-v3/cashflow/employment "cashflow" "/entity/client-v3" "employment")
     :request-defaults (:inhibit t :list-obj-field cashflow_index :sublist-obj-field employment_index)
-    :get-defaults (:inhibit nil :default-args nil :inhibit-url-itemid T)
+    :get-defaults (:inhibit nil :default-args nil :inhibit-subitemid T)
     :delete-defaults (:inhibit nil))
 
 (define-entrypoint entity/client-v3/cashflow/employment :post

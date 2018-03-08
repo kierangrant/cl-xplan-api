@@ -164,6 +164,10 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "entity/client/cashflow/owner")
 		     (:file "entity/client/cheque_disbursement")
 		     (:file "entity/client/client_goals_and_objectives")
+		     (:file "entity/client/client_group/member")
+		     (:file "entity/client/client_group/member/adviser")
+		     (:file "entity/client/client_group/member/adviser/address")
+		     (:file "entity/client/client_group/member/adviser/contact")
 		     (:file "entity/client/portfolio")
 		     (:file "entity/user")
 		     ;; error_report

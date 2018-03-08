@@ -20,7 +20,7 @@ Description: Standard Definitions and overrides for other libraries
 ;;; INTERNAL API
 
 (defparameter *xplan-api-version*
-  #.(with-open-file (str (make-pathname :name "VERSION" :type "expr" :version :newest :defaults *compile-file-truename*) :direction :input)
+  #.(with-open-file (str (make-pathname :name "VERSION" :type "expr" :version :newest :defaults (or *compile-file-truename* *load-truename*)) :direction :input)
       (read str))
 	      "Version of XPLAN-API Library")
 (defparameter *user-agent* (concatenate 'string "CL-XPLAN-API/" *xplan-api-version*) "User-Agent to send to upstream server.")

@@ -272,6 +272,18 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/client_goals_and_objectives
    #:entity/client-v2/client_goals_and_objectives
    #:entity/client-v3/client_goals_and_objectives
+   #:entity/client/client_group/member
+   #:entity/client-v2/client_group/member
+   #:entity/client-v3/client_group/member
+   #:entity/client/client_group/member/adviser
+   #:entity/client-v2/client_group/member/adviser
+   #:entity/client-v3/client_group/member/adviser
+   #:entity/client/client_group/member/adviser/address
+   #:entity/client-v2/client_group/member/adviser/address
+   #:entity/client-v3/client_group/member/adviser/address
+   #:entity/client/client_group/member/adviser/contact
+   #:entity/client-v2/client_group/member/adviser/contact
+   #:entity/client-v3/client_group/member/adviser/contact
    #:entity/user
    #:entity/user-v2
    ;; error_report
@@ -585,6 +597,18 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/client_goals_and_objectives
    #:entity/client-v2/client_goals_and_objectives
    #:entity/client-v3/client_goals_and_objectives
+   #:entity/client/client_group/member
+   #:entity/client-v2/client_group/member
+   #:entity/client-v3/client_group/member
+   #:entity/client/client_group/member/adviser
+   #:entity/client-v2/client_group/member/adviser
+   #:entity/client-v3/client_group/member/adviser
+   #:entity/client/client_group/member/adviser/address
+   #:entity/client-v2/client_group/member/adviser/address
+   #:entity/client-v3/client_group/member/adviser/address
+   #:entity/client/client_group/member/adviser/contact
+   #:entity/client-v2/client_group/member/adviser/contact
+   #:entity/client-v3/client_group/member/adviser/contact
    #:entity/user
    #:entity/user-v2
    ;; error_report

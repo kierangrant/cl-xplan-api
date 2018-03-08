@@ -19,7 +19,7 @@ Description: /entity/client/asset/investment API functions
 
 (define-dynamiclike-entrypoints (entity/client/asset/investment "asset" "/entity/client" "investment")
     :request-defaults (:list-obj-field fund_id :sublist-obj-field option_id)
-    :get-defaults (:extra-args (((performance nil performance-p) :cond performance-p :value (if performance 1 0))))
+    :get-defaults (:default-args (((performance nil performance-p) :cond performance-p :value (if performance 1 0))))
     :post-defaults (:default-args
 		       (name option_spin performance_fee buy_cost sell_cost allocations research_id security_code amount))
     :patch-defaults (:default-args (name option_spin performance_fee buy_cost sell_cost allocations amount))
@@ -27,7 +27,7 @@ Description: /entity/client/asset/investment API functions
 
 (define-dynamiclike-entrypoints (entity/client-v2/asset/investment "asset" "/entity/client-v2" "investment")
     :request-defaults (:list-obj-field fund_id :sublist-obj-field option_id)
-    :get-defaults (:extra-args (((performance nil performance-p) :cond performance-p :value (if performance 1 0))))
+    :get-defaults (:default-args (((performance nil performance-p) :cond performance-p :value (if performance 1 0))))
     :post-defaults (:default-args
 		       (name option_spin performance_fee buy_cost sell_cost allocations research_id security_code amount))
     :patch-defaults (:default-args (name option_spin performance_fee buy_cost sell_cost allocations amount))
@@ -35,7 +35,7 @@ Description: /entity/client/asset/investment API functions
 
 (define-dynamiclike-entrypoints (entity/client-v3/asset/investment "asset" "/entity/client-v3" "investment")
     :request-defaults (:list-obj-field fund_id :sublist-obj-field option_id)
-    :get-defaults (:extra-args (((performance nil performance-p) :cond performance-p :value (if performance 1 0))))
+    :get-defaults (:default-args (((performance nil performance-p) :cond performance-p :value (if performance 1 0))))
     :post-defaults (:default-args
 		       (name option_spin performance_fee buy_cost sell_cost allocations research_id security_code amount))
     :patch-defaults (:default-args (name option_spin performance_fee buy_cost sell_cost allocations amount))

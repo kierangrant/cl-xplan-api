@@ -18,16 +18,16 @@ Description: /entity/client/annuity/beneficiary API functions
 (in-package :cl-xplan-api/api)
 
 (define-dynamiclike-entrypoints (entity/client/annuity/beneficiary "annuity" "/entity/client" "beneficiary")
-    :request-defaults (:inhibit T)
+    :request-defaults (:inhibit T :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (beneficiaries) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v2/annuity/beneficiary "annuity" "/entity/client-v2" "beneficiary")
-    :request-defaults (:inhibit T)
+    :request-defaults (:inhibit T :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (beneficiaries) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v3/annuity/beneficiary "annuity" "/entity/client-v3" "beneficiary")
-    :request-defaults (:inhibit T)
+    :request-defaults (:inhibit T :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (beneficiaries) :inhibit nil))

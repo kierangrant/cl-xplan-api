@@ -18,16 +18,16 @@ Description: /entity/client/annuity/owner API functions
 (in-package :cl-xplan-api/api)
 
 (define-dynamiclike-entrypoints (entity/client/annuity/owner "annuity" "/entity/client" "owner")
-    :request-defaults (:inhibit t)
+    :request-defaults (:inhibit t :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (percentage owner_id) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v2/annuity/owner "annuity" "/entity/client-v2" "owner")
-    :request-defaults (:inhibit t)
+    :request-defaults (:inhibit t :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (percentage owner_id) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v3/annuity/owner "annuity" "/entity/client-v3" "owner")
-    :request-defaults (:inhibit t)
+    :request-defaults (:inhibit t :inhibit-subitemid t)
     :get-defaults (:default-args nil :inhibit nil)
     :put-defaults (:default-args (percentage owner_id) :inhibit nil))

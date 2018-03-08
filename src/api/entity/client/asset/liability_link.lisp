@@ -19,18 +19,21 @@ Description: /entity/client/asset/liability_link API functions
 
 (define-dynamiclike-entrypoints (entity/client/asset/liability_link "asset" "/entity/client" "liability_link")
     :request-defaults (:sublist-obj-field liability_id)
+    :get-defaults (:default-args nil)
     :post-defaults (:default-args (liability_id link_type))
     :patch-defaults (:default-args (link_type))
     :put-defaults (:inhibit T))
 
 (define-dynamiclike-entrypoints (entity/client-v2/asset/liability_link "asset" "/entity/client-v2" "liability_link")
     :request-defaults (:sublist-obj-field liability_id)
+    :get-defaults (:default-args nil)
     :post-defaults (:default-args (liability_id link_type))
     :patch-defaults (:default-args (link_type))
     :put-defaults (:inhibit T))
 
 (define-dynamiclike-entrypoints (entity/client-v3/asset/liability_link "asset" "/entity/client-v3" "liability_link")
     :request-defaults (:sublist-obj-field liability_id)
+    :get-defaults (:default-args nil)
     :post-defaults (:default-args (liability_id link_type))
     :patch-defaults (:default-args (link_type))
     :put-defaults (:inhibit T))

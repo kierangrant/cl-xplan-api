@@ -19,15 +19,15 @@ Description: /entity/client/asset/owner API functions
 
 (define-dynamiclike-entrypoints (entity/client/asset/owner "asset" "/entity/client" "owner")
     :request-defaults (:inhibit t)
-    :get-defaults (:default-args nil :inhibit nil)
+    :get-defaults (:default-args nil :inhibit nil :inhibit-subitemid t)
     :put-defaults (:default-args (percentage owner_id) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v2/asset/owner "asset" "/entity/client-v2" "owner")
     :request-defaults (:inhibit t)
-    :get-defaults (:default-args nil :inhibit nil)
+    :get-defaults (:default-args nil :inhibit nil :inhibit-subitemid t)
     :put-defaults (:default-args (percentage owner_id) :inhibit nil))
 
 (define-dynamiclike-entrypoints (entity/client-v3/asset/owner "asset" "/entity/client-v3" "owner")
     :request-defaults (:inhibit t)
-    :get-defaults (:default-args nil :inhibit nil)
+    :get-defaults (:default-args nil :inhibit nil :inhibit-subitemid t)
     :put-defaults (:default-args (percentage owner_id) :inhibit nil))
