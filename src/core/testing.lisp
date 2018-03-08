@@ -46,8 +46,12 @@ Description: Testing Session for testing and development purposes.
     (apply
      (lambda (&rest rest)
        (if (slot-value session 'trace)
-	   (format *debug-io* "~S~%" rest))
-       (apply *api-call-function* rest))
+	   (progn
+	     (format *debug-io* "~S~%" rest)
+	     (let ((response (multiple-value-list (apply *api-call-function* rest))))
+	       (format *debug-io* "Response:~%~S~%" response)
+	       (values-list response)))
+	   (apply *api-call-function* rest)))
      (get-request-url request)
      :method (get-request-method request)
      :force-binary T
