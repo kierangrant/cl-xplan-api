@@ -196,7 +196,7 @@ This makes sense when you look at the call to list:
 (defgeneric %process-request (session request &key do-auth))
 
 (defmethod %process-request ((session xplan-session) request &key do-auth)
-  (with-slots (session-state api-key username password drakma-settings force-init-auth)
+  (with-slots (session-state api-key username password drakma-settings force-init-auth base-url)
       session
     (let (response
 	  (content (get-request-content request))
@@ -219,7 +219,8 @@ This makes sense when you look at the call to list:
 		    :user-agent *user-agent*
 		    :additional-headers
 		    `(("X-Xplan-App-Id" . ,api-key)
-		      ("Accept" . "application/json"))
+		      ("Accept" . "application/json")
+		      ("Referer" . ,base-url))
 		    :basic-authorization (list username password)
 		    (if (and content content-type)
 			(append
@@ -237,7 +238,8 @@ This makes sense when you look at the call to list:
 		  :user-agent *user-agent*
 		  :additional-headers
 		  `(("X-Xplan-App-Id" . ,api-key)
-		    ("Accept" . "application/json"))
+		    ("Accept" . "application/json")
+		    ("Referer" . ,base-url))
 		  (if (and content content-type)
 		      (append
 		       `(:content ,content :content-type ,content-type)

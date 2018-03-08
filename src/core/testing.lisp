@@ -52,7 +52,7 @@ Description: Testing Session for testing and development purposes.
      :method (get-request-method request)
      :force-binary T
      :cookie-jar cookies
-     :additional-headers '(("Accept" . "application/json"))
+     :additional-headers `(("Accept" . "application/json") ("Referer" . ,(base-url session)))
      :user-agent *user-agent*
      (if (and content content-type)
 	 (append `(:content ,content :content-type ,content-type) drakma-settings)

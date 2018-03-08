@@ -34,7 +34,7 @@ Description: /entity/client/asset API functions
   :put-defaults (:inhibit T))
 
 (define-dynamiclike-entrypoints
-    (entity/client-v3/asset "asset" "/entity/client-3")
+    (entity/client-v3/asset "asset" "/entity/client-v3")
     :post-defaults
   (:extra-args (security_id ((create_position_associate nil create_position_associate-p) :cond create_position_associate-p :value (if create_position_associate 1 0))))
   :patch-defaults
