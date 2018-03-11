@@ -168,6 +168,8 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "entity/client/client_group/member/adviser")
 		     (:file "entity/client/client_group/member/adviser/address")
 		     (:file "entity/client/client_group/member/adviser/contact")
+		     (:file "entity/client/company_keyperson")
+		     (:file "entity/client/contact")
 		     (:file "entity/client/portfolio")
 		     (:file "entity/user")
 		     ;; error_report

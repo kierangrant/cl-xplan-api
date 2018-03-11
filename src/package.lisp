@@ -284,6 +284,12 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/client_group/member/adviser/contact
    #:entity/client-v2/client_group/member/adviser/contact
    #:entity/client-v3/client_group/member/adviser/contact
+   #:entity/client/company_keyperson
+   #:entity/client-v2/company_keyperson
+   #:entity/client-v3/company_keyperson
+   #:entity/client/contact
+   #:entity/client-v2/contact
+   #:entity/client-v3/contact
    #:entity/user
    #:entity/user-v2
    ;; error_report
@@ -609,6 +615,12 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/client_group/member/adviser/contact
    #:entity/client-v2/client_group/member/adviser/contact
    #:entity/client-v3/client_group/member/adviser/contact
+   #:entity/client/company_keyperson
+   #:entity/client-v2/company_keyperson
+   #:entity/client-v3/company_keyperson
+   #:entity/client/contact
+   #:entity/client-v2/contact
+   #:entity/client-v3/contact
    #:entity/user
    #:entity/user-v2
    ;; error_report
