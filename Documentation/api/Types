@@ -24,12 +24,12 @@ This includes dates with and without a time component. Dates may contain timezon
 _type:	      "Date"
 _val:	      ISO8601 date
 Example:
-{"_type": "Date", "_val": "20180301"}
+{"_type": "Date", "_val": "2018-03-01"}
 Value:
 1st of March 2018. No Time
-{"_type": "Date", "_val": "20180301T1000Z"
+{"_type": "Date", "_val": "2018-03-01T10:00:00Z"}
 Value:
-1st of March 2018, 10AM GMT
+1st of March 2018, 10:00:00AM GMT
 
 Time
 ----
@@ -38,7 +38,7 @@ A time of day, with no attached date.
 _type: "Time"
 _val:  ISO8601 time
 Example:
-{"_type": "Time", "_val": "1015Z"}
+{"_type": "Time", "_val": "10:15Z"}
 Value: 10:15 AM GMT
 
 Decimal
@@ -52,7 +52,7 @@ _val:  String of the value
 
 Example Strings
 "12345678901234567890"	Simple arbitrary precision value, can be prefixed with either "+" or "-" sign and can be post-fixed with an arbitrary length decimal value
-"123.456e2"		Scientific Notation form. Can be prefixed with either "+" or "-" sign
+"1.23456e2"		Scientific Notation form. Can be prefixed with either "+" or "-" sign
 
 Example:
 {"_type": "BigDecimal", "_val": "89875517873681764"}
