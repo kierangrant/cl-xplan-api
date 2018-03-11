@@ -28,8 +28,11 @@ git clone https://github.com/nallen05/rw-ut.git # not available through Quicklis
 wget https://beta.quicklisp.org/quicklisp.org
 
 sbcl --load quicklisp.lisp
+;Then install quicklisp with
+(quicklisp-quickstart:install)
 # or if Quicklisp is already installed
 sbcl --load ~/quicklisp/setup.lisp
+;; Now lets load everything
 (ql:quickload :cl-xplan-api)
 ;; Now lets do a test
 (defpackage :test (:use :cl :cl-xplan-api))
