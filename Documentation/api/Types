@@ -7,15 +7,17 @@ XPLAN Types are passed around as a JSON object with the following fields:
 _type A String indicating the XPLAN Type
 _val  The Value represented in some JSON or XPLAN type
 
+Example: {"_type": "TypeName", "_val": "Value"}
+
 Binary
 ------
 
 A blob of binary data. This is used to contain data in formats that cannot be encoded raw into JSON, such as multimedia attachments.
 _type: "Binary"
 _val:  A base64 encoded string value
-Examples:
+Example:
 {"_type": "Binary", "_val": "VGVzdCBWYWx1ZQ=="}
-Value: "Test Value"
+Decoded Value: "Test Value"
 
 Date
 ----
@@ -88,6 +90,12 @@ Will become: foo.0=a&foo.1=b&foo.2=c&bar.xplan=api
 
 You do not need to flatten if you are passing in a body as application/json.
 Note: GET requests do not read body content, so you must flatten in this case.
+
+Example XPLAN Types Flattened:
+A Currency Object is one of the most complex types to flatten:
+some_request_url?some_field._type=Currency&some_field._val.code=AUD&some_field._val.value._type=BigDecimal&some_field._val.value._val=100
+
+You can thus see how nested JSON objects are flattened.
 
 References
 =========

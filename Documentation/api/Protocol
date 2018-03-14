@@ -42,10 +42,17 @@ Query String Parameters
 Usually parameters are passed in the URL as Query String Parameters, please see "Types" Documentation
 Otherwise, they are passed in the Response Body (for example, in PATCH, PUT, POST and Batched Requests)
 
-Example:
+Examples:
+In this example the field "external_id" is to be updated, for this request, "fields" is a "StringKeyedDict" which can be imagined as a JSON object of the form {"field1": "value1", "field2": "value2"}
+
 PATCH /my_xplan_site/resourceful/enttiy/client-v3/1234?fields.external_id=abc123
 
-(See Types for an understanding of fields was constructed)
+In this example, we will fetch the entity's external_id field:
+In this case, fields is an array of the name's of the fields. (Of the form ["field1", "field2"])
+
+GET /my_xplan_site/resourceful/entity/client-v3/1234?fields.0=external_id
+
+(See Types for an understanding of how method parameters are converted to Query String Parameters
 
 Request Body Parameters
 -----------------------
