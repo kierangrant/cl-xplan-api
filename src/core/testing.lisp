@@ -47,9 +47,13 @@ Description: Testing Session for testing and development purposes.
      (lambda (&rest rest)
        (if (slot-value session 'trace)
 	   (progn
-	     (format *debug-io* "~S~%" rest)
+	     (format *debug-io* "API Called with:~%~S~%" rest)
 	     (let ((response (multiple-value-list (apply *api-call-function* rest))))
-	       (format *debug-io* "Response:~%~S~%" response)
+	       (format *debug-io* "API Response:~%~S~%" response)
+	       (if (string= (cdr (assoc :content-type (elt response 2))) "application/json")
+		   (format *debug-io* "Decoded Content:~%~S~%"
+			   (babel:octets-to-string
+			    (elt response 0))))
 	       (values-list response)))
 	   (apply *api-call-function* rest)))
      (get-request-url request)
