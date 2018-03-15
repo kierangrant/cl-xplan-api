@@ -42,26 +42,26 @@ Description: Testing Session for testing and development purposes.
 					       2)))))
 	  (content (get-request-content request))
 	  (content-type (get-request-content-type request)))
-      (if (slot-value session 'trace) (format *debug-io* "~S~%" (drakma:cookie-jar-cookies cookies)))
-    (apply
-     (lambda (&rest rest)
-       (if (slot-value session 'trace)
-	   (progn
-	     (format *debug-io* "API Called with:~%~S~%" rest)
-	     (let ((response (multiple-value-list (apply *api-call-function* rest))))
-	       (format *debug-io* "API Response:~%~S~%" response)
-	       (if (string= (cdr (assoc :content-type (elt response 2))) "application/json")
-		   (format *debug-io* "Decoded Content:~%~S~%"
-			   (babel:octets-to-string
-			    (elt response 0))))
-	       (values-list response)))
-	   (apply *api-call-function* rest)))
-     (get-request-url request)
-     :method (get-request-method request)
-     :force-binary T
-     :cookie-jar cookies
-     :additional-headers `(("Accept" . "application/json") ("Referer" . ,(base-url session)))
-     :user-agent *user-agent*
-     (if (and content content-type)
-	 (append `(:content ,content :content-type ,content-type) drakma-settings)
-	 drakma-settings)))))
+      (apply
+       (lambda (&rest rest)
+	 (if (slot-value session 'trace)
+	     (progn
+	       (format *debug-io* "--- BEGIN TRACE ---~%API Called with:~%~S~%" rest)
+	       (let ((response (multiple-value-list (apply *api-call-function* rest))))
+		 (format *debug-io* "API Response:~%~S~%" response)
+		 (if (string= (cdr (assoc :content-type (elt response 2))) "application/json")
+		     (format *debug-io* "Decoded Content:~%~A~%"
+			     (babel:octets-to-string
+			      (elt response 0))))
+		 (format *debug-io* "--- END TRACE ---~%")
+		 (values-list response)))
+	     (apply *api-call-function* rest)))
+       (get-request-url request)
+       :method (get-request-method request)
+       :force-binary T
+       :cookie-jar cookies
+       :additional-headers `(("Accept" . "application/json") ("Referer" . ,(base-url session)))
+       :user-agent *user-agent*
+       (if (and content content-type)
+	   (append `(:content ,content :content-type ,content-type) drakma-settings)
+	   drakma-settings)))))
