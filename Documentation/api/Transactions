@@ -21,6 +21,9 @@ If the transaction has expired or is invalid you will get a HTTP 404 error.
 
 If using a Bulk Request, it is included as a parameter in the "body" of a request not in the request URL.
 
+NOTE: When appending to Request URL for non batch requests make sure you DO NOT URL Encode it...
+That is, do not convert "=" to "%3D" otherwise the XPlan Server will give an error about invalid Transaction ID.
+
 Commit a Transaction
 --------------------
 
