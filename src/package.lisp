@@ -290,6 +290,8 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/contact
    #:entity/client-v2/contact
    #:entity/client-v3/contact
+   #:entity/group
+   #:entity/group/user
    #:entity/user
    #:entity/user-v2
    ;; error_report
@@ -621,6 +623,8 @@ Description: Package definition for CL-XPLAN-API
    #:entity/client/contact
    #:entity/client-v2/contact
    #:entity/client-v3/contact
+   #:entity/group
+   #:entity/group/user
    #:entity/user
    #:entity/user-v2
    ;; error_report

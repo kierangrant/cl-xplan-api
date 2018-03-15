@@ -171,6 +171,8 @@ Description: cl-xplan-api ASDF system definition file
 		     (:file "entity/client/company_keyperson")
 		     (:file "entity/client/contact")
 		     (:file "entity/client/portfolio")
+		     (:file "entity/group")
+		     (:file "entity/group/user")
 		     (:file "entity/user")
 		     ;; error_report
 		     (:file "error_report")
