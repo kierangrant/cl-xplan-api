@@ -17,19 +17,16 @@ Description: /session/transaction API Functions
 
 (in-package :cl-xplan-api/api)
 
-;; session/transaction - We only support with normal non-bulk requests
-
 ;; session/transaction - POST /resourceful/session/transaction
 (define-entrypoint session/transaction :post
   () ()
-  :inhibit-bulk T
   :inhibit-transaction T
-  :documentation "Create a Session Transaction" :resource "/session/transaction")
+  :documentation "Create a Session Transaction"
+  :resource "/session/transaction")
 
 ;; session/transaction - DELETE /resourceful/session/transaction/:transaction_id
 (define-entrypoint session/transaction :delete
   (transaction_id) ()
-  :inhibit-bulk T
   :inhibit-transaction T
   :documentation "Rollback the transaction and dispose of if."
   :resource (format NIL "/session/transaction/~A" transaction_id))
