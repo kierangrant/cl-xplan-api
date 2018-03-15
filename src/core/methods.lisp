@@ -370,7 +370,7 @@ This makes sense when you look at the call to list:
 				 inhibit-json-decode-default)
 	       (get-request-by-name request (gethash "name" res))
 	     (setf response
-		   (if (gethash "body" res)
+		   (if (and (gethash "body" res) (not (= (gethash "code" res) 204)))
 		       (if (or (and inhibit-json-decode-p inhibit-json-decode)
 			       (and (not inhibit-json-decode-p) inhibit-json-decode-default))
 			   (gethash "body" res)
