@@ -10,3 +10,12 @@ XPLAN API is a HTTP Rest API.
 
 These files are an outline, please refer to the IRESS Insights community for an up-to-date reference.
 https://insights.iressconnect.com/community/developers/xplan-api/content
+
+Extra Notes:
+
+Some Extra notes will appear in the other files if possible, otherwise they will be included here:
+
+Bookmarks:
+Just like as in Transactions, the page_bookmark parameter when used in a GET request, must also NOT be URL-encoded... otherwise XPlan throws errors.
+That is, do not convert "=" to "%3D".
+This only affects non Batched Requests. Batched Requests have no URL encoding.

@@ -151,8 +151,9 @@ This makes sense when you look at the call to list:
 		  (with-hash-table-iterator (getitem (flatten-structure parameters))
 		    (let ((result (multiple-value-list (getitem))))
 		      (if (car result)
-			  ;; don't URL encode transaction ID, XPLAN throws errors
-			  (if (string= (elt result 1) "_transaction")
+			  ;; don't URL encode transaction ID or bookmark, XPLAN throws errors
+			  (if (or (string= (elt result 1) "_transaction")
+				  (string= (elt result 1) "page_bookmark"))
 			      (format out "?~a~@[=~a~]" (elt result 1) (elt result 2))
 			      (format out "?~a~@[=~a~]" (elt result 1)
 				      (value-to-string (elt result 2)))))
@@ -160,8 +161,9 @@ This makes sense when you look at the call to list:
 			 for result = (multiple-value-list (getitem))
 			 while (car result)
 			 do
-			 ;; don't URL encode transaction ID, XPLAN throws errors
-			   (if (string= (elt result 1) "_transaction")
+			 ;; don't URL encode transaction ID or bookmark, XPLAN throws errors
+			   (if (or (string= (elt result 1) "_transaction")
+				   (string= (elt result 1) "page_bookmark"))
 			       (format out "&~a~@[=~a~]" (elt result 1) (elt result 2))
 			       (format out "&~a~@[=~a~]" (elt result 1)
 				       (value-to-string (elt result 2)))))))))))))
