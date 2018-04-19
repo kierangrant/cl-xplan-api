@@ -115,6 +115,7 @@ Limits
 ======
 
 The limit on number of requests that can be in one batch is 100.
+The body of a logical HTTP request only supports JSON.
 
 References
 ==========

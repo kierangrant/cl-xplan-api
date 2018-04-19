@@ -230,7 +230,7 @@ This makes sense when you look at the call to list:
 		    :user-agent *user-agent*
 		    :additional-headers
 		    `(("X-Xplan-App-Id" . ,api-key)
-		      ("Accept" . "application/json")
+		      ("Accept" . "application/json, text/html")
 		      ("Referer" . ,base-url))
 		    :basic-authorization (list username password)
 		    (if (and content content-type)
@@ -249,7 +249,7 @@ This makes sense when you look at the call to list:
 		  :user-agent *user-agent*
 		  :additional-headers
 		  `(("X-Xplan-App-Id" . ,api-key)
-		    ("Accept" . "application/json")
+		    ("Accept" . "application/json, text/html")
 		    ("Referer" . ,base-url))
 		  (if (and content content-type)
 		      (append
@@ -418,7 +418,11 @@ This makes sense when you look at the call to list:
 	    (if (>= (elt %response 1) 400)
 		(error 'xplan-api-error
 		       :response-message
-		       (if (elt %response 0)
+		       ;; if we are getting :OPTIONS and get an error, the response may not
+		       ;; be application/json but instead text/html.
+		       (if (and (elt %response 0)
+				(string-equal (cdr (assoc :content-type (elt %response 2)))
+					      "application/json"))
 			   (with-xplan-api-json-handlers
 			     (json:decode-json-from-string (babel:octets-to-string (elt %response 0))))
 			   (elt %response 6))
@@ -437,7 +441,9 @@ This makes sense when you look at the call to list:
 	       (if (>= (elt %response 1) 400)
 		   (error 'xplan-api-error
 			  :reason-message
-			  (if (elt %response 0)
+			  (if (and (elt %response 0)
+				   (string-equal (cdr (assoc :content-type (elt %response 2)))
+						 "application/json"))
 			      (with-xplan-api-json-handlers
 				(json:decode-json-from-string (babel:octets-to-string (elt %response 0))))
 			      (elt %response 6))
@@ -445,7 +451,9 @@ This makes sense when you look at the call to list:
 			  :request request)))))
       (setf
        response (if (elt %response 0)
-		    (if inhibit-json-decode
+		    (if (or inhibit-json-decode
+			    (not (string-equal "application/json"
+					       (cdr (assoc :content-type (elt %response 2))))))
 			(babel:octets-to-string (elt %response 0))
 			(with-xplan-api-json-handlers
 			  (convert-bulk-to-native

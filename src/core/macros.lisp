@@ -124,7 +124,7 @@ field -> (if field `(("field" . ,field)))
       (setf sparms (parm-processor inhibit-single hidden-single-parameters)
 	    bparms (parm-processor inhibit-bulk hidden-bulk-parameters)))
     `(progn
-       ,@(if (not (boundp name))
+       ,@(if (not (fboundp name))
 	     `((defgeneric ,name (session method &key &allow-other-keys))))
        ,@(if (not inhibit-single)
 	     `((defmethod ,name ((session xplan-session) (method (eql ,method))
