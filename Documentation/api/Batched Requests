@@ -109,7 +109,7 @@ Transactions
 See Transactions.
 
 The requests inside a bulk request occur within an implicit transaction.
-If you specify a transaction, manually, and you can even create a transaction inside a bulk request and reference it using JSONPath
+You can specify a transaction manually, you can also create a transaction inside a bulk request and reference it using JSONPath.
 
 Limits
 ======
