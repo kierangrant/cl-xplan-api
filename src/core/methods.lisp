@@ -243,7 +243,7 @@ This makes sense when you look at the call to list:
 		 (apply
 		  *api-call-function*
 		  request-url
-		  :method :post
+		  :method method
 		  :force-binary T
 		  :cookie-jar session-state
 		  :user-agent *user-agent*

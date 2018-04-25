@@ -66,3 +66,18 @@ Description: Testing Session for testing and development purposes.
        (if (and content content-type)
 	   (append `(:content ,content :content-type ,content-type) drakma-settings)
 	   drakma-settings)))))
+
+(defmacro with-dummy-call (&body body)
+  `(let ((*api-call-function*
+	  (lambda (&rest rest)
+	    (format *xplan-api-debug*
+		    "Called with:~%~S~%" rest)
+	    (values
+	     #.(babel:string-to-octets "[]")
+	     200
+	     '(("Content-Type" . "application/json"))
+	     nil
+	     nil
+	     nil
+	     "OK"))))
+     ,@body))

@@ -30,6 +30,7 @@ Description: /entity/client/debt_qualifier/au/scenario API functions
   (entity_id scenario_id) (proposed_loan_id)
   :resource (format nil "/entity/client/~A/debt_qualifier/au/scenario/~A" entity_id scenario_id)
   :single-method :post
+  :single-parms-as-body t
   :single-resource (format nil "/entity/client/~A/debt_qualifier/au/scenario/~A?_method=implement" entity_id scenario_id))
 
 ;; client-v2
@@ -45,6 +46,7 @@ Description: /entity/client/debt_qualifier/au/scenario API functions
   (entity_id scenario_id) (proposed_loan_id)
   :resource (format nil "/entity/client-v2/~A/debt_qualifier/au/scenario/~A" entity_id scenario_id)
   :single-method :post
+  :single-parms-as-body t
   :single-resource (format nil "/entity/client-v2/~A/debt_qualifier/au/scenario/~A?_method=implement" entity_id scenario_id))
 
 ;; client-v3
@@ -60,4 +62,5 @@ Description: /entity/client/debt_qualifier/au/scenario API functions
   (entity_id scenario_id) (proposed_loan_id)
   :resource (format nil "/entity/client-v3/~A/debt_qualifier/au/scenario/~A" entity_id scenario_id)
   :single-method :post
+  :single-parms-as-body t
   :single-resource (format nil "/entity/client-v3/~A/debt_qualifier/au/scenario/~A?_method=implement" entity_id scenario_id))

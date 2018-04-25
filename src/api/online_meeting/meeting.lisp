@@ -45,5 +45,6 @@ Description: /online_meeting/meeting API functions
   (meeting_id) ()
   :documentation "Launch or Join a OnlineMeeting meeting, depending on the session user's role"
   :single-method :post
+  :single-parms-as-body T
   :single-resource (format nil "/online_meeting/meeting/~A?_method=attend" meeting_id)
   :bulk-resource (format nil "/online_meeting/meeting/~A" meeting_id))

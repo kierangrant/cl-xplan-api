@@ -30,6 +30,7 @@ Description: /entity/client/debt_qualifier/au/scenario/lender_maxloan_report API
   (entity_id scenario_id) (((download_only nil download_only-p) :cond download_only-p
 			    :value (if download_only 1 0)))
   :single-method :post
+  :single-parms-as-body t
   :single-resource (format nil "/entity/client/~A/debt_qualifier/au/scenario/~A/lender_maxloan_report?_method=abstractread" entity_id scenario_id)
   :bulk-method :abstractread
   :bulk-resource (format nil "/entity/client/~A/debt_qualifier/au/scenario/~A/lender_maxloan_report" entity_id scenario_id))
@@ -47,6 +48,7 @@ Description: /entity/client/debt_qualifier/au/scenario/lender_maxloan_report API
   (entity_id scenario_id) (((download_only nil download_only-p) :cond download_only-p
 			    :value (if download_only 1 0)))
   :single-method :post
+  :single-parms-as-body t
   :single-resource (format nil "/entity/client-v2/~A/debt_qualifier/au/scenario/~A/lender_maxloan_report?_method=abstractread" entity_id scenario_id)
   :bulk-method :abstractread
   :bulk-resource (format nil "/entity/client-v2/~A/debt_qualifier/au/scenario/~A/lender_maxloan_report" entity_id scenario_id))
@@ -64,6 +66,7 @@ Description: /entity/client/debt_qualifier/au/scenario/lender_maxloan_report API
   (entity_id scenario_id) (((download_only nil download_only-p) :cond download_only-p
 			    :value (if download_only 1 0)))
   :single-method :post
+  :single-parms-as-body t
   :single-resource (format nil "/entity/client-v3/~A/debt_qualifier/au/scenario/~A/lender_maxloan_report?_method=abstractread" entity_id scenario_id)
   :bulk-method :abstractread
   :bulk-resource (format nil "/entity/client-v3/~A/debt_qualifier/au/scenario/~A/lender_maxloan_report" entity_id scenario_id))

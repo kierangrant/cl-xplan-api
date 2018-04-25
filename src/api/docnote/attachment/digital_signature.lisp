@@ -25,6 +25,7 @@ Description: /docnote/attachment/digital_signature API functions
 ;; docnote/attachment-v3/digital_signature - POST /resourceful/docnote/:docid/attachment-v3/:docpartid/digital_signature?_method=post
 (define-entrypoint docnote/attachment-v3/digital_signature :post
   (docid docpartid) (due_in_days)
+  :single-parms-as-body T
   :single-resource (format nil "/docnote/~A/attachment-v3/~A/digital_signature?_method=post" docid docpartid)
   :bulk-resource (format nil "/docnote/~A/attachment-v3/~A/digital_signature" docid docpartid))
 
@@ -36,5 +37,6 @@ Description: /docnote/attachment/digital_signature API functions
 ;; docnote-v2/attachment-v3/digital_signature - POST /resourceful/docnote-v2/:docid/attachment-v3/:docpartid/digital_signature?_method=post
 (define-entrypoint docnote-v2/attachment-v3/digital_signature :post
   (docid docpartid) (due_in_days)
+  :single-parms-as-body T
   :single-resource (format nil "/docnote-v2/~A/attachment-v3/~A/digital_signature?_method=post" docid docpartid)
   :bulk-resource (format nil "/docnote-v2/~A/attachment-v3/~A/digital_signature" docid docpartid))

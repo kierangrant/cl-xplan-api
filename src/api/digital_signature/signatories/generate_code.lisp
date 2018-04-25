@@ -21,7 +21,7 @@ Description: /digital_signature/signatories/generate_code API Functions
 (define-entrypoint digital_signature/signatories/generate_code :post
   (digital_signature_id signatory_id) ()
   :single-parms-as-body T
-  :single-resource (format nil "/digital_signature/~A/signatories/~A/generate_code"
+  :single-resource (format nil "/digital_signature/~A/signatories/~A/generate_code?_method=post"
 			 digital_signature_id signatory_id)
   :bulk-resource (format nil "/digital_signature/~A/signatories/~A/generate_code"
 			 digital_signature_id signatory_id))
