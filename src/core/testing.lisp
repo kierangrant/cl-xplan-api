@@ -46,14 +46,20 @@ Description: Testing Session for testing and development purposes.
        (lambda (&rest rest)
 	 (if (slot-value session 'trace)
 	     (progn
-	       (format *debug-io* "--- BEGIN TRACE ---~%API Called with:~%~S~%" rest)
+	       (format *xplan-api-debug* "--- BEGIN TRACE ---~%API Called with:~%~S~%" rest)
+	       (force-output *xplan-api-debug*)
 	       (let ((response (multiple-value-list (apply *api-call-function* rest))))
-		 (format *debug-io* "API Response:~%~S~%" response)
+		 ;; Let's not output actual content if we can instead decode it!
+		 (format *xplan-api-debug* "API Response:~%~S~%" (cdr response))
+		 (force-output *xplan-api-debug*)
 		 (if (string= (cdr (assoc :content-type (elt response 2))) "application/json")
-		     (format *debug-io* "Decoded Content:~%~A~%"
+		     (format *xplan-api-debug* "Response Content:~%~A~%"
 			     (babel:octets-to-string
-			      (elt response 0))))
-		 (format *debug-io* "--- END TRACE ---~%")
+			      (elt response 0)))
+		     (format *xplan-api-debug* "Raw Content:~%~A~%"
+			     (elt response 0)))
+		 (format *xplan-api-debug* "--- END TRACE ---~%")
+		 (force-output *xplan-api-debug*)
 		 (values-list response)))
 	     (apply *api-call-function* rest)))
        (get-request-url request)
