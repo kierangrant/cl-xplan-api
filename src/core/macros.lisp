@@ -209,8 +209,8 @@ with request-defaults setting values for all if thier value is omitted.
     ((name item-name item-prefix &optional subitem-name item-postfix)
      &key request-defaults get-defaults post-defaults put-defaults patch-defaults delete-defaults)
   (destructuring-bind  (&key ((:extra-args extra-args-default))
-			     ((:list-obj-field list-obj-field-default) 'list_obj_index)
-			     ((:sublist-obj-field sublist-obj-field-default) 'sublist_obj_index)
+			     ((:list-obj-field list-obj-field-default) 'cl-xplan-api/api::list_obj_index)
+			     ((:sublist-obj-field sublist-obj-field-default) 'cl-xplan-api/api::sublist_obj_index)
 			     ((:inhibit inhibit-default))
 			     ((:inhibit-subitem-name inhibit-subitem-name-default))
 			     ((:inhibit-itemid inhibit-itemid-default))
@@ -221,12 +221,12 @@ with request-defaults setting values for all if thier value is omitted.
 			     ((:sublist-obj-field get-sublist-obj-field) sublist-obj-field-default)
 			     ((:default-args get-default-args)
 			      (if subitem-name
-				  `((indexes :cond (and (not ,get-sublist-obj-field) indexes))
-				    fields
-				    (page :cond (and (not ,get-sublist-obj-field) page)))
-				  `((indexes :cond (and (not ,get-list-obj-field) indexes))
-				    fields
-				    (page :cond (and (not ,get-list-obj-field) page)))))
+				  `((cl-xplan-api/api::indexes :cond (and (not ,get-sublist-obj-field) cl-xplan-api/api::indexes))
+				    cl-xplan-api/api::fields
+				    (cl-xplan-api/api::page :cond (and (not ,get-sublist-obj-field) cl-xplan-api/api::page)))
+				  `((cl-xplan-api/api::indexes :cond (and (not ,get-list-obj-field) cl-xplan-api/api::indexes))
+				    cl-xplan-api/api::fields
+				    (cl-xplan-api/api::page :cond (and (not ,get-list-obj-field) cl-xplan-api/api::page)))))
 			     ((:inhibit get-inhibit) inhibit-default)
 			     ((:inhibit-subitem-name get-inhibit-subitem-name) inhibit-subitem-name-default)
 			     ((:inhibit-itemid get-inhibit-itemid) inhibit-itemid-default)
@@ -267,7 +267,7 @@ with request-defaults setting values for all if thier value is omitted.
     `(progn
    ,@(if (not get-inhibit)
      `((define-entrypoint ,name :get
-	 (entity_id
+	 (cl-xplan-api/api::entity_id
 	  ,@(if (not get-inhibit-itemid) `(,get-list-obj-field))
 	  ,@(if (and subitem-name (not get-inhibit-subitemid)) `(,get-sublist-obj-field)))
 	 ,(append get-default-args get-extra-args)
@@ -291,12 +291,12 @@ with request-defaults setting values for all if thier value is omitted.
 			    ,@(if (and subitem-name (not get-inhibit-subitemid))
 				  '("~@[/~A~]")) ; get-sublist-obj-field
 			    ,@(if item-postfix `("/" ,item-postfix))))
-		 entity_id
+		 cl-xplan-api/api::entity_id
 		 ,@(if (not get-inhibit-itemid) `(,get-list-obj-field))
 		 ,@(if (and subitem-name (not get-inhibit-subitemid)) `(,get-sublist-obj-field))))))
    ,@(if (not post-inhibit)
      `((define-entrypoint ,name :post
-	 (entity_id
+	 (cl-xplan-api/api::entity_id
 	  ,@(if (and subitem-name (not post-inhibit-itemid)) `(,post-list-obj-field)))
 	 ,(append post-default-args post-extra-args)
 	 :resource
@@ -313,12 +313,12 @@ with request-defaults setting values for all if thier value is omitted.
 			    ,@(if (and subitem-name (not post-inhibit-subitem-name))
 				  `("/" ,subitem-name))
 			    ,@(if item-postfix `("/" ,item-postfix))))
-		 entity_id
+		 cl-xplan-api/api::entity_id
 		 ,@(if (and subitem-name (not post-inhibit-itemid))
 		       `(,post-list-obj-field))))))
    ,@(if (not put-inhibit)
      `((define-entrypoint ,name :put
-	 (entity_id
+	 (cl-xplan-api/api::entity_id
 	  ,@(if (and subitem-name (not put-inhibit-itemid)) `(,put-list-obj-field)))
 	 ,(append put-default-args put-extra-args)
 	 :resource
@@ -335,12 +335,12 @@ with request-defaults setting values for all if thier value is omitted.
 			    ,@(if (and subitem-name (not put-inhibit-subitem-name))
 				  `("/" ,subitem-name))
 			    ,@(if item-postfix `("/" ,item-postfix))))
-		 entity_id
+		 cl-xplan-api/api::entity_id
 		 ,@(if (and subitem-name (not put-inhibit-itemid))
 		       `(,put-list-obj-field))))))
    ,@(if (not patch-inhibit)
      `((define-entrypoint ,name :patch
-	 (entity_id
+	 (cl-xplan-api/api::entity_id
 	  ,@(if (not patch-inhibit-itemid) `(,patch-list-obj-field))
 	  ,@(if (and subitem-name (not patch-inhibit-subitemid)) `(,patch-sublist-obj-field)))
 	 ,(append patch-default-args patch-extra-args)
@@ -360,12 +360,12 @@ with request-defaults setting values for all if thier value is omitted.
 			    ,@(if (and subitem-name (not patch-inhibit-subitemid))
 				  '("/~A")) ; patch-sublist-obj-field
 			    ,@(if item-postfix `("/" ,item-postfix))))
-		 entity_id
+		 cl-xplan-api/api::entity_id
 		 ,@(if (not patch-inhibit-itemid) `(,patch-list-obj-field))
 		 ,@(if (and subitem-name (not patch-inhibit-subitemid)) `(,patch-sublist-obj-field))))))
    ,@(if (not delete-inhibit)
      `((define-entrypoint ,name :delete
-	 (entity_id
+	 (cl-xplan-api/api::entity_id
 	  ,@(if (not delete-inhibit-itemid) `(,delete-list-obj-field))
 	  ,@(if (and subitem-name (not delete-inhibit-subitemid)) `(,delete-sublist-obj-field)))
 	 ,(append delete-default-args delete-extra-args)
@@ -385,7 +385,7 @@ with request-defaults setting values for all if thier value is omitted.
 			    ,@(if (and subitem-name (not delete-inhibit-subitemid))
 				  `("/~A")) ; delete-sublist-obj-field
 			    ,@(if item-postfix `("/" ,item-postfix))))
-		 entity_id
+		 cl-xplan-api/api::entity_id
 		 ,@(if (not delete-inhibit-itemid) `(,delete-list-obj-field))
 		 ,@(if (and subitem-name (not delete-inhibit-subitemid)) `(,delete-sublist-obj-field))))))))))))))
 
