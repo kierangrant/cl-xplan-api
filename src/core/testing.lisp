@@ -46,7 +46,8 @@ Description: Testing Session for testing and development purposes.
        (lambda (&rest rest)
 	 (if (slot-value session 'trace)
 	     (progn
-	       (format *xplan-api-debug* "--- BEGIN TRACE ---~%API Called with:~%~S~%" rest)
+	       (format *xplan-api-debug* "--- BEGIN TRACE ---~%Timestamp: ~A~%API Called with:~%~S~%"
+		       (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ") rest)
 	       (force-output *xplan-api-debug*)
 	       (let ((response (multiple-value-list (apply *api-call-function* rest))))
 		 ;; Let's not output actual content if we can instead decode it!
@@ -58,7 +59,8 @@ Description: Testing Session for testing and development purposes.
 			      (elt response 0)))
 		     (format *xplan-api-debug* "Raw Content:~%~A~%"
 			     (elt response 0)))
-		 (format *xplan-api-debug* "--- END TRACE ---~%")
+		 (format *xplan-api-debug* "Timestamp: ~A~%--- END TRACE ---~%"
+			 (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ"))
 		 (force-output *xplan-api-debug*)
 		 (values-list response)))
 	     (apply *api-call-function* rest)))
