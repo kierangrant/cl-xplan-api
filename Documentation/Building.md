@@ -1,4 +1,4 @@
-cl-xplan-api is build-able using the asdf system. https://common-lisp.net/project/asdf/
+cl-xplan-api is build-able using the [asdf system](https://common-lisp.net/project/asdf/).
 
 The main target audience for this library is server-side software, as such, this code is in LISP, because on a server you can use whatever language you like.
 
@@ -15,18 +15,21 @@ These are the direct dependencies for cl-xplan-api, they will depend on others i
 - split-sequence - For breaking sequences up into smaller parts. Used for reading in Scientific notation Big Decimals That XPLAN Sometimes throws. Also used to get domain for testing session... because I'm lazy and didn't want to write that myself...
 
 Once you have either loaded quicklisp, or downloaded all dependencies (recursively) somewhere and put links in the ~/common-lisp/ directory (or setup ASDF Source Registry) it should be as easy as:
-
+```lisp
 (require "asdf")
 (asdf:make "cl-xplan-api")
 ;; Done!
+```
 
 If you are using Quicklisp, follow these instructions:
+```shell
 mkdir ~/common-lisp/
 cd ~/common-lisp/
 git clone https://github.com/kierangrant/cl-xplan-api.git
 git clone https://github.com/nallen05/rw-ut.git # not available through Quicklisp
 wget https://beta.quicklisp.org/quicklisp.org
-
+```
+```lisp
 sbcl --load quicklisp.lisp
 ;Then install quicklisp with
 (quicklisp-quickstart:install)
@@ -55,12 +58,17 @@ sbcl --load ~/quicklisp/setup.lisp
 (defvar *session/user* (session/user *session* :get))
 ; returns a Hash Table. (For multiple response entry-points, it returns a vector of hash tables)
 (maphash (lambda (k v) (format t "~S: ~S~%" k v)) *session/user*)
+```
 
-Note: If you are on Windows, you will need to Download/Build OpenSSL for your Common LISP environment and have a cacerts.txt file or a CA Directory to setup Drakma to point towards.
+**NOTE**: If you are on Windows, you will need to Download/Build OpenSSL for your Common LISP environment and have a cacerts.txt file or a CA Directory to setup Drakma to point towards.
 For example:
+```lisp
 (setf (getf (cl-xplan-api/core:drakma-settings *session) :ca-file) "/path/to/cacert.crt")
+```
 
-https://www.gnu.org/software/emacs/
-https://common-lisp.net/project/slime/
-http://www.sbcl.org/
-https://www.quicklisp.org/beta/
+Resources
+---------
+- [GNU Emacs](https://www.gnu.org/software/emacs/)
+- [SLIME](https://common-lisp.net/project/slime/)
+- [SBCL](http://www.sbcl.org/)
+- [Quicklisp](https://www.quicklisp.org/beta/)
