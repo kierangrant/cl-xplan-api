@@ -214,7 +214,8 @@ with request-defaults setting values for all if thier value is omitted.
 			     ((:inhibit inhibit-default))
 			     ((:inhibit-subitem-name inhibit-subitem-name-default))
 			     ((:inhibit-itemid inhibit-itemid-default))
-			     ((:inhibit-subitemid inhibit-subitemid-default)))
+			     ((:inhibit-subitemid inhibit-subitemid-default))
+			     ((:single-parms-as-body single-parms-as-body-default)))
       request-defaults
   (destructuring-bind  (&key ((:extra-args get-extra-args) extra-args-default)
 			     ((:list-obj-field get-list-obj-field) list-obj-field-default)
@@ -237,14 +238,16 @@ with request-defaults setting values for all if thier value is omitted.
 			     ((:default-args post-default-args) '(fields extra_return_fields))
 			     ((:inhibit post-inhibit) inhibit-default)
 			     ((:inhibit-subitem-name post-inhibit-subitem-name) inhibit-subitem-name-default)
-			     ((:inhibit-itemid post-inhibit-itemid) inhibit-itemid-default))
+			     ((:inhibit-itemid post-inhibit-itemid) inhibit-itemid-default)
+			     ((:single-parms-as-body post-single-parms-as-body) single-parms-as-body-default))
       post-defaults
   (destructuring-bind (&key ((:extra-args put-extra-args) extra-args-default)
 			    ((:list-obj-field put-list-obj-field) list-obj-field-default)
 			    ((:default-args put-default-args) '(fields extra_return-fields))
 			    ((:inhibit put-inhibit) inhibit-default)
 			    ((:inhibit-subitem-name put-inhibit-subitem-name) inhibit-subitem-name-default)
-			    ((:inhibit-itemid put-inhibit-itemid) inhibit-itemid-default))
+			    ((:inhibit-itemid put-inhibit-itemid) inhibit-itemid-default)
+			    ((:single-parms-as-body put-single-parms-as-body) single-parms-as-body-default))
       put-defaults
   (destructuring-bind (&key ((:extra-args patch-extra-args) extra-args-default)
 			    ((:list-obj-field patch-list-obj-field) list-obj-field-default)
@@ -253,7 +256,8 @@ with request-defaults setting values for all if thier value is omitted.
 			    ((:inhibit patch-inhibit) inhibit-default)
 			    ((:inhibit-subitem-name patch-inhibit-subitem-name) inhibit-subitem-name-default)
 			    ((:inhibit-itemid patch-inhibit-itemid) inhibit-itemid-default)
-			    ((:inhibit-subitemid patch-inhibit-subitemid) inhibit-subitemid-default))
+			    ((:inhibit-subitemid patch-inhibit-subitemid) inhibit-subitemid-default)
+			    ((:single-parms-as-body patch-single-parms-as-body) single-parms-as-body-default))
       patch-defaults
   (destructuring-bind (&key ((:extra-args delete-extra-args) extra-args-default)
 			    ((:list-obj-field delete-list-obj-field) list-obj-field-default)
@@ -299,6 +303,7 @@ with request-defaults setting values for all if thier value is omitted.
 	 (cl-xplan-api/api::entity_id
 	  ,@(if (and subitem-name (not post-inhibit-itemid)) `(,post-list-obj-field)))
 	 ,(append post-default-args post-extra-args)
+	 :single-parms-as-body ,post-single-parms-as-body
 	 :resource
 	 ;; item-prefix/:entity_id/item-name/:list-obj-field/subitem-name/item-postfix
 	 ;; list-obj-field is ommited if post-inhibit-itemid is T. It will only appear if subitem-name has a value
@@ -321,6 +326,7 @@ with request-defaults setting values for all if thier value is omitted.
 	 (cl-xplan-api/api::entity_id
 	  ,@(if (and subitem-name (not put-inhibit-itemid)) `(,put-list-obj-field)))
 	 ,(append put-default-args put-extra-args)
+	 :single-parms-as-body ,put-single-parms-as-body
 	 :resource
 	 ;; item-prefix/:entity_id/item-name/:list-obj-field/subitem-name/item-postfix
 	 ;; list-obj-field is ommited if put-inhibit-itemid is T. It will only appear if subitem-name has a value
@@ -344,6 +350,7 @@ with request-defaults setting values for all if thier value is omitted.
 	  ,@(if (not patch-inhibit-itemid) `(,patch-list-obj-field))
 	  ,@(if (and subitem-name (not patch-inhibit-subitemid)) `(,patch-sublist-obj-field)))
 	 ,(append patch-default-args patch-extra-args)
+	 :single-parms-as-body ,patch-single-parms-as-body
 	 :resource
 	 ;; item-prefix/:entity_id/item-name/:list-obj-field/subitem-name/:subitem-obj-field/postfix
 	 ;; list-obj-field is ommited if patch-inhibit-itemid is T
