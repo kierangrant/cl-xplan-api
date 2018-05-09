@@ -125,7 +125,7 @@ field -> (if field `(("field" . ,field)))
 	    bparms (parm-processor inhibit-bulk hidden-bulk-parameters)))
     `(progn
        ,@(if (not (fboundp name))
-	     `((defgeneric ,name (session method &key &allow-other-keys))))
+	     `((defgeneric ,name (session method &key))))
        ,@(if (not inhibit-single)
 	     `((defmethod ,name ((session xplan-session) (method (eql ,method))
 				 &key ,@(if (not (or inhibit-transaction single-content-p))
