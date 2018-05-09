@@ -35,28 +35,37 @@ Description: /docnote API Functions
    (docsubtype :cond (and (not docid) docsubtype))
    (modified_by :cond (and (not docid) modified_by))
    (keywords :cond (and (not docid) keywords))
-   ((created_date nil created_date-p) :cond (not docid)
+   ;; Dates are optional, only include if it is provided or part provided. Not if NIL
+   (created_date
+    :cond (and (not docid) (or created_date created_date.start_date created_date.end_date))
     :value
-    (if created_date-p created_date
+    ;; If explicitly provided a value, it overrides any part field
+    (if created_date created_date
 	(cond-hash
 	  (created_date.start_date "start_date")
 	  (created_date.end_date "end_date"))))
-   ((modified_date nil modified_date-p) :cond (not docid)
+   (modified_date
+    :cond (and (not docid) (or modified_date modified_date.start_date modified_date.end_date))
     :value
-    (if modified_date-p modified_date
+    (if modified_date modified_date
 	(cond-hash
 	  (modified_date.start_date "start_date")
 	  (modified_date.end_date "end_date"))))
-   ((reference_date nil reference_date-p) :cond (not docid)
+   (reference_date
+    :cond (and (not docid) (or modified_date modified_date.start_date modified_date.end_date))
     :value
-    (if reference_date-p reference_date
+    (if reference_date reference_date
 	(cond-hash
 	  (reference_date.start_date "start_date")
 	  (reference_date.end_date "end_date"))))
+   ;; For get request, we cannot include parameters in body as JSON, thus truth and falsity
+   ;; must be represented by 0 or 1, not true or false.
    ((session_info nil sinfo-p) :cond (and (not docid) sinfo-p) :value (if session_info 1 0))
-   ((firstread nil firstread-p) :cond (not docid)
+   (firstread
+    :cond (and (not docid) (or firstread firstread.entity_id read-notes-p firstread.read_entity_roles
+			       firstread.max_num_entities))
     :value
-    (if firstread-p firstread
+    (if firstread firstread
 	(cond-hash
 	  (firstread.entity_id "entity_id")
 	  (read-notes-p "include_read_notes" firstread.include_read_notes)
@@ -75,55 +84,61 @@ Description: /docnote API Functions
 (define-entrypoint docnote :post
   ()
   (body mimetype subject metadata
-	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted 1 0))
+	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted t json:+json-false+))
 	reference_date entity_ids
-	((is_locked nil locked-p) :cond locked-p :value (if is_locked 1 0))
+	((is_locked nil locked-p) :cond locked-p :value (if is_locked t json:+json-false+))
 	permission shared_entity_ids
 	((is_client_access_accessible nil client-access-p) :cond client-access-p
-	 :value (if is_client_access_accessible 1 0))
+	 :value (if is_client_access_accessible t json:+json-false+))
 	((is_client_share_all nil client-share-p) :cond client-share-p
-	 :value (if is_client_share_all 1 0))
+	 :value (if is_client_share_all t json:+json-false+))
 	((is_referrer_accessible nil referrer-access-p) :cond referrer-access-p
-	 :value (if is_referrer_accessible 1 0))
+	 :value (if is_referrer_accessible t json:+json-false+))
 	((is_profadviser_accessible nil profadviser-access-p) :cond profadviser-access-p
-	 :value (if is_profadviser_accessible 1 0))
+	 :value (if is_profadviser_accessible t json:+json-false+))
 	edit_privilege
-	((is_published nil published-p) :cond published-p :value (if is_published 1 0))
+	((is_published nil published-p) :cond published-p
+	 :value (if is_published t json:+json-false+))
 	summary guid
-	((is_unallocated nil unallocated-p) :cond unallocated-p :value (if is_unallocated 1 0))
+	((is_unallocated nil unallocated-p) :cond unallocated-p
+	 :value (if is_unallocated t json:+json-false+))
 	categories
 	accounts
 	account_group_codes
 	doctype
 	docsubtype
 	actual_creator)
+  :single-parms-as-body t
   :resource "/docnote")
 
 ;; docnote - PATCH /resourceful/docnote/:docid
 (define-entrypoint docnote :patch
   (docid)
   (body mimetype subject metadata
-	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted 1 0))
+	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted t json:+json-false+))
 	reference_date entity_ids
-	((is_locked nil locked-p) :cond locked-p :value (if is_locked 1 0))
+	((is_locked nil locked-p) :cond locked-p :value (if is_locked t json:+json-false+))
 	permission shared_entity_ids
 	((is_client_access_accessible nil client-access-p) :cond client-access-p
-	 :value (if is_client_access_accessible 1 0))
+	 :value (if is_client_access_accessible t json:+json-false+))
 	((is_client_share_all nil client-share-p) :cond client-share-p
-	 :value (if is_client_share_all 1 0))
+	 :value (if is_client_share_all t json:+json-false+))
 	((is_referrer_accessible nil referrer-access-p) :cond referrer-access-p
-	 :value (if is_referrer_accessible 1 0))
+	 :value (if is_referrer_accessible t json:+json-false+))
 	((is_profadviser_accessible nil profadviser-access-p) :cond profadviser-access-p
-	 :value (if is_profadviser_accessible 1 0))
+	 :value (if is_profadviser_accessible t json:+json-false+))
 	edit_privilege
-	((is_published nil published-p) :cond published-p :value (if is_published 1 0))
+	((is_published nil published-p) :cond published-p
+	 :value (if is_published t json:+json-false+))
 	summary guid
-	((is_unallocated nil unallocated-p) :cond unallocated-p :value (if is_unallocated 1 0))
+	((is_unallocated nil unallocated-p) :cond unallocated-p
+	 :value (if is_unallocated t json:+json-false+))
 	categories
 	accounts
 	account_group_codes
 	doctype
 	docsubtype)
+  :single-parms-as-body t
   :resource (format nil "/docnote/~A" docid))
 
 ;; docnote - DELETE /resourceful/docnote/:docid
@@ -147,28 +162,33 @@ Description: /docnote API Functions
    (docsubtype :cond (and (not docid) docsubtype))
    (modified_by :cond (and (not docid) modified_by))
    (keywords :cond (and (not docid) keywords))
-   ((created_date nil created_date-p) :cond (not docid)
+   (created_date
+    :cond (and (not docid) (or created_date created_date.start_date created_date.end_date))
     :value
-    (if created_date-p created_date
+    (if created_date created_date
 	(cond-hash
 	  (created_date.start_date "start_date")
 	  (created_date.end_date "end_date"))))
-   ((modified_date nil modified_date-p) :cond (not docid)
+   (modified_date
+    :cond (and (not docid) (or modified_date modified_date.start_date modified_date.end_date))
     :value
-    (if modified_date-p modified_date
+    (if modified_date modified_date
 	(cond-hash
 	  (modified_date.start_date "start_date")
 	  (modified_date.end_date "end_date"))))
-   ((reference_date nil reference_date-p) :cond (not docid)
+   (reference_date
+    :cond (and (not docid) (or reference_date reference_date.start_date reference_date.end_date))
     :value
-    (if reference_date-p reference_date
+    (if reference_date reference_date
 	(cond-hash
 	  (reference_date.start_date "start_date")
 	  (reference_date.end_date "end_date"))))
    ((session_info nil sinfo-p) :cond (and (not docid) sinfo-p) :value (if session_info 1 0))
-   ((firstread nil firstread-p) :cond (not docid)
+   (firstread
+    :cond (and (not docid) (or firstread firstread.entity_id include-read-p firstread.read_entity_roles
+			       firstread.max_num_entities))
     :value
-    (if firstread-p firstread
+    (if firstread firstread
 	(cond-hash
 	  (firstread.entity_id "entity_id")
 	  (include-read-p "include_read_notes" (if firstread.include_read_notes 1 0))
@@ -190,47 +210,55 @@ Description: /docnote API Functions
 (define-entrypoint docnote-v2 :post
   ()
   (body mimetype subject metadata
-	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted 1 0))
+	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted t json:+json-false+))
 	reference_date
 	entity_ids
-	((is_locked nil locked-p) :cond locked-p :value (if is_locked 1 0))
+	((is_locked nil locked-p) :cond locked-p :value (if is_locked t json:+json-false+))
 	permission shared_entity_ids
 	((is_client_access_accessible nil client-access-p) :cond client-access-p
-	 :value (if is_client_access_accessible 1 0))
-	((is_client_share_all nil client-share-p) :cond client-share-p :value (if is_client_share_all 1 0))
+	 :value (if is_client_access_accessible t json:+json-false+))
+	((is_client_share_all nil client-share-p) :cond client-share-p
+	 :value (if is_client_share_all t json:+json-false+))
 	((is_referrer_accessible nil referrer-access-p) :cond referrer-access-p
-	 :value (if is_referrer_accessible 1 0))
+	 :value (if is_referrer_accessible t json:+json-false+))
 	((is_profadviser_accessible nil profadviser-access-p) :cond profadviser-access-p
-	 :value (if is_profadviser_accessible 1 0))
+	 :value (if is_profadviser_accessible t json:+json-false+))
 	edit_privilege
-	((is_published nil published-p) :cond published-p :value (if is_published 1 0))
+	((is_published nil published-p) :cond published-p
+	 :value (if is_published t json:+json-false+))
 	summary guid
-	((is_unallocated nil unallocated-p) :cond unallocated-p :value (if is_unallocated 1 0))
+	((is_unallocated nil unallocated-p) :cond unallocated-p
+	 :value (if is_unallocated t json:+json-false+))
 	categories accounts account_group_codes doctype docsubtype actual_creator)
+  :single-parms-as-body t
   :resource "/docnote-v2")
 
 ;; docnote-v2 - PATCH /resourceful/docnote-v2/:docid
 (define-entrypoint docnote-v2 :patch
-  ()
+  (docid)
   (body mimetype subject metadata
-	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted 1 0))
+	((is_deleted nil deleted-p) :cond deleted-p :value (if is_deleted t json:+json-false+))
 	reference_date
 	entity_ids
-	((is_locked nil locked-p) :cond locked-p :value (if is_locked 1 0))
+	((is_locked nil locked-p) :cond locked-p :value (if is_locked t json:+json-false+))
 	permission shared_entity_ids
 	((is_client_access_accessible nil client-access-p) :cond client-access-p
-	 :value (if is_client_access_accessible 1 0))
-	((is_client_share_all nil client-share-p) :cond client-share-p :value (if is_client_share_all 1 0))
+	 :value (if is_client_access_accessible t json:+json-false+))
+	((is_client_share_all nil client-share-p) :cond client-share-p
+	 :value (if is_client_share_all t json:+json-false+))
 	((is_referrer_accessible nil referrer-access-p) :cond referrer-access-p
-	 :value (if is_referrer_accessible 1 0))
+	 :value (if is_referrer_accessible t json:+json-false+))
 	((is_profadviser_accessible nil profadviser-access-p) :cond profadviser-access-p
-	 :value (if is_profadviser_accessible 1 0))
+	 :value (if is_profadviser_accessible t json:+json-false+))
 	edit_privilege
-	((is_published nil published-p) :cond published-p :value (if is_published 1 0))
+	((is_published nil published-p) :cond published-p
+	 :value (if is_published t json:+json-false+))
 	summary guid
-	((is_unallocated nil unallocated-p) :cond unallocated-p :value (if is_unallocated 1 0))
+	((is_unallocated nil unallocated-p) :cond unallocated-p
+	 :value (if is_unallocated t json:+json-false+))
 	categories accounts account_group_codes doctype docsubtype)
-  :resource "/docnote-v2")
+  :single-parms-as-body t
+  :resource (format nil "/docnote-v2/~A" docid))
 
 ;; docnote-v2 - DELETE /resourceful/docnote-v2/:docid
 (define-entrypoint docnote-v2 :delete
