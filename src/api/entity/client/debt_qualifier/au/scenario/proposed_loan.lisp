@@ -29,7 +29,7 @@ Description: /entity/client/debt_qualifier/au/scenario/proposed_loan API functio
 	 ((proposed_loan_investment nil proposed_loan_investment-p) :cond proposed_loan_investment-p
 	  :value (if proposed_loan_investment 1 0))
 	 ((proposed_loan_implemented nil proposed_loan_implemented-p) :cond proposed_loan_implemented-p
-	  :value (if proposed_loan_implemented 1 0)) 
+	  :value (if proposed_loan_implemented 1 0))
 	 proposed_loan_type proposed_loan_amount proposed_loan_term proposed_loan_repayment_type
 	 proposed_loan_io_term proposed_loan_feature))
     :patch-defaults
@@ -39,7 +39,7 @@ Description: /entity/client/debt_qualifier/au/scenario/proposed_loan API functio
 	 ((proposed_loan_investment nil proposed_loan_investment-p) :cond proposed_loan_investment-p
 	  :value (if proposed_loan_investment 1 0))
 	 ((proposed_loan_implemented nil proposed_loan_implemented-p) :cond proposed_loan_implemented-p
-	  :value (if proposed_loan_implemented 1 0)) 
+	  :value (if proposed_loan_implemented 1 0))
 	 proposed_loan_type proposed_loan_amount proposed_loan_term proposed_loan_repayment_type
 	 proposed_loan_io_term proposed_loan_feature))
     :put-defaults (:inhibit t))
@@ -56,7 +56,7 @@ Description: /entity/client/debt_qualifier/au/scenario/proposed_loan API functio
 	 ((proposed_loan_investment nil proposed_loan_investment-p) :cond proposed_loan_investment-p
 	  :value (if proposed_loan_investment 1 0))
 	 ((proposed_loan_implemented nil proposed_loan_implemented-p) :cond proposed_loan_implemented-p
-	  :value (if proposed_loan_implemented 1 0)) 
+	  :value (if proposed_loan_implemented 1 0))
 	 proposed_loan_type proposed_loan_amount proposed_loan_term proposed_loan_repayment_type
 	 proposed_loan_io_term proposed_loan_feature))
     :patch-defaults
@@ -66,7 +66,7 @@ Description: /entity/client/debt_qualifier/au/scenario/proposed_loan API functio
 	 ((proposed_loan_investment nil proposed_loan_investment-p) :cond proposed_loan_investment-p
 	  :value (if proposed_loan_investment 1 0))
 	 ((proposed_loan_implemented nil proposed_loan_implemented-p) :cond proposed_loan_implemented-p
-	  :value (if proposed_loan_implemented 1 0)) 
+	  :value (if proposed_loan_implemented 1 0))
 	 proposed_loan_type proposed_loan_amount proposed_loan_term proposed_loan_repayment_type
 	 proposed_loan_io_term proposed_loan_feature))
     :put-defaults (:inhibit t))
@@ -83,7 +83,7 @@ Description: /entity/client/debt_qualifier/au/scenario/proposed_loan API functio
 	 ((proposed_loan_investment nil proposed_loan_investment-p) :cond proposed_loan_investment-p
 	  :value (if proposed_loan_investment 1 0))
 	 ((proposed_loan_implemented nil proposed_loan_implemented-p) :cond proposed_loan_implemented-p
-	  :value (if proposed_loan_implemented 1 0)) 
+	  :value (if proposed_loan_implemented 1 0))
 	 proposed_loan_type proposed_loan_amount proposed_loan_term proposed_loan_repayment_type
 	 proposed_loan_io_term proposed_loan_feature))
     :patch-defaults
@@ -93,7 +93,7 @@ Description: /entity/client/debt_qualifier/au/scenario/proposed_loan API functio
 	 ((proposed_loan_investment nil proposed_loan_investment-p) :cond proposed_loan_investment-p
 	  :value (if proposed_loan_investment 1 0))
 	 ((proposed_loan_implemented nil proposed_loan_implemented-p) :cond proposed_loan_implemented-p
-	  :value (if proposed_loan_implemented 1 0)) 
+	  :value (if proposed_loan_implemented 1 0))
 	 proposed_loan_type proposed_loan_amount proposed_loan_term proposed_loan_repayment_type
 	 proposed_loan_io_term proposed_loan_feature))
     :put-defaults (:inhibit t))

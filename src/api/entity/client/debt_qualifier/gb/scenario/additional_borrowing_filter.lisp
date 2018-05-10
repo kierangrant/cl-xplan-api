@@ -29,9 +29,9 @@ Description: /entity/client/debt_qualifier/gb/scenario/additional_borrowing_filt
 	     (rate_type.fixed nil rate_type.fixed-p) (rate_type.variable nil rate_type.variable-p)
 	     (rate_type.discounted nil rate_type.discounted-p) (rate_type.tracker nil rate_type.tracker-p)
 	     (rate_type.capped nil rate_type.capped-p) (rate_type.libor nil rate_type.libor-p))
-  (additional_borrowing_quote_filter additional_borrowing_feature additional_borrowing_fee 
+  (additional_borrowing_quote_filter additional_borrowing_feature additional_borrowing_fee
    additional_borrowing_total_pay filter_lender max_floor_rate max_rate max_arrange_fee total_to_pay_years
-   init_rate_term init_from_month init_to_month broker_fee term_year term_month 
+   init_rate_term init_from_month init_to_month broker_fee term_year term_month
    (rate_type
     :cond (or rate_type rate_type.scenario_id rate_type.all_type rate_type.fixed rate_type.variable
 	      rate_type.discounted rate_type.tracker rate_type.capped rate_type.libor)
@@ -62,9 +62,9 @@ Description: /entity/client/debt_qualifier/gb/scenario/additional_borrowing_filt
 	     (rate_type.fixed nil rate_type.fixed-p) (rate_type.variable nil rate_type.variable-p)
 	     (rate_type.discounted nil rate_type.discounted-p) (rate_type.tracker nil rate_type.tracker-p)
 	     (rate_type.capped nil rate_type.capped-p) (rate_type.libor nil rate_type.libor-p))
-  (additional_borrowing_quote_filter additional_borrowing_feature additional_borrowing_fee 
+  (additional_borrowing_quote_filter additional_borrowing_feature additional_borrowing_fee
    additional_borrowing_total_pay filter_lender max_floor_rate max_rate max_arrange_fee total_to_pay_years
-   init_rate_term init_from_month init_to_month broker_fee term_year term_month 
+   init_rate_term init_from_month init_to_month broker_fee term_year term_month
    (rate_type
     :cond (or rate_type rate_type.scenario_id rate_type.all_type rate_type.fixed rate_type.variable
 	      rate_type.discounted rate_type.tracker rate_type.capped rate_type.libor)
@@ -95,9 +95,9 @@ Description: /entity/client/debt_qualifier/gb/scenario/additional_borrowing_filt
 	     (rate_type.fixed nil rate_type.fixed-p) (rate_type.variable nil rate_type.variable-p)
 	     (rate_type.discounted nil rate_type.discounted-p) (rate_type.tracker nil rate_type.tracker-p)
 	     (rate_type.capped nil rate_type.capped-p) (rate_type.libor nil rate_type.libor-p))
-  (additional_borrowing_quote_filter additional_borrowing_feature additional_borrowing_fee 
+  (additional_borrowing_quote_filter additional_borrowing_feature additional_borrowing_fee
    additional_borrowing_total_pay filter_lender max_floor_rate max_rate max_arrange_fee total_to_pay_years
-   init_rate_term init_from_month init_to_month broker_fee term_year term_month 
+   init_rate_term init_from_month init_to_month broker_fee term_year term_month
    (rate_type
     :cond (or rate_type rate_type.scenario_id rate_type.all_type rate_type.fixed rate_type.variable
 	      rate_type.discounted rate_type.tracker rate_type.capped rate_type.libor)

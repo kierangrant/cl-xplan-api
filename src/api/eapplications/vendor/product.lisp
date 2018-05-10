@@ -31,7 +31,7 @@ Description: /eapplications/vendor/product API functions
    ((disabled nil disabled-p) :cond disabled-p :value (if disabled 1 0))
    ((allowed nil allowed-p) :cond allowed-p :value (if allowed 1 0))
    ((licence_required nil licence_required-p) :cond licence_required-p :value (if licence_required 1 0))
-   ((is_passthrough nil is_passthrough-p) :cond is_passthrough-p :value (if is_passthrough 1 0))   
+   ((is_passthrough nil is_passthrough-p) :cond is_passthrough-p :value (if is_passthrough 1 0))
    code name product_type locale entity_types transaction_types properties services statuses user_groups sub_type
    last_pds_update vendor_product_code external_system_codes)
   :documentation

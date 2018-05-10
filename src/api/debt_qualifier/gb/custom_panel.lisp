@@ -20,7 +20,7 @@ Description: /debt_qualifier/gb/custom_panel API Functions
 ;; debt_qualifier/gb/custom_panel - GET /resourceful/debt_qualifier/gb/custom_panel/:entity_id and GET /resourceful/debt_qualifier/gb/custom_panel/:entity_id/:panel_id
 (define-entrypoint debt_qualifier/gb/custom_panel :get
   (entity_id panel_id) ((panel_group :cond (and (not panel_id) panel_group)))
-  :resource (format nil "GET /resourceful/debt_qualifier/gb/custom_panel/~A~@[/~A~]" entity_id panel_id))  
+  :resource (format nil "GET /resourceful/debt_qualifier/gb/custom_panel/~A~@[/~A~]" entity_id panel_id))
 
 ;; debt_qualifier/gb/custom_panel - POST /resourceful/debt_qualifier/gb/custom_panel/:entity_id
 (define-entrypoint debt_qualifier/gb/custom_panel :get
