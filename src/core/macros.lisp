@@ -80,8 +80,13 @@ field -> (if field `(("field" . ,field)))
 			       (bulk-content content bulk-content-p)
 			       (bulk-content-type content-type)
 			       (bulk-inhibit-json-decode inhibit-json-decode))
-  (if (not (eq :external (elt (multiple-value-list (find-symbol (symbol-name name))) 1)))
-      (warn "Symbol ~S is not external in package ~A" name (package-name *package*)))
+  ;; If API is not already exported, export from cl-xplan-api/api and import then re-export in cl-xplan-api
+  (if (not (eq :external
+	       (elt (multiple-value-list (find-symbol (symbol-name name) (find-package :cl-xplan-api/api))) 1)))
+      (let ((sym (find-symbol (symbol-name name) (find-package :cl-xplan-api/api))))
+	(export sym (find-package :cl-xplan-api/api))
+	(import sym (find-package :cl-xplan-api))
+	(export sym (find-package :cl-xplan-api))))
   ;; If content is provided, set {single/bulk}-content-p as if manually provided
   ;; *-content-type is required if *-content is provided !!
   (let* ((field-entries (loop for item in arglist collecting (if (typep item 'symbol) item (car item))))
