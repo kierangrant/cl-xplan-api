@@ -6,12 +6,12 @@ Development is done with EMACS using SLIME, using SBCL.
 
 These are the direct dependencies for cl-xplan-api, they will depend on others in turn. You can use quicklisp to fetch the required systems.
 
-- Drakma - HTTP Client. (Will be replaced in the future with a faster client)
+- Drakma - HTTP Client.
 - cl-json - JSON for Common LISP. Patched by cl-xplan-api to allow explicit false values
 - Babel - Convert To and From Unicode plus multi-language support
 - Decimals - Simple Decimal to String conversion. (LISP already has arbitrary precision numbers)
 - cl-base64 - Convert To and From Base64
-- rw-ut - Read and Write to ISO 8601 Date / Times to LISP Universal Time. (Unfortunately, LISP dates cannot go before 1901-01-1 00:00 GMT, which XPLAN uses... :/) Oh well.
+- rw-ut - Read and Write to ISO 8601 Date / Times to LISP Universal Time. (Unfortunately, LISP dates cannot go before 1900-01-1 00:00 GMT, which XPLAN uses... :/) Oh well.
 - split-sequence - For breaking sequences up into smaller parts. Used for reading in Scientific notation Big Decimals That XPLAN Sometimes throws. Also used to get domain for testing session... because I'm lazy and didn't want to write that myself...
 
 Once you have either loaded quicklisp, or downloaded all dependencies (recursively) somewhere and put links in the ~/common-lisp/ directory (or setup ASDF Source Registry) it should be as easy as:
