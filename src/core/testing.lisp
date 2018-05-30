@@ -89,3 +89,25 @@ Description: Testing Session for testing and development purposes.
 	     nil
 	     "OK"))))
      ,@body))
+
+(defmacro with-trace-to-stream ((stream) &body body)
+  (let ((api-sym (gensym)) (stream-sym (gensym)))
+    `(let* ((,api-sym *api-call-function*) (,stream-sym ,stream)
+	    (*api-call-function*
+	     (lambda (&rest rest)
+	       (format ,stream-sym "--- BEGIN TRACE ---~%Timestamp: ~A~%API Called with:~%~S~%"
+		       (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ") rest)
+	       (force-output ,stream-sym)
+	       (let ((response (multiple-value-list (apply ,api-sym rest))))
+		 ;; Let's not output actual content if we can instead decode it!
+		 (format ,stream-sym "API Response:~%~S~%" (cdr response))
+		 (force-output ,stream-sym)
+		 (if (string= (cdr (assoc :content-type (elt response 2))) "application/json")
+		     (format ,stream-sym "Response Content:~%~A~%"
+			     (babel:octets-to-string (elt response 0)))
+		     (format ,stream-sym "Raw Content:~%~A~%" (elt response 0)))
+		 (format ,stream-sym "Timestamp: ~A~%--- END TRACE ---~%"
+			 (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ"))
+		 (force-output ,stream-sym)
+		 (values-list response)))))
+       ,@body)))
