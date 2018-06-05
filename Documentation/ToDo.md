@@ -1,22 +1,5 @@
-The following entry-points are not yet available in this library, and will be added over time:
-
-- [ ] /entity* ; except entity/client{,-v2,-v3},{,/portfolio,/cashflow}
-- [ ] /portfolio* ; except /portfolio/{position,profit_analysis/detail,transaction,transaction_types}
-- [ ] /riskresearcher*
-- [ ] /supersolver*
-- [ ] /sysadmin*
-- [ ] /task*
-- [ ] /task_template*
-- [ ] /thread*
-- [ ] /trading*
-- [ ] /user_message*
-- [ ] /utilities*
-- [ ] /view_config*
-- [ ] /xmerge*
-
-As you can see, this library is still in it's early stages
-
-More things To do:
+To Do
+=====
 
 - [x] Add better tracing.
 This would make it possible to test parts of the library without needing a server to talk to. (Only for call HTTP format, etc)

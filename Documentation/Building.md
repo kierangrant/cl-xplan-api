@@ -8,6 +8,7 @@ These are the direct dependencies for cl-xplan-api, they will depend on others i
 
 - Drakma - HTTP Client.
 - cl-json - JSON for Common LISP. Patched by cl-xplan-api to allow explicit false values
+- json-to-clos - Simple JSON to CLOS mapper macro, depends on cl-json.
 - Babel - Convert To and From Unicode plus multi-language support
 - Decimals - Simple Decimal to String conversion. (LISP already has arbitrary precision numbers)
 - cl-base64 - Convert To and From Base64
@@ -25,7 +26,8 @@ If you are using Quicklisp, follow these instructions:
 ```shell
 mkdir ~/common-lisp/
 cd ~/common-lisp/
-git clone https://github.com/kierangrant/cl-xplan-api.git
+git clone https://gitlab.com/kierangrant/cl-xplan-api.git
+git clone https://gitlab.com/kierangrant/json-to-clos.git
 git clone https://github.com/nallen05/rw-ut.git # not available through Quicklisp
 wget https://beta.quicklisp.org/quicklisp.org
 ```
@@ -55,7 +57,7 @@ sbcl --load ~/quicklisp/setup.lisp
    :base-url "YourXPLANSite"
    :xplanid "XPLANIDCOOKIE"))
 
-(defvar *session/user* (session/user *session* :get))
+(defvar *session/user* (xplan-call *session* "session/user" :get))	
 ; returns a Hash Table. (For multiple response entry-points, it returns a vector of hash tables)
 (maphash (lambda (k v) (format t "~S: ~S~%" k v)) *session/user*)
 ```

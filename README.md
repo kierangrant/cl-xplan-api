@@ -1,5 +1,7 @@
 CL-XPLAN-API is a LISP library that makes it easier to interact with IRESS XPLAN API.
 
+This is the in development v2-next branch, see the master branch for the stable code.
+
 Whilst this software is released under the LLGPL, to actually connect to an IRESS XPLAN API Server requires you to have an API Key from them.
 
 You need a use agreement with IRESS, though, nothing stops you using this library with a server that duplicates their API.
@@ -20,7 +22,3 @@ EG:
  (getf (cl-xplan-api/core:drakma-settings *sess*) :ca-file)
  "/Path/to/cacert.perm")
 ```
-
-Please note, new entry-points are added all the time in newer XPlan Versions.
-There is no way to keep track of this other then continually reading release notes, even worse, according to IRESS, we cannot version test for an entry-point.
-We must just accept a HTTP 404 as probably meaning it isn't implemented on that version.
