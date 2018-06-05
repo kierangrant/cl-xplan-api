@@ -24,7 +24,6 @@ Description: Standard Definitions and overrides for other libraries
       (read str))
 	      "Version of XPLAN-API Library")
 (defparameter *user-agent* (concatenate 'string "CL-XPLAN-API/" *xplan-api-version*) "User-Agent to send to upstream server.")
-(defparameter *api-call-function* #'drakma:http-request "Low-Level HTTP Request function to make API request.")
 
 ;;; PUBLIC API
 

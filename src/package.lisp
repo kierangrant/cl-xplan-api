@@ -21,22 +21,27 @@ Description: Package definition for CL-XPLAN-API
   (:use :cl)
   (:export
    ;; classes
-   #:xplan-request #:xplan-request-bulk #:xplan-request-bulk-requests #:xplan-session
+   #:xplan-request #:xplan-request-bulk #:xplan-bulk-requests #:xplan-session
+   #:xplan-iso8601 #:xplan-date #:xplan-time #:xplan-currency #:xplan-binary
    ;; conditions
-   #:xplan-api-error
+   #:xplan-api-error #:xplan-api-error-bad-request #:xplan-api-error-unauthenticated #:xplan-api-error-unauthorised
+   #:xplan-api-error-not-found #:xplan-api-error-server-error #:xplan-api-error-upstream-server-error
+   #:xplan-api-error-code #:xplan-api-error-reason #:xplan-api-error-request
    ;; methods
-   #:api-key #:base-url #:content #:content-type #:delete-session #:drakma-settings #:force-init-auth
-   #:name  #:password #:prepare-request #:process-request #:parameters #:transport-version #:response
-   #:response-code #:response-msg #:response-headers #:response-time #:resource #:requests #:request-method
-   #:username #:user-agent #:xplan-api-call #:xplan-api-error-status-code #:xplan-api-error-reason-message
+   #:api-key #:username #:password #:base-url #:transport-version #:xplan-session-auto-reauth #:force-init-auth
+   #:response #:response-msg #:response-code #:response-headers #:resource #:request-method #:parameters #:content
+   #:content-type #:name #:omit-results-on-success #:response-time #:requests #:include-subtimings
+   #:xplan-iso8601-str #:xplan-currency-code #:xplan-value
+   
+   #:delete-session #:prepare-request #:process-request #:user-agent #:xplan-api-call
+   #:xplan-api-error-status-code #:xplan-api-error-reason-message
    #:xplan-api-error-request #:xplan-session-auto-reauth #:get-request-by-name
    ;; functions
    #:convert-xplan-type-to-native #:convert-native-to-xplan-type #:convert-bulk-to-native
    ;; macros
    #:with-xplan-session #:with-bulk-request
    ;; variables
-   #:*max-rounding* #:*xplan-api-debug*)
-  (:intern "DEFINE-ENTRYPOINT" "COND-HASH" "DEFINE-DYNAMICLIKE-ENTRYPOINTS"))
+   #:*max-rounding* #:*xplan-api-debug*))
 
 ;; Deleting existing packages
 (if (find-package :cl-xplan-api)

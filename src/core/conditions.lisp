@@ -18,12 +18,19 @@ Description: XPLAN API Conditions
 (in-package :cl-xplan-api/core)
 
 (define-condition xplan-api-error (error)
-  ((status-code :reader xplan-api-error-status-code :initarg :status-code)
-   (reason-message :reader xplan-api-error-reason-message :initarg :reason-message :initform NIL)
-   (request :reader xplan-api-error-request :initarg :request))
-  (:report
-   (lambda (c st)
-     (format st "XPLAN API Error ~D~:[~;: ~:*~A~]"
-	     (xplan-api-error-status-code c)
-	     (json:encode-json-to-string
-	      (xplan-api-error-reason-message c))))))
+  ((request :reader xplan-api-error-request :initarg :request)
+   (reason :reader xplan-api-error-reason :initarg :reason)))
+
+(define-condition xplan-api-error-bad-request (xplan-api-error))
+(define-condition xplan-api-error-unauthenticated (xplan-api-error))
+(define-condition xplan-api-error-unauthorised (xplan-api-error))
+(define-condition xplan-api-error-not-found (xplan-api-error))
+(define-condition xplan-api-error-server-error (xplan-api-error))
+(define-condition xplan-api-error-upstream-server-error (xplan-api-error-server-error))
+
+(defmethod xplan-api-error-code ((c xplan-api-error-bad-request)) (declare (ignore c)) 400)
+(defmethod xplan-api-error-code ((c xplan-api-error-unauthenticated)) (declare (ignore c)) 401)
+(defmethod xplan-api-error-code ((c xplan-api-error-unauthorised)) (declare (ignore c)) 403)
+(defmethod xplan-api-error-code ((c xplan-api-error-not-found)) (declare (ignore c)) 404)
+(defmethod xplan-api-error-code ((c xplan-api-error-server-error)) (declare (ignore c)) 500)
+(defmethod xplan-api-error-code ((c xplan-api-error-upstream-server-error)) (declare (ignore c)) 502)
