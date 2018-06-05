@@ -11,11 +11,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/core/testing.lisp
+File: src/testing.lisp
 Description: Testing Session for testing and development purposes.
 |#
 
-(in-package :cl-xplan-api/core)
+(in-package :cl-xplan-api)
 
 ;;; This file is for TESTING AND DEVELOPMENT ONLY
 ;;; It is not supported for actual usage

@@ -11,122 +11,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/core/methods.lisp
+File: src/methods.lisp
 Description: Methods for Classes
 |#
 
-(in-package :cl-xplan-api/core)
+(in-package :cl-xplan-api)
 
 ;;; INTERNAL
-
-#|
-Takes an object, and returns a flattened hash-table (test EQUAL).
-Keys in returned hash-table are strings.
-Keys in passed object must be either a string, integer or a symbol.
-Passed object can consist of Strings, Integers, Symbols, Hash-tables, sequences, a-lists, p-list, NIL or T. (CLOS Objects, structures, conditions and functions are *NOT* supported)
-
-Duplicate keys (test is EQUAL on key string) result in last value being used.
-
-A list is treated a p-list if it's first element is a keyword, otherwise it is treated like a sequence. This means you cannot pass a list of keywords and expect it to be treated as a sequence.
-
-Eg:
-(flatten-structure '(:foo 100 :bar (:foobar 200)))
---> Hash-table with key, value pairs:
-foo: 100
-bar.foobar: 200
-(flatten-structure '((:foo . 100) ("baR" . "cool") (:test . #(100 200 300))))
---> Hash-table with key, value pairs:
-foo: 100
-baR: "cool"
-test.0: 100
-test:1: 200
-test:2: 300
-(flatten-structure '(:foo NIL :bar T))
---> Hash-table with key, value pairs:
-foo: NIL
-bar: T
-(flatten-structure #(100 200 (:foo "bar")))
---> Hash-table with key, value pairs:
-"0": 100
-"1": 200
-"2.foo": "bar"
-
-Also, be careful with cons cells... you can easily confuse yourself, take for example:
-(list (cons ("foo" (list "mee" (list :foo "bar")))))
---> (("foo" "mee" (:FOO "bar")))
-(flatten-list (("foo" "mee" (:FOO "bar"))))
---> Hash-table with key, value pairs:
-foo.0: "mee"
-foo.1.foo: "bar"
-
-This makes sense when you look at the call to list:
-1) It makes an a-list, with one item, key "foo"
-2) It's value is a list, non-keyword first value, so treated as a sequence
-3) Sequence first value is a string
-4) Sequence second value is a p-list
-|#
-(defun flatten-structure (object)
-  (let ((pairs (make-hash-table :test #'equal)) (key (make-array 0 :adjustable t :fill-pointer 0)))
-    (if (null object) (return-from flatten-structure pairs))
-    (labels
-	((integer-to-string (int) (with-output-to-string (s) (print-object int s)))
-	 (key-to-string (key)
-	   (etypecase key
-	     (integer (integer-to-string key))
-	     (symbol (string-downcase (symbol-name key)))
-	     (string key)))
-	 (process-object (item)
-	   (cond
-	     ((or (null item) (eq item T) (typep item 'string) (typep item 'integer)
-		  (typep item 'symbol))
-	      (process-atom item))
-	     ((typep item 'hash-table)
-	      (maphash
-	       (lambda (k v)
-		 (vector-push-extend (key-to-string k) key)
-		 (process-object v)
-		 (vector-pop key))
-	       item))
-	     ((typep item 'cons)
-	      (if (not (atom (car item)))
-		  ;; are an a-list, as is of form ((ATOM . VALUE) (ATOM . VALUE) ...)
-		  (loop for (k . v) in item do
-		       (vector-push-extend (key-to-string k) key)
-		       (process-object v)
-		       (vector-pop key))
-		  ;; need to detect difference between plist and non p-list, use first element as test
-		  (if (symbolp (car item))
-		      ;; are a p-list, as is of form (ATOM VALUE ATOM VALUE ...)
-		      (loop until (= (length item) 0) do
-			   (vector-push-extend (key-to-string (pop item)) key)
-			   (process-object (pop item))
-			   (vector-pop key))
-		      ;; otherwise treat as a regular sequence
-		      (dotimes (i (length item))
-			(vector-push-extend (integer-to-string i) key)
-			(process-object (elt item i))
-			(vector-pop key)))))
-	     ((typep item 'sequence)
-	      (dotimes (i (length item))
-		(vector-push-extend (integer-to-string i) key)
-		(process-object (elt item i))
-		(vector-pop key)))
-	     (T (error 'type-error
-		       :expected-type '(or string integer symbol vector cons hash-table null
-					(member T))
-		       :datum item))))
-	 (process-atom (item)
-	   (setf
-	    (gethash
-	     (with-output-to-string (s)
-	       (dotimes (i (1- (length key)))
-		 (write-string (elt key i) s)
-		 (write-char #\. s))
-	       (write-string (elt key (1- (length key))) s))
-	     pairs)
-	    item)))
-      (process-object object))
-    pairs))
 
 (defgeneric get-request-url (request))
 
@@ -275,37 +166,7 @@ This makes sense when you look at the call to list:
 	(elt req 0)
 	NIL)))
 
-(defgeneric xplan-api-call (xplan-session &key resource method parameters content content-type inhibit-auth inhibit-json-decode &allow-other-keys))
 
-(defmethod xplan-api-call ((xplan-session xplan-session) &key resource (method :get) parameters content content-type inhibit-auth inhibit-json-decode &allow-other-keys)
-  (let ((request
-	 (make-instance
-	  'xplan-request
-	  :session xplan-session
-	  :resource resource
-	  :method method
-	  :parameters parameters
-	  :content content
-	  :content-type content-type)))
-    (process-request request :inhibit-auth inhibit-auth :inhibit-json-decode inhibit-json-decode)
-    request))
-
-(defgeneric prepare-request (request &key resource method parameters &allow-other-keys))
-(defmethod prepare-request ((request xplan-request-bulk) &key resource method parameters name omit-results-on-success inhibit-json-decode)
-  (with-slots (state requests) request
-    (if (not (eq state :prepare))
-	(error 'xplan-api-error :request request
-	       :reason-message "Cannot prepare a request once BULK request is processing or is finished"
-	       :status-code 400))
-    (vector-push-extend
-     (make-instance 'xplan-request-bulk-requests
-		    :resource (concatenate 'string "/resourceful" resource)
-		    :method method
-		    :parameters parameters
-		    :name name
-		    :omit-results-on-success omit-results-on-success
-		    :inhibit-json-decode-default inhibit-json-decode)
-     requests)))
 
 (defgeneric delete-session (session) (:documentation "Deletes a session, ignores HTTP 401 errors, returns T if session was delted, otherwise NIL. On non 401 Errors a XPLAN-API-ERROR condition is thrown."))
 (defmethod delete-session ((session xplan-session))

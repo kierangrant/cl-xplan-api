@@ -11,11 +11,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/core/definitions.lisp
+File: src/definitions.lisp
 Description: Standard Definitions and overrides for other libraries
 |#
 
-(in-package :cl-xplan-api/core)
+(in-package :cl-xplan-api)
 
 ;;; INTERNAL API
 

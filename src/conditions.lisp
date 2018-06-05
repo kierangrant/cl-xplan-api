@@ -11,11 +11,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/core/conditions.lisp
+File: src/conditions.lisp
 Description: XPLAN API Conditions
 |#
 
-(in-package :cl-xplan-api/core)
+(in-package :cl-xplan-api)
 
 (define-condition xplan-api-error (error)
   ((request :reader xplan-api-error-request :initarg :request)

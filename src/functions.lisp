@@ -11,11 +11,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/core/functions.lisp
+File: src/functions.lisp
 Description: Non-object orientated functions or internal functions
 |#
 
-(in-package :cl-xplan-api/core)
+(in-package :cl-xplan-api)
 
 ;;; INTERNAL API
 
@@ -101,7 +101,7 @@ NOTE: We only use xplan-bigdecimal for encoding, we ALWAYS decode to native NUMB
 	  (xplan-currency
 	   (json:with-object ()
 	     (json:encode-object-member "code" (xplan-currency-code object))
-	     (json:encode-object-member "value" (xplan-value object))))
+	     (json:encode-object-member "value" (xplan-bigdecimal (xplan-value object)))))
 	  (xplan-binary (json:encode-json (xplan-value object)))
 	  (xplan-bigdecimal
 	   (json:encode-json
@@ -137,3 +137,126 @@ NOTE: We only use xplan-bigdecimal for encoding, we ALWAYS decode to native NUMB
      finally
        (if restore-vector value (coerce items 'vector))))
 (defmethod xplan-types->native ((value T)) value)
+
+#|
+Takes an object, and returns a flattened hash-table (test EQUAL).
+Keys in returned hash-table are strings.
+Keys in passed object must be either a string, integer or a symbol.
+Passed object can consist of Strings, Integers, Symbols, Hash-tables, sequences, a-lists, p-list, NIL or T. (CLOS Objects, structures, conditions and functions are *NOT* supported)
+
+Duplicate keys (test is EQUAL on key string) result in last value being used.
+
+A list is treated a p-list if it's first element is a keyword, otherwise it is treated like a sequence. This means you cannot pass a list of keywords and expect it to be treated as a sequence.
+
+Eg:
+(flatten-structure '(:foo 100 :bar (:foobar 200)))
+--> Hash-table with key, value pairs:
+foo: 100
+bar.foobar: 200
+(flatten-structure '((:foo . 100) ("baR" . "cool") (:test . #(100 200 300))))
+--> Hash-table with key, value pairs:
+foo: 100
+baR: "cool"
+test.0: 100
+test:1: 200
+test:2: 300
+(flatten-structure '(:foo NIL :bar T))
+--> Hash-table with key, value pairs:
+foo: NIL
+bar: T
+(flatten-structure #(100 200 (:foo "bar")))
+--> Hash-table with key, value pairs:
+"0": 100
+"1": 200
+"2.foo": "bar"
+
+Also, be careful with cons cells... you can easily confuse yourself, take for example:
+(list (cons ("foo" (list "mee" (list :foo "bar")))))
+--> (("foo" "mee" (:FOO "bar")))
+(flatten-list (("foo" "mee" (:FOO "bar"))))
+--> Hash-table with key, value pairs:
+foo.0: "mee"
+foo.1.foo: "bar"
+
+This makes sense when you look at the call to list:
+1) It makes an a-list, with one item, key "foo"
+2) It's value is a list, non-keyword first value, so treated as a sequence
+3) Sequence first value is a string
+4) Sequence second value is a p-list
+|#
+(defun flatten-structure (object)
+  (let ((pairs (make-hash-table :test #'equal)) (key (make-array 0 :adjustable t :fill-pointer 0)))
+    (if (null object) (return-from flatten-structure pairs))
+    (labels
+	((integer-to-string (int) (with-output-to-string (s) (print-object int s)))
+	 (key-to-string (key)
+	   (etypecase key
+	     (integer (integer-to-string key))
+	     (symbol (string-downcase (symbol-name key)))
+	     (string key)))
+	 (process-object (item)
+	   (cond
+	     ((or (null item) (eq item T) (typep item 'string) (typep item 'integer)
+		  (typep item 'symbol))
+	      (process-atom item))
+	     ((typep item 'hash-table)
+	      (maphash
+	       (lambda (k v)
+		 (vector-push-extend (key-to-string k) key)
+		 (process-object v)
+		 (vector-pop key))
+	       item))
+	     ((typep item 'cons)
+	      (if (not (atom (car item)))
+		  ;; are an a-list, as is of form ((ATOM . VALUE) (ATOM . VALUE) ...)
+		  (loop for (k . v) in item do
+		       (vector-push-extend (key-to-string k) key)
+		       (process-object v)
+		       (vector-pop key))
+		  ;; need to detect difference between plist and non p-list, use first element as test
+		  (if (symbolp (car item))
+		      ;; are a p-list, as is of form (ATOM VALUE ATOM VALUE ...)
+		      (loop until (= (length item) 0) do
+			   (vector-push-extend (key-to-string (pop item)) key)
+			   (process-object (pop item))
+			   (vector-pop key))
+		      ;; otherwise treat as a regular sequence
+		      (dotimes (i (length item))
+			(vector-push-extend (integer-to-string i) key)
+			(process-object (elt item i))
+			(vector-pop key)))))
+	     ((typep item 'sequence)
+	      (dotimes (i (length item))
+		(vector-push-extend (integer-to-string i) key)
+		(process-object (elt item i))
+		(vector-pop key)))
+	     (T (error 'type-error
+		       :expected-type '(or string integer symbol vector cons hash-table null
+					(member T))
+		       :datum item))))
+	 (process-atom (item)
+	   (setf
+	    (gethash
+	     (with-output-to-string (s)
+	       (dotimes (i (1- (length key)))
+		 (write-string (elt key i) s)
+		 (write-char #\. s))
+	       (write-string (elt key (1- (length key))) s))
+	     pairs)
+	    item)))
+      (process-object object))
+    pairs))
+
+(defun %xplan-prepare-bulk (bulk-request resource method
+			    &key name content content-type omit-results-on-success inhibit-json-decode)
+  (with-slots (requests) bulk-request
+    (vector-push-extend
+     (make-instance 'xplan-request-bulk
+		    :resource resource
+		    :method method
+		    :content content
+		    :content-type content-type
+		    :name name
+		    :omit-results-on omit-results-on-success
+		    :inhibit-json-decode-default inhibit-json-decode)
+     requests)))

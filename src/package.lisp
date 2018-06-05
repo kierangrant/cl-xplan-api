@@ -17,7 +17,7 @@ Description: Package definition for CL-XPLAN-API
 
 (in-package :cl-user)
 
-(defpackage :cl-xplan-api/core
+(defpackage :cl-xplan-api
   (:use :cl)
   (:export
    ;; classes
@@ -39,31 +39,6 @@ Description: Package definition for CL-XPLAN-API
    ;; functions
    #:convert-xplan-type-to-native #:convert-native-to-xplan-type #:convert-bulk-to-native
    ;; macros
-   #:with-xplan-session #:with-bulk-request
+   #:with-xplan-session #:with-bulk-request #:xplan-call #:xplan-prepare-bulk
    ;; variables
    #:*max-rounding* #:*xplan-api-debug*))
-
-;; Deleting existing packages
-(if (find-package :cl-xplan-api)
-    (delete-package (find-package :cl-xplan-api)))
-
-(if (find-package :cl-xplan-api/api)
-    (delete-package (find-package :cl-xplan-api/api)))
-
-;; Rrecreate cl-xplan-api/api package. Exported symbols will be done by the macros that define the APIs
-(make-package :cl-xplan-api/api :use '(:cl)) ; not going to directly use cl-xplan-api/core
-(import '(cl-xplan-api/core::define-entrypoint cl-xplan-api/core::cond-hash
-	  cl-xplan-api/core::define-dynamiclike-entrypoints)
-	(find-package :cl-xplan-api/api))
-
-;; recreate the cl-xplan-api pacakge. Re-export what we need from cl-xplan-api/core, API symbols will be exported
-;; by the macros directly
-(make-package :cl-xplan-api :use '(:cl :cl-xplan-api/core :cl-xplan-api/api))
-;; These symbols are to be re-exported from cl-xplan-api/core
-(export '(cl-xplan-api/core:xplan-session cl-xplan-api/core:username cl-xplan-api/core:password
-	  cl-xplan-api/core:base-url cl-xplan-api/core:api-key cl-xplan-api/core:with-xplan-session
-	  cl-xplan-api/core:with-bulk-request cl-xplan-api/core:get-request-by-name
-	  cl-xplan-api/core:process-request cl-xplan-api/core:delete-session
-	  cl-xplan-api/core:convert-xplan-type-to-native cl-xplan-api/core:convert-native-to-xplan-type
-	  cl-xplan-api/core:convert-bulk-to-native cl-xplan-api/core:response cl-xplan-api/core:response-time)
-	(find-package :cl-xplan-api))

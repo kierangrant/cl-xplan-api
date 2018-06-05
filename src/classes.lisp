@@ -11,11 +11,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Lisp Lesser GNU General Public License for more details.
 
-File: src/core/classes.lisp
+File: src/classes.lisp
 Description: XPLAN API Classes
 |#
 
-(in-package :cl-xplan-api/core)
+(in-package :cl-xplan-api)
 
 (defclass xplan-session ()
   ((api-key :accessor api-key :initarg :api-key)
@@ -40,6 +40,7 @@ Description: XPLAN API Classes
 (defclass xplan-request-bulk (xplan-request)
   ((name :accessor name :initarg :name)
    (omit-results-on-success :accessor omit-results-on-success :initform NIL :initarg :omit-results-on)
+   (inhibit-json-decode-default :initarg :inhibit-json-decode-default :initform nil)
    (time :accessor response-time :initform NIL)))
 
 ;; requests is array of actual requests, the requests themselves store the response
