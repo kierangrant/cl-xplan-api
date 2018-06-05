@@ -21,12 +21,12 @@ Description: XPLAN API Conditions
   ((request :reader xplan-api-error-request :initarg :request)
    (reason :reader xplan-api-error-reason :initarg :reason)))
 
-(define-condition xplan-api-error-bad-request (xplan-api-error))
-(define-condition xplan-api-error-unauthenticated (xplan-api-error))
-(define-condition xplan-api-error-unauthorised (xplan-api-error))
-(define-condition xplan-api-error-not-found (xplan-api-error))
-(define-condition xplan-api-error-server-error (xplan-api-error))
-(define-condition xplan-api-error-upstream-server-error (xplan-api-error-server-error))
+(define-condition xplan-api-error-bad-request (xplan-api-error) ())
+(define-condition xplan-api-error-unauthenticated (xplan-api-error) ())
+(define-condition xplan-api-error-unauthorised (xplan-api-error) ())
+(define-condition xplan-api-error-not-found (xplan-api-error) ())
+(define-condition xplan-api-error-server-error (xplan-api-error) ())
+(define-condition xplan-api-error-upstream-server-error (xplan-api-error-server-error) ())
 
 (defmethod xplan-api-error-code ((c xplan-api-error-bad-request)) (declare (ignore c)) 400)
 (defmethod xplan-api-error-code ((c xplan-api-error-unauthenticated)) (declare (ignore c)) 401)

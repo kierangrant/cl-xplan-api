@@ -16,7 +16,7 @@ Description: cl-xplan-api ASDF system definition file
 |#
 
 (defsystem "cl-xplan-api"
-  :version (:read-file-form "src/core/VERSION.expr")
+  :version (:read-file-form "src/VERSION.expr")
   :author "Kieran Grant"
   :license "LLGPL"
   :description "XPlan API Library"
