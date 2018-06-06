@@ -19,13 +19,44 @@ Description: Non-object orientated functions or internal functions
 
 ;;; INTERNAL API
 
+#| If string has an 'e' or 'E' in it, assume it is scientific notation, and do some manual calcs
+fixup for some responses having scientific notation.
+This is allowed in JSON for a direct value, but this is a string!
+We want to return a rational or integer, not a FLOAT
+NOTE: We only use xplan-bigdecimal for encoding, we ALWAYS decode to native NUMBER type
+|#
+(defun bigdecimal-string->native (value)
+  (let ((svalue (split-sequence:split-sequence #\e value :test #'string-equal)))
+    (if (cdr svalue)
+	(* (decimals:parse-decimal-number (car svalue))
+	   (expt 10 (decimals:parse-decimal-number (cadr svalue))))
+	(decimals:parse-decimal-number value))))
+
+(defun %xplan-type-finaliser (object)
+  (symbol-macrolet ((type (gethash "_type" object)) (value (gethash "_val" object)))
+    ;; A Currency Object has a sub-object that is not a Type, but then has a BigDecimal
+    ;; So this function will be called for that middle-subtype.
+    ;; In this case, we do nothing
+    (if (not type) (return-from %xplan-type-finaliser object))
+    (pop json-to-clos:current-finally)
+    (cond
+      ((string= type "Binary") (xplan-binary value))
+      ((string= type "Date") (xplan-date value))
+      ((string= type "Time") (xplan-time value))
+      ((string= type "BigDecimal") (bigdecimal-string->native value))
+      ((string= type "Currency") (xplan-currency (gethash "code" value) (gethash "value" value)))
+      (t (error "Error decoding XPLAN Type")))))
+
+(defun %xplan-add-value-to-object (instance key value)
+  (setf (gethash key instance) value)
+  (if (and (string= key "_type")
+	   (member value '("Binary" "Date" "Time" "BigDecimal" "Currency") :test #'equal))
+      (push #'%xplan-type-finaliser json-to-clos:current-finally))
+  value)
+
 (defparameter *default-json-mapper*
   '(#'(lambda () (make-hash-table :test #'equal))
-    ((t #'(lambda (instance key value) (setf (gethash key instance) value))
-      :mapping
-      (#'(lambda () (make-hash-table :test #'equal))
-	 ((t #'(lambda (instance key value) (setf (gethash key instance) value)))))))
-    :finally #'(lambda (value) (xplan-types->native value))))
+    ((t #'%xplan-add-value-to-object))))
 
 ;; These functions are helpers to create the types
 ;; all calls to API functions should pass the appropiate types created by these functions
@@ -54,35 +85,6 @@ Description: Non-object orientated functions or internal functions
 (defun xplan-currency (code value) (make-instance 'xplan-currency :code code :value value))
 (defun xplan-bigdecimal (value) (make-instance 'xplan-bigdecimal :value value))
 
-#| If string has an 'e' or 'E' in it, assume it is scientific notation, and do some manual calcs
-fixup for some responses having scientific notation.
-This is allowed in JSON for a direct value, but this is a string!
-We want to return a rational or integer, not a FLOAT
-NOTE: We only use xplan-bigdecimal for encoding, we ALWAYS decode to native NUMBER type
-|#
-(defun bigdecimal-string->native (value)
-  (let ((svalue (split-sequence:split-sequence #\e value :test #'string-equal)))
-    (if (cdr svalue)
-	(* (decimals:parse-decimal-number (car svalue))
-	   (expt 10 (decimals:parse-decimal-number (cadr svalue))))
-	(decimals:parse-decimal-number value))))
-
-(defun xplan-type->native (value)
-  (let ((raw-type (gethash "_type" value))
-	(raw-value (gethash "_val" value)))
-    (if (not (typep raw-value '(or string hash-table)))
-	(error 'type-error :expected-type '(or string hash-table) :datum raw-value))
-    (cond
-      ((string= raw-type "Date") (xplan-date raw-value))
-      ((string= raw-type "Time") (xplan-time raw-value))
-      ((string= raw-type "BigDecimal") (bigdecimal-string->native raw-value))
-      ((string= raw-type "Currency")
-       (xplan-currency (gethash "code" raw-value)
-		       (bigdecimal-string->native (gethash "_val" (gethash "value" raw-value)))))
-      ((string= raw-type "Binary") (xplan-binary raw-value))
-      (T (error 'type-error :expected-type '(OR "Date" "Time" "BigDecimal" "Currency" "Binary")
-		:datum raw-type)))))
-
 ;; JSON Encoder Method, converts 'native' types to JSON
 (defmethod json:encode-json ((object xplan-type) &optional stream)
   (let ((json:*json-output* stream))
@@ -107,36 +109,6 @@ NOTE: We only use xplan-bigdecimal for encoding, we ALWAYS decode to native NUMB
 	   (json:encode-json
 	    (decimals:format-decimal-number (xplan-value object) :round-magnitude *max-rounding*)))))))
   nil)
-
-(defgeneric xplan-types->native (value) (:documentation "Covert all known types in value to native type."))
-(defmethod xplan-types->native ((value (eql nil))) nil)
-(defmethod xplan-types->native ((value list))
-  (handler-case
-      (xplan-type->native value)
-    (type-error ()
-      (cons (xplan-types->native (car value))
-	    (xplan-types->native (cdr value))))))
-(defmethod xplan-types->native ((value hash-table))
-  ;; First try and convert hash table as if it is a XPLAN type
-  (handler-case
-      (xplan-type->native value)
-    (type-error ()
-      ;; otherwise try and convert all items in hash-table
-      (maphash (lambda (k v) (setf (gethash k value) (xplan-types->native v))) value)
-      value)))
-(defmethod xplan-types->native ((value string)) value)
-(defmethod xplan-types->native ((value vector))
-  (loop with restore-vector = T for item across value collect
-       (let ((_i))
-	 (handler-case
-	     (setf _i (xplan-types->native item))
-	   (type-error () (setf _i item)))
-	 (if (not (eq item _i)) (setf restore-vector nil))
-	 _i)
-     into items
-     finally
-       (if restore-vector value (coerce items 'vector))))
-(defmethod xplan-types->native ((value T)) value)
 
 #|
 Takes an object, and returns a flattened hash-table (test EQUAL).
