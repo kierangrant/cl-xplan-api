@@ -2,7 +2,7 @@ CL-XPLAN-API is a LISP library that makes it easier to interact with IRESS XPLAN
 
 This is the in development v2-next branch, see the master branch for the stable code.
 
-Whilst this software is released under the LLGPL, to actually connect to an IRESS XPLAN API Server requires you to have an API Key from them.
+Whilst this software is released under the LGPLv2.1+, to actually connect to an IRESS XPLAN API Server requires you to have an API Key from them.
 
 You need a use agreement with IRESS, though, nothing stops you using this library with a server that duplicates their API.
 
