@@ -25,7 +25,7 @@ If you are using Quicklisp, follow these instructions:
 ```shell
 mkdir ~/common-lisp/
 cd ~/common-lisp/
-git clone https://github.com/kierangrant/cl-xplan-api.git
+git clone https://gitlab.com/kierangrant/cl-xplan-api.git
 git clone https://github.com/nallen05/rw-ut.git # not available through Quicklisp
 wget https://beta.quicklisp.org/quicklisp.org
 ```
