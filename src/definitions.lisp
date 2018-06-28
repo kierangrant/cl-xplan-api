@@ -33,3 +33,6 @@ Description: Standard Definitions and overrides for other libraries
 
 (defparameter *max-rounding* -1024 "Maximum rounding when converting a ratio to a 'BigDeciaml'")
 (defvar *xplan-api-debug* *debug-io* "Stream to output debug messages to, if NIL messages are disabled")
+
+(defvar *xplan-session*)
+(defvar *xplan-batched-request*)

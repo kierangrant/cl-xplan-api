@@ -45,4 +45,4 @@ Description: Package definition for CL-XPLAN-API
    ;; macros
    #:with-xplan-session #:with-bulk-request #:xplan-call #:xplan-prepare-bulk
    ;; variables
-   #:*max-rounding* #:*xplan-api-debug*))
+   #:*max-rounding* #:*xplan-api-debug* #:*xplan-session* #:xplan-batched-request))
