@@ -47,7 +47,9 @@ Description: Testing Session for testing and development purposes.
 	 (if (slot-value session 'trace)
 	     (progn
 	       (format *xplan-api-debug* "--- BEGIN TRACE ---~%Timestamp: ~A~%API Called with:~%~S~%"
-		       (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ") rest)
+		       (multiple-value-bind (sec min hour date month year) (decode-universal-time (get-universal-time) 0)
+			 (format nil "~4,'0d-~2,'0d-~2,'0d T~2,'0d:~2,'0d:~2,'0d" year month date hour min sec))
+		       rest)
 	       (force-output *xplan-api-debug*)
 	       (let ((response (multiple-value-list (apply *api-call-function* rest))))
 		 ;; Let's not output actual content if we can instead decode it!
@@ -60,7 +62,8 @@ Description: Testing Session for testing and development purposes.
 		     (format *xplan-api-debug* "Raw Content:~%~A~%"
 			     (elt response 0)))
 		 (format *xplan-api-debug* "Timestamp: ~A~%--- END TRACE ---~%"
-			 (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ"))
+			 (multiple-value-bind (sec min hour date month year) (decode-universal-time (get-universal-time) 0)
+			   (format nil "~4,'0d-~2,'0d-~2,'0d T~2,'0d:~2,'0d:~2,'0d" year month date hour min sec)))
 		 (force-output *xplan-api-debug*)
 		 (values-list response)))
 	     (apply *api-call-function* rest)))
@@ -96,7 +99,9 @@ Description: Testing Session for testing and development purposes.
 	    (*api-call-function*
 	     (lambda (&rest rest)
 	       (format ,stream-sym "--- BEGIN TRACE ---~%Timestamp: ~A~%API Called with:~%~S~%"
-		       (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ") rest)
+		       (multiple-value-bind (sec min hour date month year) (decode-universal-time value 0)
+			 (format nil "~4,'0d-~2,'0d-~2,'0d T~2,'0d:~2,'0d:~2,'0d" year month date hour min sec))
+		       rest)
 	       (force-output ,stream-sym)
 	       (let ((response (multiple-value-list (apply ,api-sym rest))))
 		 ;; Let's not output actual content if we can instead decode it!
@@ -107,7 +112,9 @@ Description: Testing Session for testing and development purposes.
 			     (babel:octets-to-string (elt response 0)))
 		     (format ,stream-sym "Raw Content:~%~A~%" (elt response 0)))
 		 (format ,stream-sym "Timestamp: ~A~%--- END TRACE ---~%"
-			 (rw-ut:write-time-string (get-universal-time) "YYYY-MM-DDThh:mm:ssZ"))
+			 (multiple-value-bind (sec min hour date month year) (decode-universal-time (get-universal-time) 0)
+			   (format nil "~4,'0d-~2,'0d-~2,'0d T~2,'0d:~2,'0d:~2,'0d" year month date hour min sec))
+			 )
 		 (force-output ,stream-sym)
 		 (values-list response)))))
        ,@body)))

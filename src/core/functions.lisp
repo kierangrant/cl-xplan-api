@@ -60,7 +60,10 @@ We want to return a rational or integer, not a FLOAT |#
 ;; Even though we *currently* do not support decoding a Time/Date to a Universal Time, we will support encoding from one
 (defun convert-native-to-xplan-date (value)
   (etypecase value
-    (number (setf value (rw-ut:write-time-string value "YYYY-MM-DD")))
+    (number (setf value
+		  (multiple-value-bind (sec min hour date month year) (decode-universal-time value 0)
+		    (declare (ignore sec min hour))
+		    (format nil "~4,'0d-~2,'0d-~2,'0d" year month date))))
     (string nil))
   (let ((h (make-hash-table :size 2 :test #'equal)))
     (setf (gethash "_type" h) "Date"
@@ -69,7 +72,9 @@ We want to return a rational or integer, not a FLOAT |#
 
 (defun convert-native-to-xplan-time (value)
   (etypecase value
-    (number (setf value (rw-ut:write-time-string value "YYYY-MM-DDThh:mm:ssZ")))
+    (number (setf value
+		  (multiple-value-bind (sec min hour date month year) (decode-universal-time (get-universal-time) 0)
+		    (format nil "~4,'0d-~2,'0d-~2,'0d T~2,'0d:~2,'0d:~2,'0d" year month date hour min sec))))
     (string nil))
   (let ((h (make-hash-table :size 2 :test #'equal)))
     (setf (gethash "_type" h) "Time"

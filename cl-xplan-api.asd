@@ -98,4 +98,4 @@ Description: cl-xplan-api ASDF system definition file
 		   (:file "methods" :depends-on ("classes" "conditions" "definitions" "macros"))))
 		 (:recursive-source-module "api" :depends-on ("core" "package")))
 		:depends-on ("json-patch")))
-  :depends-on ("drakma" "cl-json" "babel" "decimals" "cl-base64" "rw-ut" "split-sequence"))
+  :depends-on ("drakma" "cl-json" "babel" "decimals" "cl-base64" "split-sequence"))
