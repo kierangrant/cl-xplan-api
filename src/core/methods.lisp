@@ -1,7 +1,7 @@
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2018 Kieran Grant
+Copyright (C) 2023 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -132,41 +132,30 @@ This makes sense when you look at the call to list:
 
 (defmethod get-request-url ((request xplan-request-bulk))
   (with-slots (session) request
-    (with-slots (base-url transport-version) session
-      (format NIL "~A/resourceful-v~D" base-url transport-version))))
+    (with-slots (base-url) session
+      (format NIL "~A/resourceful" base-url))))
 
 (defmethod get-request-url ((request xplan-request))
-  (with-slots (resource parameters session) request
-    (with-slots (base-url transport-version) session
-      (format nil "~a/resourceful-v~D~a~@[~a~]" base-url transport-version resource
-	      (with-output-to-string (out)
-		(labels ((value-to-string (item)
-			   (etypecase item
-			     (string (drakma:url-encode item :utf-8))
-			     (integer
-			      (drakma:url-encode
-			       (decimals:format-decimal-number item :round-magnitude -20)  :utf-8))
-			     (symbol (drakma:url-encode (string-downcase (symbol-name item))  :utf-8))
-			     ((member nil) nil))))
-		  (with-hash-table-iterator (getitem (flatten-structure parameters))
-		    (let ((result (multiple-value-list (getitem))))
-		      (if (car result)
-			  ;; don't URL encode transaction ID or bookmark, XPLAN throws errors
-			  (if (or (string= (elt result 1) "_transaction")
-				  (string= (elt result 1) "page_bookmark"))
-			      (format out "?~a~@[=~a~]" (elt result 1) (elt result 2))
-			      (format out "?~a~@[=~a~]" (elt result 1)
-				      (value-to-string (elt result 2)))))
-		      (loop
-			 for result = (multiple-value-list (getitem))
-			 while (car result)
-			 do
-			 ;; don't URL encode transaction ID or bookmark, XPLAN throws errors
-			   (if (or (string= (elt result 1) "_transaction")
-				   (string= (elt result 1) "page_bookmark"))
-			       (format out "&~a~@[=~a~]" (elt result 1) (elt result 2))
-			       (format out "&~a~@[=~a~]" (elt result 1)
-				       (value-to-string (elt result 2)))))))))))))
+  (with-slots (resource session) request
+    (with-slots (base-url) session
+      (format nil "~a/resourceful~a" base-url resource))))
+
+(defgeneric get-request-parameters (request))
+
+(defmethod get-request-parameters ((request xplan-request-bulk))
+  nil)
+
+(defmethod get-request-parameters ((request xplan-request))
+  (with-slots (parameters) request
+    (labels ((value-to-string (item)
+	       (etypecase item
+		 (string item)
+		 (integer (decimals:format-decimal-number item :round-magnitude -20))
+		 (symbol (string-downcase (symbol-name item)))
+		 ((member nil) nil))))
+      (iter:iter
+	(iter:for (k v) :in-hashtable (flatten-structure parameters))
+	(iter:collect `(,k . ,(value-to-string v)))))))
 
 (defgeneric get-request-content (request))
 
@@ -213,6 +202,7 @@ This makes sense when you look at the call to list:
 	  (content (get-request-content request))
 	  (content-type (get-request-content-type request))
 	  (request-url (get-request-url request))
+	  (request-parameters (get-request-parameters request))
 	  (method (get-request-method request)))
       (if (or do-auth force-init-auth)
 	  (progn
@@ -225,6 +215,7 @@ This makes sense when you look at the call to list:
 		    *api-call-function*
 		    request-url
 		    :method method
+		    :parameters request-parameters
 		    :force-binary T
 		    :cookie-jar session-state
 		    :user-agent *user-agent*
@@ -244,6 +235,7 @@ This makes sense when you look at the call to list:
 		  *api-call-function*
 		  request-url
 		  :method method
+		  :parameters request-parameters
 		  :force-binary T
 		  :cookie-jar session-state
 		  :user-agent *user-agent*

@@ -1,7 +1,7 @@
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2018 Kieran Grant
+Copyright (C) 2023 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -26,7 +26,7 @@ Description: Package definition for CL-XPLAN-API
    #:xplan-api-error
    ;; methods
    #:api-key #:base-url #:content #:content-type #:delete-session #:drakma-settings #:force-init-auth
-   #:name  #:password #:prepare-request #:process-request #:parameters #:transport-version #:response
+   #:name  #:password #:prepare-request #:process-request #:parameters #:response
    #:response-code #:response-msg #:response-headers #:response-time #:resource #:requests #:request-method
    #:username #:user-agent #:xplan-api-call #:xplan-api-error-status-code #:xplan-api-error-reason-message
    #:xplan-api-error-request #:xplan-session-auto-reauth #:get-request-by-name

@@ -61,7 +61,7 @@ This is released under the same License as ASDF itself, the MIT-style license in
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2018 Kieran Grant
+Copyright (C) 2023 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -98,4 +98,4 @@ Description: cl-xplan-api ASDF system definition file
 		   (:file "methods" :depends-on ("classes" "conditions" "definitions" "macros"))))
 		 (:recursive-source-module "api" :depends-on ("core" "package")))
 		:depends-on ("json-patch")))
-  :depends-on ("drakma" "cl-json" "babel" "decimals" "cl-base64" "split-sequence"))
+  :depends-on ("drakma" "cl-json" "babel" "decimals" "cl-base64" "split-sequence" "iterate"))

@@ -1,7 +1,7 @@
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2018 Kieran Grant
+Copyright (C) 2023 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -24,7 +24,23 @@ Description: Standard Definitions and overrides for other libraries
       (read str))
 	      "Version of XPLAN-API Library")
 (defparameter *user-agent* (concatenate 'string "CL-XPLAN-API/" *xplan-api-version*) "User-Agent to send to upstream server.")
-(defparameter *api-call-function* #'drakma:http-request "Low-Level HTTP Request function to make API request.")
+(defparameter *api-call-function*
+  (lambda (uri &rest args &key url-encoder &allow-other-keys)
+    (labels ((default-encoder (value encoding)
+	       (drakma:url-encode value encoding)))
+      (if (null url-encoder)
+	  (setf url-encoder #'default-encoder))
+      (apply #'drakma:http-request
+	     uri
+	     `(:url-encoder
+	       ,#'(lambda (v encoding)
+		    ;; don't URL encode transaction ID or bookmark, XPLAN throws errors
+		    (if (or (string= v "_transaction")
+			    (string= v "page_bookmark"))
+			v
+			(funcall url-encoder v encoding)))
+	       ,@args))))
+  "Low-Level HTTP Request function to make API request.")
 
 ;;; PUBLIC API
 

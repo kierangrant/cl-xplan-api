@@ -1,7 +1,7 @@
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2018 Kieran Grant
+Copyright (C) 2023 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -69,6 +69,7 @@ Description: Testing Session for testing and development purposes.
 	     (apply *api-call-function* rest)))
        (get-request-url request)
        :method (get-request-method request)
+       :parameters (get-request-parameters request)
        :force-binary T
        :cookie-jar cookies
        :additional-headers `(("Accept" . "application/json, text/html")
@@ -99,7 +100,7 @@ Description: Testing Session for testing and development purposes.
 	    (*api-call-function*
 	     (lambda (&rest rest)
 	       (format ,stream-sym "--- BEGIN TRACE ---~%Timestamp: ~A~%API Called with:~%~S~%"
-		       (multiple-value-bind (sec min hour date month year) (decode-universal-time value 0)
+		       (multiple-value-bind (sec min hour date month year) (decode-universal-time (get-universal-time) 0)
 			 (format nil "~4,'0d-~2,'0d-~2,'0d T~2,'0d:~2,'0d:~2,'0d" year month date hour min sec))
 		       rest)
 	       (force-output ,stream-sym)

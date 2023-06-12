@@ -29,7 +29,7 @@
      :get
      :request-name "adviser"
      :fields #("first_name" "last_name")
-     :entity_id "{result=client:$.client_adviser}")
+     :entity_id "{result=client:$.fields.client_adviser}")
     ;; For a bulk-request, we must call process-request when we are finished setting it up.
     ;; As with a normal request, if the server returns an error, we throw a non-continuable error.
     ;; But if a subrequest has an error, we throw a continuable error, as XPlan documentation says the
@@ -38,9 +38,11 @@
     (let ((client (response (get-request-by-name req "client")))
 	  (adviser (response (get-request-by-name req "adviser"))))
       `(:client
-	(:first-name ,(gethash "first_name" client) :last-name ,(gethash "last_name" client))
+	(:first-name ,(gethash "first_name" (gethash "fields" client))
+	 :last-name ,(gethash "last_name" (gethash "fields" client)))
 	:adviser
-	(:first-name ,(gethash "first_name" adviser) :last-name ,(gethash "last_name" adviser))))))
+	(:first-name ,(gethash "first_name" (gethash "fields" adviser))
+	 :last-name ,(gethash "last_name" (gethash "fields" adviser)))))))
 -->
 (:CLIENT
  (:FIRST-NAME "Test" :LAST-NAME "KTestclient")

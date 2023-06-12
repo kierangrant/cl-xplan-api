@@ -1,7 +1,7 @@
 #|
 This file is part of CL-XPLAN-API, the Lisp XPLAN API Library
 
-Copyright (C) 2018 Kieran Grant
+Copyright (C) 2023 Kieran Grant
 This library is free software; you can redistribute it and/or
 modify it under the terms of the Lisp Lesser General Public License
 (http://opensource.franz.com/preamble.html), known as the LLGPL.
@@ -24,7 +24,6 @@ Description: XPLAN API Classes
    (password :accessor password :initarg :password :documentation "Password to use when authenticating")
    (session-state :accessor session-state :initarg :session-state :initform (make-instance 'drakma:cookie-jar) :documentation "Session state used by backend to keep track of session")
    (base-url :accessor base-url :initarg :base-url :documentation "Base site url used when making requests.")
-   (transport-version :accessor transport-version :initarg :transport-version :initform 1 :documentation "XPlan API Transport Version")
    (auto-reauth :accessor xplan-session-auto-reauth :initarg :auto-reauth :initform T :documentation "Automatically reauthenticated on expiry or invalidation?")
    (force-init-auth :accessor force-init-auth :initarg :force-init-auth :initform NIL :documentation "Force Authentication on first request")))
 

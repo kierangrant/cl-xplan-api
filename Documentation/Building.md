@@ -13,6 +13,7 @@ These are the direct dependencies for cl-xplan-api, they will depend on others i
 - cl-base64 - Convert To and From Base64
 - rw-ut - Read and Write to ISO 8601 Date / Times to LISP Universal Time. (Unfortunately, LISP dates cannot go before 1900-01-1 00:00 GMT, which XPLAN uses... :/) Oh well.
 - split-sequence - For breaking sequences up into smaller parts. Used for reading in Scientific notation Big Decimals That XPLAN Sometimes throws. Also used to get domain for testing session... because I'm lazy and didn't want to write that myself...
+- iterate
 
 Once you have either loaded quicklisp, or downloaded all dependencies (recursively) somewhere and put links in the ~/common-lisp/ directory (or setup ASDF Source Registry) it should be as easy as:
 ```lisp
